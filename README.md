@@ -8,5 +8,7 @@ Java, Spring, JUnit, Selenium
 
 ## Team Info
 Jose Robles - jose.robles2@wsu.edu
+
 William Hiatt william.hiatt@wsu.edu
+
 Joshua Long joshua.long@wsu.edu
