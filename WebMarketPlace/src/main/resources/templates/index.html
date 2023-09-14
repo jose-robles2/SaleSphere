@@ -1,0 +1,53 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <div>
+            <h1>Course Management Application</h1>
+            <table style="border: solid">
+                <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Course Instructor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--This is a for loop - iterate for each course in courses and display-->
+                <tr th:each="course: ${courses}">
+                    <td th:text="${course.getCourseId()}"></td>
+                    <td th:text="${course.getCourseName()}"></td>
+                    <td th:text="${course.getInstructor().getFirstName()}+ ' ' +${course.getInstructor().getLastName()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2>Course Creation Form</h2>
+            <!--For the submit action of this form, call createCourse() and pass in a course object-->
+            <form action = "" th:action="@{/createCourse}" th:object="${course}" method="post">
+                <p>Course Code: <input th:field="*{courseId}" type="text" name="courseId" id="courseId"> </p>
+                <p>Course Code: <input th:field="*{courseName}" type="text" name="courseName" id="courseName"> </p>
+                <p>Instructor:
+                    <select th:field="*{instructor}" name="intstuctor" id="instructor">
+                        <option
+                                th:each="instructor: ${instructors}"
+                                th:value="${instructor.id}"
+                                th:text="${instructor.firstName}+ ' ' +${instructor.lastName}"
+                                value="test">
+                            Select
+                        </option>
+                    </select>
+                </p>
+                <p><input type="submit" value="submit"></p>
+            </form>
+        </div>
+
+    </body>
+</html>
