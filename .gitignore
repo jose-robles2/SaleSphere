@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore IntelliJ IDEA settings
+.idea/
+
+# Ignore Maven wrapper and build directories
+.mvn/
+src/
+target/
+HELP.md
+mvnw
+mvnw.cmd
+pom.xml

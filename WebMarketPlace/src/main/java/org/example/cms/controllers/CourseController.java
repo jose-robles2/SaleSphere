@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 // This course controller recevies requests from index.html
     // we want to retrieve courses for the user, and also let users create a course
-//temp
+//temp okay this is a test
 @Controller // handles http reqs
 public class CourseController {
 
