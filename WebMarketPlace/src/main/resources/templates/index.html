@@ -31,7 +31,7 @@
         <div>
             <h2>Course Creation Form</h2>
             <!--For the submit action of this form, call createCourse() and pass in a course object-->
-            <form action = "" th:action="@{/createCourse}" th:object="${course}" method="post">
+            <form action = "" th:action="@{/createCourse}" th:object="${newCourse}" method="post">
                 <p>Course Code: <input th:field="*{courseId}" type="text" name="courseId" id="courseId"> </p>
                 <p>Course Code: <input th:field="*{courseName}" type="text" name="courseName" id="courseName"> </p>
                 <p>Instructor:

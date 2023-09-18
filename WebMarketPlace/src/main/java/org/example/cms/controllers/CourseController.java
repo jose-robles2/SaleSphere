@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+// This course controller recevies requests from index.html
+    // we want to retrieve courses for the user, and also let users create a course
+//temp
+@Controller // handles http reqs
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
 
-    private InstructorService instructorService;
+    private final InstructorService instructorService;
 
     public CourseController(CourseService courseService, InstructorService instructorService) {
         this.courseService = courseService;
@@ -26,7 +29,7 @@ public class CourseController {
     @RequestMapping("/") // root of the app
     public String getCourses(Model model) {
         model.addAttribute("courses", courseService.findAll()); // use the service middleman
-        model.addAttribute("course", new Course()); // send in an empty instance, for what tho?
+        model.addAttribute("newCourse", new Course()); // This object lets users add to database
 
         model.addAttribute("instructors", instructorService.findAll());
 
