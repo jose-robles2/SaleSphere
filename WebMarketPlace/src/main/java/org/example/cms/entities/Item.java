@@ -1,11 +1,13 @@
 package org.example.cms.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import java.util.Objects;
 
 @Entity
 public class Item {
-    private String id;
+    private int test;
 
     private String name;
 
@@ -17,20 +19,19 @@ public class Item {
 
     private Long price;
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private int stock;
 
-    public Item(String id, String name, String description, String imageUrl, String locationState, Long price, int stock) {
-        this.id = id;
+    public Item(String name, String description, String imageUrl, String locationState, Long price, int stock) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.locationState = locationState;
         this.price = price;
         this.stock = stock;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getName() {
@@ -53,12 +54,10 @@ public class Item {
         return price;
     }
 
+    public Long getId() { return id; }
+
     public int getStock() {
         return stock;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -79,6 +78,10 @@ public class Item {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setStock(int stock) {
