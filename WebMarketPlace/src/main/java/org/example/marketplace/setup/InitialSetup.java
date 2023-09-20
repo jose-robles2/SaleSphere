@@ -26,15 +26,27 @@ public class InitialSetup implements CommandLineRunner {
         System.out.println("Initializing database...");
         Item phone = new Item("Phone", "IPhone 15", "/image", "Washington", 1199.99, 5);
         Item laptop = new Item("Laptop", "Macbook Pro", "/image", "Washington", 2199.99, 5);
+        Item tv = new Item("TV", "Samsund 4K TV", "/image", "Washington", 999.99, 5);
+        Item tablet = new Item("Tablet", "iPad Pro", "/image", "Washington", 799.99, 5);
+        Item headphones = new Item("Headphones", "Sony Noise-Canceling", "/image", "Washington", 299.99, 5);
+        Item camera = new Item("Camera", "Canon EOS", "/image", "Washington", 899.99, 5);
 
         phone = itemRepository.save(phone);
         laptop = itemRepository.save(laptop);
+        tv = itemRepository.save(tv);
+        tablet = itemRepository.save(tablet);
+        headphones = itemRepository.save(headphones);
+        camera = itemRepository.save(camera);
 
         User user = new User("Will", "Hiatt", "wHiatt", "Washington");
         user = userRepository.save(user);
 
         System.out.println(phone);
         System.out.println(laptop);
+        System.out.println(tv);
         System.out.println(user);
+        System.out.println(tablet);
+        System.out.println(headphones);
+        System.out.println(camera);
     }
 }
