@@ -4,53 +4,76 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
+        <title>MarketPlace</title>
+        <style>
+            .appContainer {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            .appHeader {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
+                padding: 20px; /* Padding around header content */
+                text-align: center;
+                width: 100%;
+            }
+            .itemsContainer {
+                padding: 20px;
+                max-height: 500px;
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                grid-column-gap: 40px;
+                grid-row-gap: 30px;
+            }
+            .item {
+                border: 1px solid;
+                border-radius: 15px;
+                padding: 1.5rem;
+                min-height: 100px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                white-space: pre-wrap;
+                overflow: hidden;
+                word-wrap: break-word;
+            }
+        </style>
     </head>
     <body>
-        <div>
-            <h1>Marketplace Web Application</h1>
-            <table style="border: solid">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!--This is a for loop - iterate for each course in courses and display-->
-                <tr th:each="item: ${items}">
-                    <td th:text="${item.getName()}"></td>
-                    <td th:text="${item.getDescription()}"></td>
-                    <td th:text="${item.getPrice()}"></td>
-                    <td th:text="${item.getStock()}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        <div class="appContainer">
+            <div class="appHeader">
+                <h1>SaleSphere Market</h1>
+            </div>
+            <div class="itemsContainer">
+                <div th:each="item: ${items}" class="item">
+                    <h4 th:text="${item.getName()}"></h4>
+                    <p th:text="${item.getDescription()}"></p>
+                    <p th:text="${item.getPrice()}"></p>
+                    <p th:text="${item.getStock()}"></p>
+                </div>
+            </div>
 
-        <div>
-            <h2>Item Creation Form</h2>
-            <h3>Insert Form below...</h3>
-            <!--For the submit action of this form, call createCourse() and pass in a course object-->
-<!--            <form action = "" th:action="@{/createItem}" th:object="${newItem}" method="post">-->
-<!--                <p>Course Code: <input th:field="*{courseId}" type="text" name="courseId" id="courseId"> </p>-->
-<!--                <p>Course Code: <input th:field="*{courseName}" type="text" name="courseName" id="courseName"> </p>-->
-<!--                <p>Instructor:-->
-<!--                    <select th:field="*{instructor}" name="intstuctor" id="instructor">-->
-<!--                        <option-->
-<!--                                th:each="instructor: ${instructors}"-->
-<!--                                th:value="${instructor.id}"-->
-<!--                                th:text="${instructor.firstName}+ ' ' +${instructor.lastName}"-->
-<!--                                value="test">-->
-<!--                            Select-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                </p>-->
-<!--                <p><input type="submit" value="submit"></p>-->
-<!--            </form>-->
+            <div>
+                <h2>Item Creation Form</h2>
+                <h3>Insert Form below...</h3>
+                <!--For the submit action of this form, call createCourse() and pass in a course object-->
+                <!--            <form action = "" th:action="@{/createItem}" th:object="${newItem}" method="post">-->
+                <!--                <p>Course Code: <input th:field="*{courseId}" type="text" name="courseId" id="courseId"> </p>-->
+                <!--                <p>Course Code: <input th:field="*{courseName}" type="text" name="courseName" id="courseName"> </p>-->
+                <!--                <p>Instructor:-->
+                <!--                    <select th:field="*{instructor}" name="intstuctor" id="instructor">-->
+                <!--                        <option-->
+                <!--                                th:each="instructor: ${instructors}"-->
+                <!--                                th:value="${instructor.id}"-->
+                <!--                                th:text="${instructor.firstName}+ ' ' +${instructor.lastName}"-->
+                <!--                                value="test">-->
+                <!--                            Select-->
+                <!--                        </option>-->
+                <!--                    </select>-->
+                <!--                </p>-->
+                <!--                <p><input type="submit" value="submit"></p>-->
+                <!--            </form>-->
+            </div>
         </div>
-
     </body>
 </html>
