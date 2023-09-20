@@ -1,10 +1,10 @@
-package org.example.cms;
+package org.example.marketplace;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CmsApplicationTests {
+class MarketPlaceApplicationTests {
 
 	@Test
 	void contextLoads() {
