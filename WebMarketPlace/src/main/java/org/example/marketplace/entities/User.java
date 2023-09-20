@@ -1,12 +1,14 @@
-package org.example.cms.entities;
+package org.example.marketplace.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "users") // Change the table name to "users" to bypass naming clash error with "user"
 public class User {
     private String firstName;
 
@@ -62,6 +64,7 @@ public class User {
     public void setState(String state) {
         this.state = state;
     }
+
     public void setId(Long id) {
         this.id = id;
     }

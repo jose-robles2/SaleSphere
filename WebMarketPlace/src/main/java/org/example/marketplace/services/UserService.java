@@ -1,6 +1,6 @@
-package org.example.cms.services;
+package org.example.marketplace.services;
 
-import org.example.cms.entities.User;
+import org.example.marketplace.entities.User;
 
 public interface UserService {
     public Iterable<User> findAll();

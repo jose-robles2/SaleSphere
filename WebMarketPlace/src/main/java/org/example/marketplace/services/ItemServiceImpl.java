@@ -1,8 +1,10 @@
-package org.example.cms.services;
+package org.example.marketplace.services;
 
-import org.example.cms.entities.Item;
-import org.example.cms.repositories.ItemRepository;
+import org.example.marketplace.entities.Item;
+import org.example.marketplace.repositories.ItemRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ItemServiceImpl implements ItemService {
 
     private ItemRepository itemRepository;

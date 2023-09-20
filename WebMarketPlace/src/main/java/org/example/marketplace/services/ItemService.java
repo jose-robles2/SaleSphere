@@ -1,5 +1,5 @@
-package org.example.cms.services;
-import org.example.cms.entities.Item;
+package org.example.marketplace.services;
+import org.example.marketplace.entities.Item;
 
 public interface ItemService {
     public Iterable<Item> findAll();

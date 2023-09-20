@@ -1,4 +1,4 @@
-package org.example.cms.entities;
+package org.example.marketplace.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +7,6 @@ import java.util.Objects;
 
 @Entity
 public class Item {
-    private int test;
 
     private String name;
 
@@ -17,7 +16,7 @@ public class Item {
 
     private String locationState;
 
-    private Long price;
+    private double price;
 
     @Id
     @GeneratedValue
@@ -25,7 +24,9 @@ public class Item {
 
     private int stock;
 
-    public Item(String name, String description, String imageUrl, String locationState, Long price, int stock) {
+    public Item() {}
+
+    public Item(String name, String description, String imageUrl, String locationState, double price, int stock) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -50,7 +51,7 @@ public class Item {
         return locationState;
     }
 
-    public Long getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -76,7 +77,7 @@ public class Item {
         this.locationState = locationState;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

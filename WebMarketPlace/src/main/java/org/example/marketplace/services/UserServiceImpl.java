@@ -1,7 +1,7 @@
-package org.example.cms.services;
+package org.example.marketplace.services;
 
-import org.example.cms.entities.User;
-import org.example.cms.repositories.UserRepository;
+import org.example.marketplace.entities.User;
+import org.example.marketplace.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service

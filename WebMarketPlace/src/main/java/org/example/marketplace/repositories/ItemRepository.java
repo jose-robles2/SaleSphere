@@ -1,6 +1,6 @@
-package org.example.cms.repositories;
+package org.example.marketplace.repositories;
 
-import org.example.cms.entities.Item;
+import org.example.marketplace.entities.Item;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ItemRepository extends CrudRepository<Item, Long> {
