@@ -28,6 +28,12 @@ public class ItemController {
         return "index";
     }
 
+    @PostMapping("/buyItem")
+    public String buyItem(@ModelAttribute Item item, Model model) {
+        System.out.println("WE MADE IT !");
+        return "redirect:/";
+    }
+
     @PostMapping("/createItem")
     public String createItem(@ModelAttribute Item item, Model model) {
         itemService.save(item);

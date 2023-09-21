@@ -22,4 +22,14 @@ public class ItemServiceImpl implements ItemService {
     public Item save(Item item) {
         return itemRepository.save(item);
     }
+
+    public Boolean buyItem(Item item, int quantity) {
+
+        if (item.getStock() <= 0) {
+            return false;
+        }
+
+        item.setStock(item.getStock() - 1);
+        return true;
+    }
 }
