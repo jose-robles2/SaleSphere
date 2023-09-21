@@ -25,7 +25,7 @@
                 grid-column-gap: 40px;
                 grid-row-gap: 30px;
             }
-            .item {
+            .itemDisplay {
                 border: 1px solid;
                 border-radius: 15px;
                 padding: 10px;
@@ -53,7 +53,7 @@
                 <h1>SaleSphere Market</h1>
             </div>
             <div class="itemsContainer">
-                <div th:each="item: ${items}" class="item">
+                <div th:each="item: ${items}" class="itemDisplay">
                     <div class="itemElement">
                         <div class="sideBySide"><!--
                             --><h4 th:text="${item.getName()}"></h4><!--
@@ -65,7 +65,16 @@
                     </div>
                     <div class="itemElement">
                         <div class="sideBySide"><!--
-                            --><button th:action="@{buyItem}" th:object="${item}" method="post">Buy</button><!--
+                            --><form th:action="@{/buyItem}" th:object="${item}" method="post"><!--
+                                --><input type="hidden" name="id" th:value="${item.id}" /><!--
+                                --><input type="hidden" name="name" th:value="${item.name}" /><!--
+                                --><input type="hidden" name="description" th:value="${item.description}" /><!--
+                                --><input type="hidden" name="imageUrl" th:value="${item.imageUrl}" /><!--
+                                --><input type="hidden" name="locationState" th:value="${item.locationState}" /><!--
+                                --><input type="hidden" name="price" th:value="${item.price}" /><!--
+                                --><input type="hidden" name="stock" th:value="${item.stock}" /><!--
+                            --><button type="submit">Buy</button> <!--
+                            --></form><!--
                         --></div>
                         <div class="sideBySide"><!--
                             --><p th:text="'In Stock: ' + ${item.getStock()}" style="flex: 1"></p><!--
