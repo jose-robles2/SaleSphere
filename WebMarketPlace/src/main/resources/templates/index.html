@@ -28,7 +28,7 @@
             .item {
                 border: 1px solid;
                 border-radius: 15px;
-                padding: 1.5rem;
+                padding: 10px;
                 min-height: 100px;
                 display: flex;
                 flex-direction: column;
@@ -36,6 +36,14 @@
                 white-space: pre-wrap;
                 overflow: hidden;
                 word-wrap: break-word;
+                cursor: pointer;
+           }
+           .itemElement {
+                display: flex;
+                align-items: center;
+           }
+            .sideBySide {
+                flex: 1;
             }
         </style>
     </head>
@@ -46,10 +54,23 @@
             </div>
             <div class="itemsContainer">
                 <div th:each="item: ${items}" class="item">
-                    <h4 th:text="${item.getName()}"></h4>
-                    <p th:text="${item.getDescription()}"></p>
-                    <p th:text="${item.getPrice()}"></p>
-                    <p th:text="${item.getStock()}"></p>
+                    <div class="itemElement">
+                        <div class="sideBySide"><!--
+                            --><h4 th:text="${item.getName()}"></h4><!--
+                            --><p th:text="${item.getDescription()}"></p><!--
+                        --></div>
+                        <div class="sideBySide"><!--
+                            --><p th:text="'$' + ${item.getPrice()}"></p><!--
+                        --></div>
+                    </div>
+                    <div class="itemElement">
+                        <div class="sideBySide"><!--
+                            --><button th:action="@{buyItem}" th:object="${item}" method="post">Buy</button><!--
+                        --></div>
+                        <div class="sideBySide"><!--
+                            --><p th:text="'In Stock: ' + ${item.getStock()}" style="flex: 1"></p><!--
+                        --></div>
+                    </div>
                 </div>
             </div>
 
