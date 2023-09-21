@@ -4,6 +4,8 @@ import org.example.marketplace.entities.User;
 import org.example.marketplace.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -22,4 +24,10 @@ public class UserServiceImpl implements UserService{
     public User save(User user) {
         return userRepository.save(user);
     }
+
+    public Optional<User> getUser(Long ID)
+    {
+        return userRepository.findById(ID);
+    }
+
 }

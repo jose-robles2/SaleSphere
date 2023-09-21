@@ -48,6 +48,13 @@
         </style>
     </head>
     <body>
+
+        <h1>Form</h1>
+        <form th:action="@{/setUser}" th:object="${user}" method="post">
+            <p>Id: <input type="text" th:field="*{id}" /></p>
+            <p><input type="submit" value="Submit" /> </p>
+        </form>
+
         <div class="appContainer">
             <div class="appHeader">
                 <h1>SaleSphere Market</h1>
