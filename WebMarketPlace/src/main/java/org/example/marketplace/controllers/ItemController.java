@@ -1,6 +1,7 @@
 package org.example.marketplace.controllers;
 
 import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.User;
 import org.example.marketplace.services.ItemService;
 import org.example.marketplace.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Optional;
 
 @Controller
 public class ItemController {
@@ -26,6 +29,7 @@ public class ItemController {
         model.addAttribute("newItem", new Item());  // addItem form submit
         model.addAttribute("users", userService.findAll());
         model.addAttribute("item", new Item());     // buyItem form submit
+        model.addAttribute("user", new User());
         return "index";
     }
 
@@ -46,4 +50,24 @@ public class ItemController {
         itemService.save(updatedItem);
         model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
     }
+
+    @PostMapping("/setUser")
+    public String setUserSubmit(@ModelAttribute User user, Model model) {
+        setUserHelper(user, model);
+        return "redirect:/";
+    }
+
+    private void setUserHelper(User user, Model model) {
+        Optional<User> currentUser = userService.getUser(user.getId());
+        model.addAttribute("user", currentUser);
+
+    }
+
+    @PostMapping("/getCurrentUser")
+    public String getCurrentUser(Model model)
+    {
+        model.addAttribute("user", userService.getCurrentUser());
+        return "redirect:/";
+    }
+
 }

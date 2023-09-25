@@ -11,6 +11,8 @@ public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
 
+    private Optional<User> currentUser = this.getUser(0L);
+
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -29,5 +31,11 @@ public class UserServiceImpl implements UserService{
     {
         return userRepository.findById(ID);
     }
+
+    public Optional<User> getCurrentUser()
+    {
+        return this.currentUser;
+    }
+
 
 }
