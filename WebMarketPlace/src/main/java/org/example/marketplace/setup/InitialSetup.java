@@ -31,12 +31,28 @@ public class InitialSetup implements CommandLineRunner {
         Item headphones = new Item("Headphones", "Sony Noise-Canceling", "/image", "Washington", 299.99, 5);
         Item camera = new Item("Camera", "Canon EOS", "/image", "Washington", 899.99, 5);
 
+        Item smartwatch = new Item("Smartwatch", "Apple Watch Series 7", "/image", "Washington", 399.99, 5);
+        Item speaker = new Item("Speaker", "Bose SoundLink", "/image", "Washington", 199.99, 5);
+        Item gamingConsole = new Item("Gaming Console", "PlayStation 5", "/image", "Washington", 499.99, 5);
+        Item keyboard = new Item("Keyboard", "Logitech G Pro", "/image", "Washington", 129.99, 5);
+        Item mouse = new Item("Mouse", "Razer DeathAdder", "/image", "Washington", 69.99, 5);
+        Item printer = new Item("Printer", "HP LaserJet Pro", "/image", "Washington", 249.99, 5);
+
+
         phone = itemRepository.save(phone);
         laptop = itemRepository.save(laptop);
         tv = itemRepository.save(tv);
         tablet = itemRepository.save(tablet);
         headphones = itemRepository.save(headphones);
         camera = itemRepository.save(camera);
+
+        smartwatch = itemRepository.save(smartwatch);
+        speaker = itemRepository.save(speaker);
+        gamingConsole = itemRepository.save(gamingConsole);
+        keyboard = itemRepository.save(keyboard);
+        mouse = itemRepository.save(mouse);
+        printer = itemRepository.save(printer);
+
 
         User user = new User("Will", "Hiatt", "wHiatt", "Washington");
         User user2 = new User("Jose", "Robles", "jRob", "Washington");
@@ -49,7 +65,12 @@ public class InitialSetup implements CommandLineRunner {
         System.out.println(headphones);
         System.out.println(camera);
 
-        System.out.println(user);
-        System.out.println(user2);
+        System.out.println(smartwatch);
+        System.out.println(speaker);
+        System.out.println(gamingConsole);
+        System.out.println(keyboard);
+        System.out.println(mouse);
+        System.out.println(printer);
+
     }
 }
