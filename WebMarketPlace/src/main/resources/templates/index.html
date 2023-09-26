@@ -11,6 +11,7 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+            }
             .appHeader {
                 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
                 padding: 20px; /* Padding around header content */
@@ -19,7 +20,7 @@
             }
             .itemsContainer {
                 padding: 20px;
-                max-height: 500px;
+                /*max-height: 500px;*/
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
                 grid-column-gap: 40px;
@@ -44,6 +45,58 @@
            }
             .sideBySide {
                 flex: 1;
+            }
+
+
+
+            .itemform {
+
+                display: flex;
+                flex-direction: column; /* Stacks children vertically */
+                align-items: center; /* Centers children horizontally */
+                justify-content: flex-start;
+
+                border: 1px solid #e0e0e0;
+                padding: 20px;
+                border-radius: 10px;
+                width: 80%;
+                margin: 20px auto;
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: #90EE90;
+            }
+
+            .itemform h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+            }
+
+            .itemform form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .itemform input[type="text"] {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .itemform input[type="submit"] {
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .itemform input[type="submit"]:hover {
+                background-color: #0056b3;
             }
         </style>
     </head>
@@ -83,26 +136,20 @@
                 </div>
             </div>
 
-            <div>
+            <div class="itemform">
                 <h2>Item Creation Form</h2>
-                <h3>Insert Form below...</h3>
-                <!--For the submit action of this form, call createCourse() and pass in a course object-->
-                <!--            <form action = "" th:action="@{/createItem}" th:object="${newItem}" method="post">-->
-                <!--                <p>Course Code: <input th:field="*{courseId}" type="text" name="courseId" id="courseId"> </p>-->
-                <!--                <p>Course Code: <input th:field="*{courseName}" type="text" name="courseName" id="courseName"> </p>-->
-                <!--                <p>Instructor:-->
-                <!--                    <select th:field="*{instructor}" name="intstuctor" id="instructor">-->
-                <!--                        <option-->
-                <!--                                th:each="instructor: ${instructors}"-->
-                <!--                                th:value="${instructor.id}"-->
-                <!--                                th:text="${instructor.firstName}+ ' ' +${instructor.lastName}"-->
-                <!--                                value="test">-->
-                <!--                            Select-->
-                <!--                        </option>-->
-                <!--                    </select>-->
-                <!--                </p>-->
-                <!--                <p><input type="submit" value="submit"></p>-->
-                <!--            </form>-->
+                <form th:action ="@{/createItem}" th:object="${item}" method="post" >
+                    <p>Name: <input th:field= "*{name}" type="text" name ="name" id="name"></p>
+                    <p>Description: <input th:field= "*{description}" type="text" name ="description" id="description"></p>
+                    <p>imageUrl: <input th:field= "*{imageUrl}" type="text" name ="imageUrl" id="imageUrl"></p>
+                    <p>LocationState: <input th:field= "*{locationState}" type="text" name ="locationState" id="locationState"></p>
+                    <p>Price: <input th:field= "*{price}" type="text" name ="price" id="price"></p>
+                    <p>Stock: <input th:field= "*{stock}" type="text" name ="stock" id="stock"></p>
+                    <p><input type="submit" value="submit"></p>
+
+
+                </form>
+
             </div>
         </div>
     </body>
