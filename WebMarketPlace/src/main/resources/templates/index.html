@@ -49,12 +49,12 @@
     </head>
     <body>
         <h1>Current User</h1>
-        <form th:action="@{/getCurrentUser}" th:object="user" method="get">
-            <p>Current User: <input type="hidden" name="currentUser" th:value="${user.firstName}" /> </p>
+        <form th:each="user : ${currentUser}" >
+            <p>Current User: <td th:text="${currentUser.firstName}"> </td> </p>
         </form>
         <h1>Set Current User</h1>
         <form th:action="@{/setUser}" th:object="${user}" method="post">
-            <input type="hidden" name="currentUser" th:value="${user.getFirstName()}" />
+            <!--<input type="hidden" name="currentUser" th:value="${user.getFirstName()}" />-->
             <p>Id: <input type="text" th:field="*{id}" /></p>
             <p><input type="submit" value="Submit" /> </p>
         </form>

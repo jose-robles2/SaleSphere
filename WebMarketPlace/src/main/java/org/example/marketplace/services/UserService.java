@@ -2,6 +2,7 @@ package org.example.marketplace.services;
 
 import org.example.marketplace.entities.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -11,5 +12,7 @@ public interface UserService {
 
     public Optional<User> getUser(Long ID);
 
-    Optional<User> getCurrentUser();
+    List<Optional<User>> getCurrentUser();
+
+    public void setCurrentUser(Optional<User> currUser);
 }

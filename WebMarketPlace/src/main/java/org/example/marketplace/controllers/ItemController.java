@@ -30,6 +30,7 @@ public class ItemController {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("item", new Item());     // buyItem form submit
         model.addAttribute("user", new User());
+        model.addAttribute("currentUser", new User());
         return "index";
     }
 
@@ -59,14 +60,15 @@ public class ItemController {
 
     private void setUserHelper(User user, Model model) {
         Optional<User> currentUser = userService.getUser(user.getId());
-        model.addAttribute("user", currentUser);
-
+        userService.setCurrentUser(currentUser);
+        model.addAttribute("currentUser", userService.getCurrentUser());
     }
 
-    @PostMapping("/getCurrentUser")
+    @RequestMapping("/getCurrentUser")
     public String getCurrentUser(Model model)
     {
-        model.addAttribute("user", userService.getCurrentUser());
+        System.out.println(userService.getCurrentUser());
+        model.addAttribute("currentUser", userService.getCurrentUser());
         return "redirect:/";
     }
 

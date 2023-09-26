@@ -4,6 +4,8 @@ import org.example.marketplace.entities.User;
 import org.example.marketplace.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -11,9 +13,12 @@ public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
 
-    private Optional<User> currentUser = this.getUser(0L);
+    //private Optional<User> currentUser;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private List<Optional<User>> currentUser = new ArrayList<Optional<User>> ();
+
+    public UserServiceImpl(UserRepository userRepository)
+    {
         this.userRepository = userRepository;
     }
 
@@ -32,9 +37,15 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(ID);
     }
 
-    public Optional<User> getCurrentUser()
+    public List<Optional<User>> getCurrentUser()
     {
         return this.currentUser;
+    }
+
+    public void setCurrentUser(Optional<User> currUser)
+    {
+        this.currentUser.clear();
+        this.currentUser.add(currUser);
     }
 
 
