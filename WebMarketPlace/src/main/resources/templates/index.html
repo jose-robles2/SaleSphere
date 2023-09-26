@@ -15,7 +15,27 @@
                 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
                 padding: 20px; /* Padding around header content */
                 text-align: center;
+                height: 80px;
                 width: 100%;
+                display: flex;
+            }
+            .headerTitle {
+                position: absolute;
+                top: 20px;
+                left: 50%; /* Set left to 50% */
+                transform: translateX(-50%); /* Translate the element back by 50% of its own width */
+            }
+            .shoppingCart {
+                border: 1px solid;
+                border-radius: 15px;
+                padding: 10px;
+
+                position: absolute;
+                top: 5px;
+                right: 10px;
+            }
+            .cartItem {
+                margin: 5px 0; /* Apply the margin to all elements with the "cartItem" class */
             }
             .itemsContainer {
                 padding: 20px;
@@ -36,7 +56,6 @@
                 white-space: pre-wrap;
                 overflow: hidden;
                 word-wrap: break-word;
-                cursor: pointer;
            }
            .itemElement {
                 display: flex;
@@ -61,12 +80,23 @@
 
         <div class="appContainer">
             <div class="appHeader">
-                <h1>SaleSphere Market</h1>
+                <div class="headerTitle"><!--
+                    --><h1>SaleSphere Market</h1><!--
+                --></div>
+                <div class="shoppingCart">
+                    <h4 class="cartItem">Shopping Cart</h4>
+                    <p class="cartItem">Count: <span th:text="${cartSize}"></span></p>
+                    <p class="cartItem">Price: $<span th:text="${cartTotal}"></span></p>
+                    <div class="itemElement">
+                        <form class="sideBySide" th:action="@{buyItemsFromCart}" method="post"><button style ="cursor: pointer;" type="submit">Buy</button> </form>
+                        <form class="sideBySide" th:action="@{/clearShoppingCart}" method="post"><button style ="cursor: pointer;" type="submit">Clear</button></form>
+                    </div>
+                </div>
             </div>
             <div class="itemsContainer">
                 <div th:each="item: ${items}" class="itemDisplay">
                     <div class="itemElement">
-                        <div class="sideBySide"><!--
+                        <div style="sideBySide"><!--
                             --><h4 th:text="${item.getName()}"></h4><!--
                             --><p th:text="${item.getDescription()}"></p><!--
                         --></div>
@@ -84,9 +114,19 @@
                                 --><input type="hidden" name="locationState" th:value="${item.locationState}" /><!--
                                 --><input type="hidden" name="price" th:value="${item.price}" /><!--
                                 --><input type="hidden" name="stock" th:value="${item.stock}" /><!--
-                            --><button type="submit">Buy</button> <!--
+                                --><button style ="cursor: pointer;" type="submit">Buy</button> <!--
                             --></form><!--
-                        --></div>
+                            --><form th:action="@{/addItemToCart}" th:object="${item}" method="post"><!--
+                                --><input type="hidden" name="id" th:value="${item.id}" /><!--
+                                --><input type="hidden" name="name" th:value="${item.name}" /><!--
+                                --><input type="hidden" name="description" th:value="${item.description}" /><!--
+                                --><input type="hidden" name="imageUrl" th:value="${item.imageUrl}" /><!--
+                                --><input type="hidden" name="locationState" th:value="${item.locationState}" /><!--
+                                --><input type="hidden" name="price" th:value="${item.price}" /><!--
+                                --><input type="hidden" name="stock" th:value="${item.stock}" /><!--
+                                --><button style ="cursor: pointer;" type="submit">Add to cart</button> <!--
+                            --></form>
+                        </div>
                         <div class="sideBySide"><!--
                             --><p th:text="'In Stock: ' + ${item.getStock()}" style="flex: 1"></p><!--
                         --></div>
