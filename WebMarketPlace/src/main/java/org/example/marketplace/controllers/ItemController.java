@@ -28,10 +28,12 @@ public class ItemController {
     public String getItems(Model model) {
         model.addAttribute("items", itemService.findAll());
         model.addAttribute("newItem", new Item());  // addItem form submit
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.findAll()); // do we need this?
         model.addAttribute("item", new Item());     // buyItem form submit
-        model.addAttribute("user", new User());
-        model.addAttribute("currentUser", new User());
+        model.addAttribute("user", new User());     // login user form
+
+        userService.setCurrentUser(userService.getUser(1L)); // this sets "Will" as the initial current user - we can change this
+        updateUserLoginForm(model);
         updateShoppingCart(model);
         return "index";
     }
@@ -92,9 +94,9 @@ public class ItemController {
     }
 
     private void setUserHelper(User user, Model model) {
-        Optional<User> currentUser = userService.getUser(user.getId());
+        User currentUser = userService.getUser(user.getId());
         userService.setCurrentUser(currentUser);
-        model.addAttribute("currentUser", userService.getCurrentUser());
+        updateUserLoginForm(model);
     }
 
     @RequestMapping("/getCurrentUser")
@@ -103,6 +105,11 @@ public class ItemController {
         System.out.println(userService.getCurrentUser());
         model.addAttribute("currentUser", userService.getCurrentUser());
         return "redirect:/";
+    }
+
+    private void updateUserLoginForm(Model model) {
+        model.addAttribute("currentUser", userService.getCurrentUser()); // add an attribute for current user so index.html can acess and display properties
+        model.addAttribute("users", userService.getCurrentUser()); // add current user to list of all users
     }
 
     private void updateShoppingCart(Model model) {

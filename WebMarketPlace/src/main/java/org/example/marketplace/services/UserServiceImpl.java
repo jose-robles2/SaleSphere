@@ -13,9 +13,7 @@ public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
 
-    //private Optional<User> currentUser;
-
-    private List<Optional<User>> currentUser = new ArrayList<Optional<User>> ();
+    private Optional<User> currentUser;
 
     public UserServiceImpl(UserRepository userRepository)
     {
@@ -32,21 +30,18 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(user);
     }
 
-    public Optional<User> getUser(Long ID)
+    public User getUser(Long ID)
     {
-        return userRepository.findById(ID);
+        return userRepository.findById(ID).get();
     }
 
-    public List<Optional<User>> getCurrentUser()
+    public User getCurrentUser()
     {
-        return this.currentUser;
+        return this.currentUser.get();
     }
 
-    public void setCurrentUser(Optional<User> currUser)
+    public void setCurrentUser(User currUser)
     {
-        this.currentUser.clear();
-        this.currentUser.add(currUser);
+        this.currentUser = Optional.ofNullable(currUser);
     }
-
-
 }

@@ -39,14 +39,17 @@ public class InitialSetup implements CommandLineRunner {
         camera = itemRepository.save(camera);
 
         User user = new User("Will", "Hiatt", "wHiatt", "Washington");
+        User user2 = new User("Jose", "Robles", "jRob", "Washington");
         user = userRepository.save(user);
-
+        user2 = userRepository.save(user2);
         System.out.println(phone);
         System.out.println(laptop);
         System.out.println(tv);
-        System.out.println(user);
         System.out.println(tablet);
         System.out.println(headphones);
         System.out.println(camera);
+
+        System.out.println(user);
+        System.out.println(user2);
     }
 }

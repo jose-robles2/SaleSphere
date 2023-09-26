@@ -10,9 +10,9 @@ public interface UserService {
 
     public User save(User instructor);
 
-    public Optional<User> getUser(Long ID);
+    public User getUser(Long ID);
 
-    List<Optional<User>> getCurrentUser();
+    User getCurrentUser();
 
-    public void setCurrentUser(Optional<User> currUser);
+    public void setCurrentUser(User currUser);
 }
