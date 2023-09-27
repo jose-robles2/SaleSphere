@@ -24,15 +24,18 @@ public class Item {
 
     private int stock;
 
+    Category category;
+
     public Item() {}
 
-    public Item(String name, String description, String imageUrl, String locationState, double price, int stock) {
+    public Item(String name, String description, String imageUrl, String locationState, double price, int stock, Category category) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.locationState = locationState;
         this.price = price;
         this.stock = stock;
+        this.category = category;
     }
 
     public String getName() {

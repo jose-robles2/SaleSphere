@@ -39,18 +39,23 @@
                 margin: 5px 0; /* Apply the margin to all elements with the "cartItem" class */
             }
             .itemsContainer {
+                border: 1px solid;
+                border-radius: 15px;
+
                 padding: 20px;
-                /*max-height: 500px;*/
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
                 grid-column-gap: 40px;
                 grid-row-gap: 30px;
+
+                max-height: 400px;
+                overflow: auto;
             }
             .itemDisplay {
                 border: 1px solid;
                 border-radius: 15px;
                 padding: 10px;
-                min-height: 100px;
+                min-height: 200px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -65,8 +70,6 @@
             .sideBySide {
                 flex: 1;
             }
-
-
 
             .itemform {
 
@@ -197,10 +200,7 @@
                     <p>Price: <input th:field= "*{price}" type="text" name ="price" id="price"></p>
                     <p>Stock: <input th:field= "*{stock}" type="text" name ="stock" id="stock"></p>
                     <p><input type="submit" value="submit"></p>
-
-
                 </form>
-
             </div>
         </div>
     </body>
