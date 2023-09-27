@@ -2,9 +2,11 @@ package org.example.marketplace.setup;
 
 import org.example.marketplace.entities.Category;
 import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.State;
 import org.example.marketplace.entities.User;
 import org.example.marketplace.repositories.ItemRepository;
 import org.example.marketplace.repositories.UserRepository;
+import org.example.marketplace.repositories.StateRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +19,12 @@ public class InitialSetup implements CommandLineRunner {
 
     private ItemRepository itemRepository;
 
-    public InitialSetup(UserRepository userRepository, ItemRepository itemRepository) {
+    private StateRepository stateRepository;
+
+    public InitialSetup(UserRepository userRepository, ItemRepository itemRepository, StateRepository stateRepository) {
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
+        this.stateRepository = stateRepository;
     }
 
     @Override
@@ -85,6 +90,47 @@ public class InitialSetup implements CommandLineRunner {
         itemRepository.save(vape);
         itemRepository.save(marijuana);
 
+        State alabama = new State("AL",
+                18, true,
+                18, true,
+                21, true,
+                25, true,
+                18, true, 7);
+
+        State alaska = new State("AK",
+                18, true,
+                18, true,
+                21, true,
+                25, true,
+                18, true, 6);
+
+        State arizona = new State("AZ",
+                18, true,
+                18, true,
+                21, true,
+                25, true,
+                18, true, 2);
+
+        State arkansas = new State("AR",
+                18, true,
+                18, true,
+                21, true,
+                25, true,
+                18, true, 13);
+
+        State california = new State("CA",
+                18, true,
+                18, true,
+                21, true,
+                25, true,
+                18, true, 20);
+
+        stateRepository.save(alabama);
+        stateRepository.save(alaska);
+        stateRepository.save(arizona);
+        stateRepository.save(arkansas);
+        stateRepository.save(california);
+
         User user = new User("Will", "Hiatt", "wHiatt", "Washington");
         user = userRepository.save(user);
 
@@ -95,6 +141,8 @@ public class InitialSetup implements CommandLineRunner {
         System.out.println(tablet);
         System.out.println(headphones);
         System.out.println(camera);
+
+        System.out.println(stateRepository);
 
 //        System.out.println(smartwatch);
 //        System.out.println(speaker);

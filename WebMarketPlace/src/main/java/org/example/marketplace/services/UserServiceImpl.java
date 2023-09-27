@@ -4,6 +4,11 @@ import org.example.marketplace.entities.User;
 import org.example.marketplace.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService{
 
