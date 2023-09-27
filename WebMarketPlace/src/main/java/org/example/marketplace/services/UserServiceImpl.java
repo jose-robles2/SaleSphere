@@ -18,6 +18,8 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl(UserRepository userRepository)
     {
         this.userRepository = userRepository;
+        this.currentUser = Optional.of(new User("Will", "Hiatt", "wHiatt", "Washington"));
+
     }
 
     @Override
@@ -37,7 +39,11 @@ public class UserServiceImpl implements UserService{
 
     public User getCurrentUser()
     {
-        return this.currentUser.get();
+        Optional<User> currentUser = this.currentUser;
+        if (currentUser != null) {
+            return currentUser.get();
+        }
+        return null;
     }
 
     public void setCurrentUser(User currUser)

@@ -32,7 +32,6 @@ public class ItemController {
         model.addAttribute("item", new Item());     // buyItem form submit
         model.addAttribute("user", new User());     // login user form
 
-        userService.setCurrentUser(userService.getUser(1L)); // this sets "Will" as the initial current user - we can change this
         updateUserLoginForm(model);
         updateShoppingCart(model);
         return "index";
@@ -63,6 +62,7 @@ public class ItemController {
                 buyItemHelper(item, model, quantity);
             }
         }
+
         clearShoppingCart(model);
         updateShoppingCart(model);
         return "redirect:/";
@@ -99,13 +99,13 @@ public class ItemController {
         updateUserLoginForm(model);
     }
 
-    @RequestMapping("/getCurrentUser")
-    public String getCurrentUser(Model model)
-    {
-        System.out.println(userService.getCurrentUser());
-        model.addAttribute("currentUser", userService.getCurrentUser());
-        return "redirect:/";
-    }
+//    @RequestMapping("/getCurrentUser")
+//    public String getCurrentUser(Model model)
+//    {
+//        System.out.println(userService.getCurrentUser());
+//        model.addAttribute("currentUser", userService.getCurrentUser());
+//        return "redirect:/";
+//    }
 
     private void updateUserLoginForm(Model model) {
         model.addAttribute("currentUser", userService.getCurrentUser()); // add an attribute for current user so index.html can acess and display properties
