@@ -14,41 +14,44 @@
             }
             .appHeader {
                 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
-                padding: 20px; /* Padding around header content */
-                text-align: center;
-                height: 80px;
+                padding: 5px; /* Padding around header content */
+                height: auto;
                 width: 100%;
                 display: flex;
+                justify-content: space-between;
+                text-align: center;
             }
-            .headerTitle {
-                position: absolute;
-                top: 20px;
-                left: 50%; /* Set left to 50% */
-                transform: translateX(-50%); /* Translate the element back by 50% of its own width */
+            .userFormContainer {
+                border: 1px solid;
+                border-radius: 15px;
+                padding: 10px;
+                height: 150px;
+            }
+            .userForm {
+                display: flex;
+                justify-content: space-between;
+            }
+            .userFormItem {
+                margin: 5px 0;
             }
             .shoppingCart {
                 border: 1px solid;
                 border-radius: 15px;
                 padding: 10px;
-
-                position: absolute;
-                top: 5px;
-                right: 10px;
+                height: 120px;
             }
             .cartItem {
-                margin: 5px 0; /* Apply the margin to all elements with the "cartItem" class */
+                margin: 10px 0;
             }
             .itemsContainer {
                 border: 1px solid;
                 border-radius: 15px;
-
                 padding: 20px;
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
                 grid-column-gap: 40px;
                 grid-row-gap: 30px;
-
-                max-height: 400px;
+                max-height: 480px;
                 overflow: auto;
             }
             .itemDisplay {
@@ -65,19 +68,13 @@
            }
            .itemElement {
                 display: flex;
-                align-items: center;
-           }
-            .sideBySide {
-                flex: 1;
+                justify-content: space-between;
             }
-
             .itemform {
-
                 display: flex;
                 flex-direction: column; /* Stacks children vertically */
                 align-items: center; /* Centers children horizontally */
                 justify-content: flex-start;
-
                 border: 1px solid #e0e0e0;
                 padding: 20px;
                 border-radius: 10px;
@@ -86,19 +83,16 @@
                 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
                 background-color: #90EE90;
             }
-
             .itemform h2 {
                 text-align: center;
                 margin-bottom: 20px;
                 color: #333;
             }
-
             .itemform form {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
             }
-
             .itemform input[type="text"] {
                 padding: 10px;
                 border: 1px solid #ccc;
@@ -106,7 +100,6 @@
                 width: 100%;
                 box-sizing: border-box;
             }
-
             .itemform input[type="submit"] {
                 padding: 10px 20px;
                 background-color: #007BFF;
@@ -116,29 +109,26 @@
                 cursor: pointer;
                 transition: background-color 0.3s;
             }
-
             .itemform input[type="submit"]:hover {
                 background-color: #0056b3;
             }
         </style>
     </head>
     <body>
-        <div>
-            <h1>Current User</h1>
-            <p>Current User: <td th:text="${currentUser.firstName}"> </td> </p>
-            <h1>Set Current User</h1>
-            <form th:action="@{/setUser}" th:object="${user}" method="post">
-                <!--<input type="hidden" name="currentUser" th:value="${user.getFirstName()}" />-->
-                <p>Id: <input type="text" th:field="*{id}" /></p>
-                <p><input type="submit" value="Submit" /> </p>
-            </form>
-        </div>
-
         <div class="appContainer">
             <div class="appHeader">
-                <div class="headerTitle"><!--
-                    --><h1>SaleSphere Market</h1><!--
-                --></div>
+                <div class="userFormContainer">
+                    <h1 class="userFormItem">Current User</h1>
+                    <p class="userFormItem">Current User: <td th:text="${currentUser.firstName}"> </td> </p>
+                    <h1 class="userFormItem">Set Current User</h1>
+                    <form class="userForm"th:action="@{/setUser}" th:object="${user}" method="post">
+                        <p class="userFormItem">Id: <input type="text" th:field="*{id}" /></p>
+                        <p class="userFormItem"><input type="submit" value="Submit" /> </p>
+                    </form>
+                </div>
+                <div class="headerTitle">
+                    <h1>SaleSphere Market</h1>
+                </div>
                 <div class="shoppingCart">
                     <h4 class="cartItem">Shopping Cart</h4>
                     <p class="cartItem">Count: <span th:text="${cartSize}"></span></p>
