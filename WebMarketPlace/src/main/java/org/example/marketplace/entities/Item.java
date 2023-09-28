@@ -64,6 +64,8 @@ public class Item {
         return stock;
     }
 
+    public Category getCategory() { return category; }
+
     public void setName(String name) {
         this.name = name;
     }

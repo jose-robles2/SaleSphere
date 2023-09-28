@@ -15,4 +15,10 @@ public interface UserService {
     User getCurrentUser();
 
     public void setCurrentUser(User currUser);
+
+    public double getTax(double total);
+
+    public double getTotalWithTax(double total);
+
+    public boolean userExists(Long ID);
 }

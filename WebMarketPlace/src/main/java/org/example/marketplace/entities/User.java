@@ -1,9 +1,6 @@
 package org.example.marketplace.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -16,7 +13,10 @@ public class User {
 
     private String userName;
 
-    private String state;
+    private Integer age;
+
+    @OneToOne
+    private State state;
 
     @Id
     @GeneratedValue
@@ -24,10 +24,11 @@ public class User {
 
     public User() {}
 
-    public User(String firstName, String lastName, String userName, String state) {
+    public User(String firstName, String lastName, String userName, Integer age,State state) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
+        this.age = age;
         this.state = state;
     }
 
@@ -43,7 +44,9 @@ public class User {
         return userName;
     }
 
-    public String getState() { return state; }
+    public Integer getAge() { return age; }
+
+    public State getState() { return state; }
 
     public Long getId() {
         return id;
@@ -61,7 +64,9 @@ public class User {
         this.userName = userName;
     }
 
-    public void setState(String state) {
+    public void setAge(Integer age) { this.age = age; }
+
+    public void setState(State state) {
         this.state = state;
     }
 
