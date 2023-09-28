@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class State {
-    public String stateName;
+    private String stateName;
     private int firearmAge;
     private boolean firearmsAllowed;
     private int tobaccoAge;
@@ -17,7 +17,7 @@ public class State {
     private boolean technologyAllowed;
     private int medicineAge;
     private boolean medicineAllowed;
-    private int taxRate;
+    private double taxRate;
     @Id
     @GeneratedValue
     private Long id;
@@ -25,7 +25,7 @@ public class State {
     public State(String stateName, int firearmAge, boolean firearmsAllowed,
                  int tobaccoAge, boolean tobaccoAllowed, int drugAge, boolean drugAllowed,
                  int technologyAge, boolean technologyAllowed, int medicineAge, boolean medicineAllowed,
-                 int taxRate) {
+                 double taxRate) {
         this.stateName = stateName;
         this.firearmAge = firearmAge;
         this.firearmsAllowed = firearmsAllowed;
@@ -80,8 +80,8 @@ public class State {
         return medicineAllowed;
     }
 
-    public int taxRate() {
-        return taxRate;
-    }
+    public String getStateName() { return stateName; }
+
+    public double getTaxRate() { return taxRate; }
 }
 

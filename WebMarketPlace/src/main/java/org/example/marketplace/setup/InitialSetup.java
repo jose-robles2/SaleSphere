@@ -95,35 +95,35 @@ public class InitialSetup implements CommandLineRunner {
                 18, true,
                 21, true,
                 25, true,
-                18, true, 7);
+                18, true, 0.07);
 
         State alaska = new State("AK",
                 18, true,
                 18, true,
                 21, true,
                 25, true,
-                18, true, 6);
+                18, true, 0.06);
 
         State arizona = new State("AZ",
                 18, true,
                 18, true,
                 21, true,
                 25, true,
-                18, true, 2);
+                18, true, 0.2);
 
         State arkansas = new State("AR",
                 18, true,
                 18, true,
                 21, true,
                 25, true,
-                18, true, 13);
+                18, true, 0.13);
 
         State california = new State("CA",
                 18, true,
                 18, true,
                 21, true,
                 25, true,
-                18, true, 20);
+                18, true, 0.20);
 
         stateRepository.save(alabama);
         stateRepository.save(alaska);
