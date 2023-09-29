@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.List;
@@ -49,15 +52,31 @@ public class ItemController {
         updateShoppingCart(model);
         return "redirect:/";
     }
+    @PostMapping("/triggerError")
+    public String triggerError(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
+        String errorMsg = (customErrorMsg != null && !customErrorMsg.isEmpty()) ? customErrorMsg : "An error was triggered by the button!";
+        redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
+        return "redirect:/";
+    }
 
     @PostMapping("/buyItemsFromCart")
-    public String buyItemsFromCart(Model model) {
+    public String buyItemsFromCart(Model model,RedirectAttributes redirectAttributes) {
         List<Item> shoppingCartCopy = itemService.getShoppingCartItems();
         HashSet<String> trackedItemNames = new HashSet<>();
+        String ErrorMessage = "";
+
 
         for (Item item : shoppingCartCopy) {
             if (!trackedItemNames.contains(item.getName())) {
                 int quantity = itemService.getQuantityToDeductStock(item);
+                ErrorMessage = itemService.getErrorMessage(item,quantity);
+                if (!ErrorMessage.isEmpty())
+                {
+                    return triggerError(ErrorMessage,redirectAttributes);
+                    // Call triggerError if the condition is met
+
+
+                }
                 trackedItemNames.add(item.getName());
                 buyItemHelper(item, model, quantity);
             }
