@@ -1,5 +1,6 @@
 package org.example.marketplace.services;
 
+import org.example.marketplace.controllers.ItemController;
 import org.example.marketplace.entities.Item;
 import org.example.marketplace.repositories.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void delete(Item item) { this.itemRepository.delete(item); }
 
+
     @Override
     public Item buyItem(Item item, int quantity) {
         if (item.getStock() <= 0) {
@@ -44,13 +46,28 @@ public class ItemServiceImpl implements ItemService {
         return item;
     }
 
+
+
+    @Override
+    public String getErrorMessage(Item item, int quantity)
+    {
+        if (item.getStock() <= 0) {
+            System.out.println("ERROR: item is no longer in stock...");
+            return "ERROR: item is no longer in stock...";
+        }
+        //add new Exceptions here
+        //if(){}
+        return "";
+    }
+
+
     @Override
     public void addItemToCart(Item item) {
-        // Don't allow for more items in cart than available stock for a certain item
-        if (itemCountMap.containsKey(item.getName()) && itemCountMap.get(item.getName()) == item.getStock() || item.getStock() == 0) {
-            System.out.println("Number of items in cart for " + item.getName() + " cannot exceed item stock amount");
-            return;
-        }
+//         Don't allow for more items in cart than available stock for a certain item
+//        if (itemCountMap.containsKey(item.getName()) && itemCountMap.get(item.getName()) == item.getStock() || item.getStock() == 0) {
+//            System.out.println("Number of items in cart for " + item.getName() + " cannot exceed item stock amount");
+//            return;
+//        }
 
         // Add the item to the cart and the itemCount map
         shoppingCart.add(item);

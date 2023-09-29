@@ -23,4 +23,7 @@ public interface ItemService {
     public double getShoppingCartTotal();
 
     public void clearShoppingCart();
+
+    public String getErrorMessage(Item item, int quantity);
+
 }

@@ -36,7 +36,7 @@ public class InitialSetup implements CommandLineRunner {
         Item gamingConsole = new Item("Gaming Console", "PlayStation 5", "/image", "Washington", 499.99, 5);
         Item keyboard = new Item("Keyboard", "Logitech G Pro", "/image", "Washington", 129.99, 5);
         Item mouse = new Item("Mouse", "Razer DeathAdder", "/image", "Washington", 69.99, 5);
-        Item printer = new Item("Printer", "HP LaserJet Pro", "/image", "Washington", 249.99, 5);
+        Item printer = new Item("Printer", "HP LaserJet Pro", "/image", "Washington", 249.99, 0);
 
 
         phone = itemRepository.save(phone);

@@ -5,9 +5,9 @@ import org.example.marketplace.services.ItemService;
 import org.example.marketplace.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +39,31 @@ public class ItemController {
         return "redirect:/";
     }
 
+
+
+//    @PostMapping("/triggerError")
+//    public String triggerError(RedirectAttributes redirectAttributes) {
+//        // This is just a simple example. In a real application,
+//        // you might have some condition or validation logic here.
+//        String errorMsg = "An error was triggered by the button!";
+//
+//        redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
+//        return "redirect:/";
+//    }
+
+    @PostMapping("/triggerError")
+    public String triggerError(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
+        String errorMsg = (customErrorMsg != null && !customErrorMsg.isEmpty()) ? customErrorMsg : "An error was triggered by the button!";
+        redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
+        return "redirect:/";
+    }
+
+
+
+
+
+
+
     @PostMapping("/addItemToCart")
     public String addItemToCart(@ModelAttribute Item item, Model model) {
         itemService.addItemToCart(item);
@@ -47,20 +72,32 @@ public class ItemController {
     }
 
     @PostMapping("/buyItemsFromCart")
-    public String buyItemsFromCart(Model model) {
+    public String buyItemsFromCart(Model model,RedirectAttributes redirectAttributes) {
         List<Item> shoppingCartCopy = itemService.getShoppingCartItems();
         HashSet<String> trackedItemNames = new HashSet<>();
+        String ErrorMessage = "";
 
         for (Item item : shoppingCartCopy) {
             if (!trackedItemNames.contains(item.getName())) {
                 int quantity = itemService.getQuantityToDeductStock(item);
-                trackedItemNames.add(item.getName());
+
+                ErrorMessage = itemService.getErrorMessage(item,quantity);
+                if (!ErrorMessage.isEmpty())
+                {
+                    return triggerError(ErrorMessage,redirectAttributes);
+                    // Call triggerError if the condition is met
+
+
+                }
+                    trackedItemNames.add(item.getName());
                 buyItemHelper(item, model, quantity);
             }
         }
         clearShoppingCart(model);
         updateShoppingCart(model);
+
         return "redirect:/";
+
     }
 
     @PostMapping("/clearShoppingCart")
@@ -68,6 +105,7 @@ public class ItemController {
         itemService.clearShoppingCart();
         updateShoppingCart(model);
         return "redirect:/";
+
     }
 
     @PostMapping("/createItem")
