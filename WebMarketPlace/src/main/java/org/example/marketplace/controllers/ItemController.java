@@ -111,14 +111,6 @@ public class ItemController {
         }
     }
 
-//    @RequestMapping("/getCurrentUser")
-//    public String getCurrentUser(Model model)
-//    {
-//        System.out.println(userService.getCurrentUser());
-//        model.addAttribute("currentUser", userService.getCurrentUser());
-//        return "redirect:/";
-//    }
-
     private void updateUserLoginForm(Model model) {
         model.addAttribute("currentUser", userService.getCurrentUser()); // add an attribute for current user so index.html can acess and display properties
         model.addAttribute("users", userService.getCurrentUser()); // add current user to list of all users
