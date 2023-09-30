@@ -2,7 +2,9 @@ package org.example.marketplace.controllers;
 
 import org.example.marketplace.entities.Item;
 import org.example.marketplace.entities.User;
+import org.example.marketplace.entities.State;
 import org.example.marketplace.services.ItemService;
+import org.example.marketplace.services.StateService;
 import org.example.marketplace.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +24,12 @@ public class ItemController {
 
     private ItemService itemService;
 
-    public ItemController(UserService userService, ItemService itemService) {
+    private StateService stateService;
+
+    public ItemController(UserService userService, ItemService itemService, StateService stateService) {
         this.userService = userService;
         this.itemService = itemService;
+        this.stateService = stateService;
     }
 
     @RequestMapping("/") // root of the app
@@ -113,9 +118,16 @@ public class ItemController {
     }
 
     private void setUserHelper(User user, Model model) {
-        User currentUser = userService.getUser(user.getId());
-        userService.setCurrentUser(currentUser);
-        updateUserLoginForm(model);
+        if(userService.userExists(user.getId()))
+        {
+            User currentUser = userService.getUser(user.getId());
+            userService.setCurrentUser(currentUser);
+            updateUserLoginForm(model);
+        }
+        else
+        {
+            // Add pop up window here
+        }
     }
 
 //    @RequestMapping("/getCurrentUser")

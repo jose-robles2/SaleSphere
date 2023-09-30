@@ -1,6 +1,8 @@
 package org.example.marketplace.services;
 
 import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.User;
+import org.example.marketplace.entities.Category;
 import org.example.marketplace.repositories.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -110,5 +112,82 @@ public class ItemServiceImpl implements ItemService {
         //add new Exceptions here
         //if(){}
         return "";
+
+    public boolean checkPurchase(User currUser, Item item)
+    {
+        // This will be used to make sure that purchases are allowed
+        if(item.getCategory() == Category.FIREARM)
+        {
+            if(!currUser.getState().isFirearmsAllowed())
+            {
+                return false;
+            }
+            else
+            {
+                return currUser.getAge() >= currUser.getState().getFirearmsAge();
+            }
+        }
+
+        if(item.getCategory() == Category.ALCOHOL)
+        {
+            if(!currUser.getState().isAlcoholAllowed())
+            {
+                return false;
+            }
+            else
+            {
+                return currUser.getAge() >= currUser.getState().getAlcoholAge();
+            }
+        }
+
+        if(item.getCategory() == Category.DRUGS)
+        {
+            if(!currUser.getState().isDrugAllowed())
+            {
+                return false;
+            }
+            else
+            {
+                return currUser.getAge() >= currUser.getState().getDrugsAge();
+            }
+        }
+
+        if(item.getCategory() == Category.MEDICINE)
+        {
+            if(!currUser.getState().isMedicineAllowed())
+            {
+                return false;
+            }
+            else
+            {
+                return currUser.getAge() >= currUser.getState().getMedicineAge();
+            }
+        }
+
+        if(item.getCategory() == Category.TECHNOLOGY)
+        {
+            if(!currUser.getState().isTechnologyAllowed())
+            {
+                return false;
+            }
+            else
+            {
+                return currUser.getAge() >= currUser.getState().getTechnologyAge();
+            }
+        }
+
+        if(item.getCategory() == Category.TOBACCO)
+        {
+            if(!currUser.getState().isTobaccoAllowed())
+            {
+                return false;
+            }
+            else
+            {
+                return currUser.getAge() >= currUser.getState().getTobaccoAge();
+            }
+        }
+
+        return true;
     }
 }

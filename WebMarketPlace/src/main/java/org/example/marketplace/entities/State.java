@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 @Entity
 public class State {
     private String stateName;
-    private int firearmAge;
+    private int firearmsAge;
     private boolean firearmsAllowed;
     private int tobaccoAge;
     private boolean tobaccoAllowed;
@@ -17,17 +17,21 @@ public class State {
     private boolean technologyAllowed;
     private int medicineAge;
     private boolean medicineAllowed;
+    private int alcoholAge;
+    private boolean alcoholAllowed;
     private double taxRate;
     @Id
     @GeneratedValue
     private Long id;
 
-    public State(String stateName, int firearmAge, boolean firearmsAllowed,
+    public State(){};
+
+    public State(String stateName, int firearmsAge, boolean firearmsAllowed,
                  int tobaccoAge, boolean tobaccoAllowed, int drugAge, boolean drugAllowed,
                  int technologyAge, boolean technologyAllowed, int medicineAge, boolean medicineAllowed,
-                 double taxRate) {
+                 int alcoholAge, boolean alcoholAllowed, double taxRate) {
         this.stateName = stateName;
-        this.firearmAge = firearmAge;
+        this.firearmsAge = firearmsAge;
         this.firearmsAllowed = firearmsAllowed;
         this.tobaccoAge = tobaccoAge;
         this.tobaccoAllowed = tobaccoAllowed;
@@ -38,10 +42,12 @@ public class State {
         this.medicineAge = medicineAge;
         this.medicineAllowed = medicineAllowed;
         this.taxRate = taxRate;
+        this.alcoholAge = alcoholAge;
+        this.alcoholAllowed = alcoholAllowed;
     }
 
-    public int getFirearmAge() {
-        return firearmAge;
+    public int getFirearmsAge() {
+        return firearmsAge;
     }
 
     public boolean isFirearmsAllowed() {
@@ -56,7 +62,7 @@ public class State {
         return tobaccoAllowed;
     }
 
-    public int getDrugAge() {
+    public int getDrugsAge() {
         return drugAge;
     }
 
@@ -81,6 +87,10 @@ public class State {
     }
 
     public String getStateName() { return stateName; }
+
+    public int getAlcoholAge() { return alcoholAge;}
+
+    public boolean isAlcoholAllowed() { return alcoholAllowed; }
 
     public double getTaxRate() { return taxRate; }
 }

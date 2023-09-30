@@ -5,5 +5,6 @@ public enum Category {
     ALCOHOL,
     MEDICINE,
     DRUGS,
-    TECHNOLOGY
+    TECHNOLOGY,
+    TOBACCO
 }

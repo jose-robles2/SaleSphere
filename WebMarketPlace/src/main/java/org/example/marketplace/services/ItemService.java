@@ -1,5 +1,6 @@
 package org.example.marketplace.services;
 import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.User;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public interface ItemService {
     public double getShoppingCartTotal();
 
     public void clearShoppingCart();
+
     public String getErrorMessage(Item item, int quantity);
 
+    public boolean checkPurchase(User currUser, Item item);
 }

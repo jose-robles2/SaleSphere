@@ -95,12 +95,14 @@ public class InitialSetup implements CommandLineRunner {
                 18, true,
                 21, true,
                 25, true,
+                25, true,
                 18, true, 0.07);
 
         State alaska = new State("AK",
                 18, true,
                 18, true,
                 21, true,
+                25, true,
                 25, true,
                 18, true, 0.06);
 
@@ -109,6 +111,7 @@ public class InitialSetup implements CommandLineRunner {
                 18, true,
                 21, true,
                 25, true,
+                25, true,
                 18, true, 0.2);
 
         State arkansas = new State("AR",
@@ -116,12 +119,14 @@ public class InitialSetup implements CommandLineRunner {
                 18, true,
                 21, true,
                 25, true,
+                25, true,
                 18, true, 0.13);
 
         State california = new State("CA",
                 18, true,
                 18, true,
                 21, true,
+                25, true,
                 25, true,
                 18, true, 0.20);
 
@@ -131,8 +136,8 @@ public class InitialSetup implements CommandLineRunner {
         stateRepository.save(arkansas);
         stateRepository.save(california);
 
-        User user = new User("Will", "Hiatt", "wHiatt", "Washington");
-        User user2 = new User("Jose", "Robles", "jRob", "Washington");
+        User user = new User("Tres", "Hiatt", "wHiatt", 55,arkansas);
+        User user2 = new User("Jose", "Robles", "jRob", 17,alaska);
         user = userRepository.save(user);
         user2 = userRepository.save(user2);
         System.out.println(phone);
