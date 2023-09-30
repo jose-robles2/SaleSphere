@@ -21,4 +21,8 @@ public interface UserService {
     public double getTotalWithTax(double total);
 
     public boolean userExists(Long ID);
+
+    public void makePurchase(double itemPrice, User user);
+
+    public boolean checkBalance(double itemPrice, User user);
 }

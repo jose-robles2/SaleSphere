@@ -13,8 +13,9 @@ public class User {
 
     private String userName;
 
-    private Integer age;
+    private int age;
 
+    private double balance;
     @OneToOne
     private State state;
 
@@ -24,12 +25,13 @@ public class User {
 
     public User() {}
 
-    public User(String firstName, String lastName, String userName, Integer age,State state) {
+    public User(String firstName, String lastName, String userName, int age,State state, double balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.age = age;
         this.state = state;
+        this.balance = balance;
     }
 
     public String getFirstName() {
@@ -44,9 +46,11 @@ public class User {
         return userName;
     }
 
-    public Integer getAge() { return age; }
+    public int getAge() { return age; }
 
     public State getState() { return state; }
+
+    public double getBalance() { return balance; }
 
     public Long getId() {
         return id;
@@ -64,10 +68,14 @@ public class User {
         this.userName = userName;
     }
 
-    public void setAge(Integer age) { this.age = age; }
+    public void setAge(int age) { this.age = age; }
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public void setId(Long id) {

@@ -121,6 +121,7 @@
                     <h1 class="userFormItem">Current User</h1>
                     <p class="userFormItem">Current User: <td th:text="${currentUser.firstName}"> </td> </p>
                     <p class="userFormItem">User State: <td th:text="${currentUser.State.stateName}"> </td> </p>
+                    <p class="userFormItem">User Balance: $<td th:text="${currentUser.balance}"></td></p>
                     <h1 class="userFormItem">Set Current User</h1>
                     <form class="userForm"th:action="@{/setUser}" th:object="${user}" method="post">
                         <p class="userFormItem">Id: <input type="text" th:field="*{id}" /></p>

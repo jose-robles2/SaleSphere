@@ -136,8 +136,8 @@ public class InitialSetup implements CommandLineRunner {
         stateRepository.save(arkansas);
         stateRepository.save(california);
 
-        User user = new User("Tres", "Hiatt", "wHiatt", 55,arkansas);
-        User user2 = new User("Jose", "Robles", "jRob", 17,alaska);
+        User user = new User("Tres", "Hiatt", "wHiatt", 55,arkansas, 1000.50);
+        User user2 = new User("Jose", "Robles", "jRob", 17,alaska, 14567.87);
         user = userRepository.save(user);
         user2 = userRepository.save(user2);
         System.out.println(phone);

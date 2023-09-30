@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
                 25, true,
                 18, true, 0.07);
 
-        User temp = new User("test", "test", "test1234", 20,alabama);
+        User temp = new User("test", "test", "test1234", 20,alabama, 4352.54);
 
         this.currentUser = Optional.of(temp);
 
@@ -76,4 +76,15 @@ public class UserServiceImpl implements UserService{
     {
         return (this.currentUser.get().getState().getTaxRate() + 1) * total;
     }
+    @Override
+    public void makePurchase(double itemPrice, User user)
+    {
+        user.setBalance((user.getBalance() - itemPrice));
+    }
+    @Override
+    public boolean checkBalance(double itemPrice, User user)
+    {
+        return (user.getBalance() - itemPrice) >= 0;
+    }
+
 }
