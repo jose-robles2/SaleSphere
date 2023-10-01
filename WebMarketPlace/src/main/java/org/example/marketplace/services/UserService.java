@@ -2,9 +2,6 @@ package org.example.marketplace.services;
 
 import org.example.marketplace.entities.User;
 
-import java.util.List;
-import java.util.Optional;
-
 public interface UserService {
     public Iterable<User> findAll();
 
@@ -22,7 +19,7 @@ public interface UserService {
 
     public boolean userExists(Long ID);
 
-    public void makePurchase(double itemPrice, User user);
+    public void makePurchase(Double itemPrice, int quantity, User user);
 
     public boolean checkBalance(double itemPrice, User user);
 }

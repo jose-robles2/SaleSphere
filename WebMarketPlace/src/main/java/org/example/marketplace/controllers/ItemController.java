@@ -55,14 +55,13 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        List<Item> shoppingCartCopy = itemService.getShoppingCartItems();
         HashSet<String> trackedItemNames = new HashSet<>();
 
-        for (Item item : shoppingCartCopy) {
+        for (Item item : itemService.getShoppingCartItems()) {
             if (!trackedItemNames.contains(item.getName())) {
                 int quantity = itemService.getQuantityToDeductStock(item);
-                trackedItemNames.add(item.getName());
                 buyItemHelper(item, model, quantity);
+                trackedItemNames.add(item.getName());
             }
         }
 
@@ -84,16 +83,18 @@ public class ItemController {
         return "redirect:/"; // send us back to the root so we can display info to user
     }
 
-    private void buyItemHelper(Item item, Model model, int quantity) {
-        Item updatedItem = itemService.buyItem(item, quantity);
-        itemService.save(updatedItem);
-        model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
-    }
-
     @PostMapping("/setUser")
     public String setUserSubmit(@ModelAttribute User user, Model model) {
         setUserHelper(user, model);
         return "redirect:/";
+    }
+
+
+    private void buyItemHelper(Item item, Model model, int quantity) {
+        Item updatedItem = itemService.buyItem(item, quantity);
+        itemService.save(updatedItem);
+        model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
+        userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
     }
 
     private void setUserHelper(User user, Model model) {
