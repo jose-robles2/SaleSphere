@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -41,8 +42,16 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("ERROR: item is no longer in stock...");
             return item;
         }
-        // Validate purchase restrictions
         item.setStock(item.getStock() - quantity);
+
+        // Remove the bought item from cart
+        for(Item cartItem : this.shoppingCart) {
+            if (Objects.equals(item.getName(), cartItem.getName())) {
+                this.shoppingCart.remove(cartItem);
+                break;
+            }
+        }
+
         return item;
     }
 

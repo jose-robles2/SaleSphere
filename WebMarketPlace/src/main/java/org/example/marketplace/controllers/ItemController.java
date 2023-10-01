@@ -37,8 +37,7 @@ public class ItemController {
         model.addAttribute("item", new Item());     // buyItem form submit
         model.addAttribute("user", new User());     // login user form
 
-        updateUserLoginForm(model);
-        updateShoppingCart(model);
+        updateFrontEnd(model);
         return "index";
     }
 
@@ -51,7 +50,6 @@ public class ItemController {
     @PostMapping("/addItemToCart")
     public String addItemToCart(@ModelAttribute Item item, Model model) {
         itemService.addItemToCart(item);
-        updateShoppingCart(model);
         return "redirect:/";
     }
 
@@ -68,6 +66,7 @@ public class ItemController {
             }
         }
 
+        // These must be called here or else the app will only update the shopping cart for 1 item bought individually
         clearShoppingCart(model);
         updateShoppingCart(model);
         return "redirect:/";
@@ -76,7 +75,6 @@ public class ItemController {
     @PostMapping("/clearShoppingCart")
     public String clearShoppingCart(Model model) {
         itemService.clearShoppingCart();
-        updateShoppingCart(model);
         return "redirect:/";
     }
 
@@ -103,12 +101,16 @@ public class ItemController {
         {
             User currentUser = userService.getUser(user.getId());
             userService.setCurrentUser(currentUser);
-            updateUserLoginForm(model);
         }
         else
         {
             // Add pop up window here
         }
+    }
+
+    private void updateFrontEnd(Model model) {
+        updateUserLoginForm(model);
+        updateShoppingCart(model);
     }
 
     private void updateUserLoginForm(Model model) {
