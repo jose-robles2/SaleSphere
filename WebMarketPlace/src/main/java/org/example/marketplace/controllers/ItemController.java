@@ -37,8 +37,7 @@ public class ItemController {
         model.addAttribute("item", new Item());     // buyItem form submit
         model.addAttribute("user", new User());     // login user form
 
-        updateUserLoginForm(model);
-        updateShoppingCart(model);
+        updateFrontEnd(model);
         return "index";
     }
 
@@ -51,23 +50,22 @@ public class ItemController {
     @PostMapping("/addItemToCart")
     public String addItemToCart(@ModelAttribute Item item, Model model) {
         itemService.addItemToCart(item);
-        updateShoppingCart(model);
         return "redirect:/";
     }
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        List<Item> shoppingCartCopy = itemService.getShoppingCartItems();
         HashSet<String> trackedItemNames = new HashSet<>();
 
-        for (Item item : shoppingCartCopy) {
+        for (Item item : itemService.getShoppingCartItems()) {
             if (!trackedItemNames.contains(item.getName())) {
                 int quantity = itemService.getQuantityToDeductStock(item);
-                trackedItemNames.add(item.getName());
                 buyItemHelper(item, model, quantity);
+                trackedItemNames.add(item.getName());
             }
         }
 
+        // These must be called here or else the app will only update the shopping cart for 1 item bought individually
         clearShoppingCart(model);
         updateShoppingCart(model);
         return "redirect:/";
@@ -76,7 +74,6 @@ public class ItemController {
     @PostMapping("/clearShoppingCart")
     public String clearShoppingCart(Model model) {
         itemService.clearShoppingCart();
-        updateShoppingCart(model);
         return "redirect:/";
     }
 
@@ -86,16 +83,18 @@ public class ItemController {
         return "redirect:/"; // send us back to the root so we can display info to user
     }
 
-    private void buyItemHelper(Item item, Model model, int quantity) {
-        Item updatedItem = itemService.buyItem(item, quantity);
-        itemService.save(updatedItem);
-        model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
-    }
-
     @PostMapping("/setUser")
     public String setUserSubmit(@ModelAttribute User user, Model model) {
         setUserHelper(user, model);
         return "redirect:/";
+    }
+
+
+    private void buyItemHelper(Item item, Model model, int quantity) {
+        Item updatedItem = itemService.buyItem(item, quantity);
+        itemService.save(updatedItem);
+        model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
+        userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
     }
 
     private void setUserHelper(User user, Model model) {
@@ -103,7 +102,6 @@ public class ItemController {
         {
             User currentUser = userService.getUser(user.getId());
             userService.setCurrentUser(currentUser);
-            updateUserLoginForm(model);
         }
         else
         {
@@ -111,13 +109,10 @@ public class ItemController {
         }
     }
 
-//    @RequestMapping("/getCurrentUser")
-//    public String getCurrentUser(Model model)
-//    {
-//        System.out.println(userService.getCurrentUser());
-//        model.addAttribute("currentUser", userService.getCurrentUser());
-//        return "redirect:/";
-//    }
+    private void updateFrontEnd(Model model) {
+        updateUserLoginForm(model);
+        updateShoppingCart(model);
+    }
 
     private void updateUserLoginForm(Model model) {
         model.addAttribute("currentUser", userService.getCurrentUser()); // add an attribute for current user so index.html can acess and display properties

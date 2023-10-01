@@ -5,9 +5,6 @@ import org.example.marketplace.entities.State;
 import org.example.marketplace.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,15 +68,17 @@ public class UserServiceImpl implements UserService{
     {
         return (this.currentUser.get().getState().getTaxRate()) * total;
     }
+
     @Override
     public double getTotalWithTax(double total)
     {
         return (this.currentUser.get().getState().getTaxRate() + 1) * total;
     }
+
     @Override
-    public void makePurchase(double itemPrice, User user)
+    public void makePurchase(Double itemPrice, int quantity, User user)
     {
-        user.setBalance((user.getBalance() - itemPrice));
+        user.setBalance((user.getBalance() - (itemPrice * quantity)));
     }
     @Override
     public boolean checkBalance(double itemPrice, User user)
