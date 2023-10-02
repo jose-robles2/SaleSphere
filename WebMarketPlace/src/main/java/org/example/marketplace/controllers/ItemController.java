@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.HashSet;
 
 @Controller
 public class ItemController {
@@ -28,14 +30,12 @@ public class ItemController {
         this.stateService = stateService;
     }
 
-    @RequestMapping("/") // root of the app
+    @RequestMapping("/")
     public String getItems(Model model) {
         model.addAttribute("items", itemService.findAll());
         model.addAttribute("newItem", new Item());  // addItem form submit
-        model.addAttribute("users", userService.findAll()); // do we need this?
         model.addAttribute("item", new Item());     // buyItem form submit
-        model.addAttribute("user", new User());     // login user form
-
+        model.addAttribute("user", new User());     // setUser form submit
         updateFrontEnd(model);
         return "index";
     }
@@ -47,19 +47,12 @@ public class ItemController {
     }
 
     @PostMapping("/addItemToCart")
-    public String addItemToCart(@ModelAttribute Item item, Model model) {
+    public String addItemToCart(@ModelAttribute Item item, Model model,RedirectAttributes redirectAttributes) {
         itemService.addItemToCart(item);
         return "redirect:/";
     }
 
-    @GetMapping("/triggerErrorGET")
-    public String triggerErrorGET(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
-        String errorMsg = (customErrorMsg != null && !customErrorMsg.isEmpty()) ? customErrorMsg : "An error was triggered by the button!";
-        redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
-        return "redirect:/";
-    }
-
-    @PostMapping("/triggerError")
+    @GetMapping("/triggerError")
     public String triggerError(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
         String errorMsg = (customErrorMsg != null && !customErrorMsg.isEmpty()) ? customErrorMsg : "An error was triggered by the button!";
         redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
@@ -67,17 +60,11 @@ public class ItemController {
     }
 
     @PostMapping("/buyItemsFromCart")
-    public String buyItemsFromCart(Model model, RedirectAttributes redirectAttributes) {
+    public String buyItemsFromCart(Model model) {
         HashSet<String> trackedItemNames = new HashSet<>();
-        String ErrorMessage = "";
-
         for (Item item : itemService.getShoppingCartItems()) {
             if (!trackedItemNames.contains(item.getName())) {
                 int quantity = itemService.getQuantityToDeductStock(item);
-                ErrorMessage = itemService.getErrorMessage(item,quantity);
-                if (!ErrorMessage.isEmpty()) {
-                    return triggerError(ErrorMessage,redirectAttributes); // Call triggerError if the condition is met
-                }
                 buyItemHelper(item, model, quantity);
                 trackedItemNames.add(item.getName());
             }
@@ -122,14 +109,14 @@ public class ItemController {
             userService.setCurrentUser(currentUser);
         }
         else {
-            return triggerErrorWithGetRequest("ERROR: Inputted user ID does not exist...");
+            return triggerErrorHelper("ERROR: Inputted user ID does not exist...");
         }
         return new RedirectView("redirect:/", true);
     }
 
-    private RedirectView triggerErrorWithGetRequest(String errorMessage) {
-        // Redirect to a URL where the error message can be displayed
-        String redirectUrl = "redirect:/triggerErrorGET?customErrorMsg=" + errorMessage;
+    private RedirectView triggerErrorHelper(String errorMessage) {
+        // Redirect to a URL where the error message can be displayed -> calls the @GetMapping triggerError()
+        String redirectUrl = "redirect:/triggerError?customErrorMsg=" + errorMessage;
         return new RedirectView(redirectUrl, true);
     }
 

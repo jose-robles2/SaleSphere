@@ -30,7 +30,7 @@ public class InitialSetup implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Initializing database...");
-        Item phone = new Item("Phone", "IPhone 15", "/image", "Washington", 1199.99, 5, Category.TECHNOLOGY);
+        Item phone = new Item("Phone", "IPhone 15", "/image", "Washington", 1199.99, 1, Category.TECHNOLOGY);
         Item laptop = new Item("Laptop", "Macbook Pro", "/image", "Washington", 2199.99, 5, Category.TECHNOLOGY);
         Item tv = new Item("TV", "Samsund 4K TV", "/image", "Washington", 999.99, 5, Category.TECHNOLOGY);
         Item tablet = new Item("Tablet", "iPad Pro", "/image", "Washington", 799.99, 5, Category.TECHNOLOGY);

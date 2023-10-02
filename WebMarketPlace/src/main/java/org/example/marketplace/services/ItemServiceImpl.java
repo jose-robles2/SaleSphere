@@ -55,13 +55,15 @@ public class ItemServiceImpl implements ItemService {
         return item;
     }
 
+
+
     @Override
     public void addItemToCart(Item item) {
-        // Don't allow for more items in cart than available stock for a certain item
-//        if (itemCountMap.containsKey(item.getName()) && itemCountMap.get(item.getName()) == item.getStock() || item.getStock() == 0) {
-//            System.out.println("Number of items in cart for " + item.getName() + " cannot exceed item stock amount");
-//            return;
-//        }
+        //Don't allow for more items in cart than available stock for a certain item
+        if (itemCountMap.containsKey(item.getName()) && itemCountMap.get(item.getName()) == item.getStock() || item.getStock() == 0) {
+            System.out.println("Number of items in cart for " + item.getName() + " cannot exceed item stock amount");
+            return;
+        }
 
         // Add the item to the cart and the itemCount map
         shoppingCart.add(item);
