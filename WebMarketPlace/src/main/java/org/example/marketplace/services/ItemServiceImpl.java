@@ -6,6 +6,7 @@ import org.example.marketplace.entities.Category;
 import org.example.marketplace.repositories.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
     private final ItemRepository itemRepository;
 
     private final List<Item> shoppingCart;
@@ -104,7 +105,7 @@ public class ItemServiceImpl implements ItemService {
         for (Item item : shoppingCart) {
             total += item.getPrice();
         }
-        return total;
+        return Double.parseDouble(decimalFormat.format(total));
     }
 
     @Override

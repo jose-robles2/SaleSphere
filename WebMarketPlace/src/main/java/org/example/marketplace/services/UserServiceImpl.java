@@ -5,10 +5,13 @@ import org.example.marketplace.entities.State;
 import org.example.marketplace.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
+
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     private UserRepository userRepository;
 
@@ -65,20 +68,27 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public double getTax(double total)
+
     {
-        return (this.currentUser.get().getState().getTaxRate()) * total;
+        Double beforeFormat = this.currentUser.get().getState().getTaxRate() * total;
+
+        return Double.parseDouble(decimalFormat.format(beforeFormat));
     }
 
     @Override
     public double getTotalWithTax(double total)
     {
-        return (this.currentUser.get().getState().getTaxRate() + 1) * total;
+        Double beforeFormat = (this.currentUser.get().getState().getTaxRate() + 1) * total;
+        return Double.parseDouble(decimalFormat.format(beforeFormat));
     }
 
     @Override
     public void makePurchase(Double itemPrice, int quantity, User user)
     {
-        user.setBalance((user.getBalance() - (itemPrice * quantity)));
+        //user.setBalance(user.getBalance() - (itemPrice * quantity));
+        double answer = user.getBalance() - (itemPrice * quantity);
+        double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
+        user.setBalance(formattedAnswer);
     }
     @Override
     public boolean checkBalance(double itemPrice, User user)
