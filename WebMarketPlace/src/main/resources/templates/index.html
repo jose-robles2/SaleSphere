@@ -150,6 +150,8 @@
                     <h4 class="cartItem">Shopping Cart</h4>
                     <p class="cartItem">Count: <span th:text="${cartSize}"></span></p>
                     <p class="cartItem">Price: $<span th:text="${cartTotal}"></span></p>
+                    <p class="cartItem">Tax: $<span th:text="${tax}"></span></p>
+                    <p class="cartItem">Subtotal: $<span th:text="${subtotal}"></span></p>
                     <div class="itemElement">
                         <form class="sideBySide" th:action="@{buyItemsFromCart}" method="post"><button style ="cursor: pointer;" type="submit">Buy</button> </form>
                         <form class="sideBySide" th:action="@{/clearShoppingCart}" method="post"><button style ="cursor: pointer;" type="submit">Clear</button></form>

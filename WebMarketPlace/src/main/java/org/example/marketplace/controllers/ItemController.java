@@ -5,6 +5,7 @@ import org.example.marketplace.entities.User;
 import org.example.marketplace.services.ItemService;
 import org.example.marketplace.services.StateService;
 import org.example.marketplace.services.UserService;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,19 +62,29 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        HashSet<String> trackedItemNames = new HashSet<>();
-        for (Item item : itemService.getShoppingCartItems()) {
-            if (!trackedItemNames.contains(item.getName())) {
-                int quantity = itemService.getQuantityToDeductStock(item);
-                buyItemHelper(item, model, quantity);
-                trackedItemNames.add(item.getName());
+        if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))
+        {
+            HashSet<String> trackedItemNames = new HashSet<>();
+            for (Item item : itemService.getShoppingCartItems()) {
+                if (!trackedItemNames.contains(item.getName())) {
+                    int quantity = itemService.getQuantityToDeductStock(item);
+                    buyItemHelper(item, model, quantity);
+                    trackedItemNames.add(item.getName());
+                }
             }
-        }
 
-        // These must be called here or else the app will only update the shopping cart for 1 item bought individually
-        clearShoppingCart(model);
-        updateShoppingCart(model);
-        return "redirect:/";
+            // These must be called here or else the app will only update the shopping cart for 1 item bought individually
+            clearShoppingCart(model);
+            updateShoppingCart(model);
+            return "redirect:/";
+        }
+        else
+        {
+            // Return error message
+            String errMsg = "The total of the cart is more than your balance.";
+            triggerErrorHelper(errMsg);
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/clearShoppingCart")
@@ -96,11 +107,20 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
-        Item updatedItem = itemService.buyItem(item, quantity);
-        itemService.save(updatedItem);
-        model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
-        userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
-        return new RedirectView("redirect:/", true);
+        if(userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))
+        {
+            Item updatedItem = itemService.buyItem(item, quantity);
+            itemService.save(updatedItem);
+            model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
+            userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
+            return new RedirectView("redirect:/", true);
+        }
+        else
+        {
+            // Trigger error
+            return new RedirectView("redirect:/", true);
+        }
+
     }
 
     private RedirectView setUserHelper(User user, Model model) {
@@ -133,5 +153,7 @@ public class ItemController {
     private void updateShoppingCart(Model model) {
         model.addAttribute("cartSize", itemService.getShoppingCartSize());
         model.addAttribute("cartTotal", itemService.getShoppingCartTotal());
+        model.addAttribute("tax", userService.getTax(itemService.getShoppingCartTotal()));
+        model.addAttribute("subtotal", userService.getTotalWithTax(itemService.getShoppingCartTotal()));
     }
 }
