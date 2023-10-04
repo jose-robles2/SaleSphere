@@ -80,10 +80,8 @@ public class ItemController {
         }
         else
         {
-            // Return error message
-            String errMsg = "The total of the cart is more than your balance.";
-            triggerErrorHelper(errMsg);
-            return "redirect:/";
+            RedirectView redirectView = cartHelper();
+            return redirectView.getUrl();
         }
     }
 
@@ -118,9 +116,14 @@ public class ItemController {
         else
         {
             // Trigger error
-            return new RedirectView("redirect:/", true);
+            return triggerErrorHelper("ERROR: Balance is lower than item cost.");
         }
 
+    }
+
+    private RedirectView cartHelper()
+    {
+        return triggerErrorHelper("ERROR: Balance is lower than cart total.");
     }
 
     private RedirectView setUserHelper(User user, Model model) {
