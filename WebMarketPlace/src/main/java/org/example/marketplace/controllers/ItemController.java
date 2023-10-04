@@ -105,7 +105,7 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
-        if(userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))
+        if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()) && this.itemService.checkPurchase(this.userService.getCurrentUser(), item))
         {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);
@@ -115,7 +115,10 @@ public class ItemController {
         }
         else
         {
-            // Trigger error
+            if(this.itemService.checkPurchase(this.userService.getCurrentUser(), item))
+            {
+                return(triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item."));
+            }
             return triggerErrorHelper("ERROR: Balance is lower than item cost.");
         }
 
