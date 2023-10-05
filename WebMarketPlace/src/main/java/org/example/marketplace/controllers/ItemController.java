@@ -48,7 +48,7 @@ public class ItemController {
     }
 
     @PostMapping("/addItemToCart")
-    public String addItemToCart(@ModelAttribute Item item, Model model,RedirectAttributes redirectAttributes) {
+    public String addItemToCart(@ModelAttribute Item item, Model model) {
         itemService.addItemToCart(item);
         return "redirect:/";
     }
