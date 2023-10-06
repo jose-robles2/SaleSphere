@@ -19,11 +19,11 @@ import java.util.HashSet;
 
 @Controller
 public class ItemController {
-    private UserService userService;
+    private final UserService userService;
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
-    private StateService stateService;
+    private final StateService stateService;
 
     public ItemController(UserService userService, ItemService itemService, StateService stateService) {
         this.userService = userService;
@@ -78,10 +78,8 @@ public class ItemController {
             updateShoppingCart(model);
             return "redirect:/";
         }
-        else
-        {
-            RedirectView redirectView = cartHelper();
-            return redirectView.getUrl();
+        else {
+            return triggerErrorHelper("ERROR: Price of items in cart exceed user's balance").getUrl();
         }
     }
 
@@ -94,8 +92,7 @@ public class ItemController {
     @PostMapping("/createItem")
     public String createItem(@ModelAttribute Item item, Model model) {
         itemService.save(item);
-        // item service find by ID, if item already exists don't allow for creation
-        return "redirect:/"; // send us back to the root so we can display info to user
+        return "redirect:/";
     }
 
     @PostMapping("/setUser")
@@ -105,7 +102,13 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
-        if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()) && this.itemService.checkPurchase(this.userService.getCurrentUser(), item))
+        if (item.getStock() == 0) {
+            return triggerErrorHelper("ERROR: The item " + item.getName() + " is out of stock");
+        }
+        else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {
+            return triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item.");
+        }
+        else if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))
         {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);
@@ -113,20 +116,9 @@ public class ItemController {
             userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
             return new RedirectView("redirect:/", true);
         }
-        else
-        {
-            if(this.itemService.checkPurchase(this.userService.getCurrentUser(), item))
-            {
-                return(triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item."));
-            }
-            return triggerErrorHelper("ERROR: Balance is lower than item cost.");
+        else {
+            return triggerErrorHelper("ERROR: Not enough user balance to purchase " + item.getName());
         }
-
-    }
-
-    private RedirectView cartHelper()
-    {
-        return triggerErrorHelper("ERROR: Balance is lower than cart total.");
     }
 
     private RedirectView setUserHelper(User user, Model model) {
