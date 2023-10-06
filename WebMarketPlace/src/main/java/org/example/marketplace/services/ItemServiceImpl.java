@@ -6,6 +6,7 @@ import org.example.marketplace.entities.Category;
 import org.example.marketplace.repositories.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
     private final ItemRepository itemRepository;
 
     private final List<Item> shoppingCart;
@@ -59,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void addItemToCart(Item item) {
-         //Don't allow for more items in cart than available stock for a certain item
+        //Don't allow for more items in cart than available stock for a certain item
         if (itemCountMap.containsKey(item.getName()) && itemCountMap.get(item.getName()) == item.getStock() || item.getStock() == 0) {
             System.out.println("Number of items in cart for " + item.getName() + " cannot exceed item stock amount");
             return;
@@ -75,17 +76,6 @@ public class ItemServiceImpl implements ItemService {
             count += 1;
             itemCountMap.put(item.getName(), count);
         }
-    }
-
-    @Override
-    public String getErrorMessage(Item item, int quantity) {
-        if (item.getStock() <= 0) {
-            System.out.println("ERROR: item is no longer in stock...");
-            return "ERROR: item is no longer in stock...";
-        }
-        //add new Exceptions here
-        //if(){}
-        return "";
     }
 
     @Override
@@ -115,7 +105,7 @@ public class ItemServiceImpl implements ItemService {
         for (Item item : shoppingCart) {
             total += item.getPrice();
         }
-        return total;
+        return Double.parseDouble(decimalFormat.format(total));
     }
 
     @Override
@@ -125,6 +115,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public String getErrorMessage(Item item, int quantity) {
+        if (item.getStock() <= 0) {
+            System.out.println("ERROR: item is no longer in stock...");
+            return "ERROR: item is no longer in stock...";
+        }
+        //add new Exceptions here
+        //if(){}
+        return "";
+    }
+
     public boolean checkPurchase(User currUser, Item item)
     {
         // This will be used to make sure that purchases are allowed

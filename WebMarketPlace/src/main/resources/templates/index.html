@@ -38,7 +38,7 @@
                 border: 1px solid;
                 border-radius: 15px;
                 padding: 10px;
-                height: 120px;
+                height: 180px;
             }
             .cartItem {
                 margin: 10px 0;
@@ -112,8 +112,6 @@
             .itemform input[type="submit"]:hover {
                 background-color: #0056b3;
             }
-
-
             .alert {
                 padding: 15px;
                 margin-bottom: 20px;
@@ -121,7 +119,6 @@
                 border-radius: 4px;
                 font-family: Arial, sans-serif;
             }
-
             .alert-danger {
                 color: #a94442;
                 background-color: #f2dede;
@@ -130,9 +127,9 @@
         </style>
     </head>
     <body>
-    <div th:if="${errorMessage}" class="alert alert-danger">
-        <p th:text="${errorMessage}"></p>
-    </div>
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <p th:text="${errorMessage}"></p>
+        </div>
         <div class="appContainer">
             <div class="appHeader">
                 <div class="userFormContainer">
@@ -153,6 +150,8 @@
                     <h4 class="cartItem">Shopping Cart</h4>
                     <p class="cartItem">Count: <span th:text="${cartSize}"></span></p>
                     <p class="cartItem">Price: $<span th:text="${cartTotal}"></span></p>
+                    <p class="cartItem">Tax: $<span th:text="${tax}"></span></p>
+                    <p class="cartItem">Subtotal: $<span th:text="${subtotal}"></span></p>
                     <div class="itemElement">
                         <form class="sideBySide" th:action="@{buyItemsFromCart}" method="post"><button style ="cursor: pointer;" type="submit">Buy</button> </form>
                         <form class="sideBySide" th:action="@{/clearShoppingCart}" method="post"><button style ="cursor: pointer;" type="submit">Clear</button></form>

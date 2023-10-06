@@ -58,7 +58,7 @@ public class InitialSetup implements CommandLineRunner {
 
         Item tobacco = new Item("Classic Cigarettes", "Large tobacco cigarette pack", "/image", "Washington", 9.99, 4, Category.DRUGS);
         Item vape = new Item("Classic Vape", "Large vape pack", "/image", "Oregon", 9.99, 4, Category.DRUGS);
-        Item marijuana = new Item("Classic Marijuana", "Large weed pack", "/image", "California", 9.99, 4, Category.DRUGS);
+        Item marijuana = new Item("Classic Marijuana", "Large weed pack", "/image", "California", 9.99, 0, Category.DRUGS);
 
         phone = itemRepository.save(phone);
         laptop = itemRepository.save(laptop);
@@ -115,8 +115,8 @@ public class InitialSetup implements CommandLineRunner {
                 18, true, 0.2);
 
         State arkansas = new State("AR",
-                18, true,
-                18, true,
+                99, true,
+                18, false,
                 21, true,
                 25, true,
                 25, true,

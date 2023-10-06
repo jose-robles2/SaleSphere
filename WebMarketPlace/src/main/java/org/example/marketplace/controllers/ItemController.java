@@ -2,21 +2,20 @@ package org.example.marketplace.controllers;
 
 import org.example.marketplace.entities.Item;
 import org.example.marketplace.entities.User;
-import org.example.marketplace.entities.State;
 import org.example.marketplace.services.ItemService;
 import org.example.marketplace.services.StateService;
 import org.example.marketplace.services.UserService;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
 import java.util.HashSet;
-import java.util.List;
 
 @Controller
 public class ItemController {
@@ -32,77 +31,59 @@ public class ItemController {
         this.stateService = stateService;
     }
 
-    @RequestMapping("/") // root of the app
+    @RequestMapping("/")
     public String getItems(Model model) {
         model.addAttribute("items", itemService.findAll());
         model.addAttribute("newItem", new Item());  // addItem form submit
-        model.addAttribute("users", userService.findAll()); // do we need this?
         model.addAttribute("item", new Item());     // buyItem form submit
-        model.addAttribute("user", new User());     // login user form
-
+        model.addAttribute("user", new User());     // setUser form submit
         updateFrontEnd(model);
         return "index";
     }
 
     @PostMapping("/buyItem")
-    public String buyItem(@ModelAttribute Item item, Model model, RedirectAttributes redirectAttributes) {
-        String ErrorMessage = "";
-        int quantity = itemService.getQuantityToDeductStock(item);
-        ErrorMessage = itemService.getErrorMessage(item,quantity);
-        if (!ErrorMessage.isEmpty())
-        {
-            return triggerError(ErrorMessage,redirectAttributes);
-            // Call triggerError if the condition is met
-        }
+    public String buyItem(@ModelAttribute Item item, Model model) {
+        RedirectView redirectView = buyItemHelper(item, model, 1);
+        return redirectView.getUrl();
+    }
 
-
-        buyItemHelper(item, model, 1);
+    @PostMapping("/addItemToCart")
+    public String addItemToCart(@ModelAttribute Item item, Model model) {
+        itemService.addItemToCart(item);
         return "redirect:/";
     }
 
-    @PostMapping("/triggerError")
+    @GetMapping("/triggerError")
     public String triggerError(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
         String errorMsg = (customErrorMsg != null && !customErrorMsg.isEmpty()) ? customErrorMsg : "An error was triggered by the button!";
         redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
         return "redirect:/";
     }
 
-    @PostMapping("/addItemToCart")
-    public String addItemToCart(@ModelAttribute Item item, Model model,RedirectAttributes redirectAttributes) {
-        String ErrorMessage = "";
-        int quantity = itemService.getQuantityToDeductStock(item);
-        ErrorMessage = itemService.getErrorMessage(item,quantity);
-        if (!ErrorMessage.isEmpty())
-        {
-            return triggerError(ErrorMessage,redirectAttributes);
-            // Call triggerError if the condition is met
-        }
-
-
-        itemService.addItemToCart(item);
-        return "redirect:/";
-    }
-
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        HashSet<String> trackedItemNames = new HashSet<>();
-
-        for (Item item : itemService.getShoppingCartItems()) {
-            if (!trackedItemNames.contains(item.getName())) {
-                int quantity = itemService.getQuantityToDeductStock(item);
-                buyItemHelper(item, model, quantity);
-                trackedItemNames.add(item.getName());
+        if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))
+        {
+            HashSet<String> trackedItemNames = new HashSet<>();
+            for (Item item : itemService.getShoppingCartItems()) {
+                if (!trackedItemNames.contains(item.getName())) {
+                    int quantity = itemService.getQuantityToDeductStock(item);
+                    buyItemHelper(item, model, quantity);
+                    trackedItemNames.add(item.getName());
+                }
             }
+
+            // These must be called here or else the app will only update the shopping cart for 1 item bought individually
+            clearShoppingCart(model);
+            updateShoppingCart(model);
+            return "redirect:/";
         }
-
-        // These must be called here or else the app will only update the shopping cart for 1 item bought individually
-        clearShoppingCart(model);
-        updateShoppingCart(model);
-        return "redirect:/";
+        else
+        {
+            RedirectView redirectView = cartHelper();
+            return redirectView.getUrl();
+        }
     }
-
-
-
 
     @PostMapping("/clearShoppingCart")
     public String clearShoppingCart(Model model) {
@@ -113,33 +94,56 @@ public class ItemController {
     @PostMapping("/createItem")
     public String createItem(@ModelAttribute Item item, Model model) {
         itemService.save(item);
+        // item service find by ID, if item already exists don't allow for creation
         return "redirect:/"; // send us back to the root so we can display info to user
     }
 
     @PostMapping("/setUser")
     public String setUserSubmit(@ModelAttribute User user, Model model) {
-        setUserHelper(user, model);
-        return "redirect:/";
+        RedirectView redirectView = setUserHelper(user, model);
+        return redirectView.getUrl();
     }
 
-
-    private void buyItemHelper(Item item, Model model, int quantity) {
-        Item updatedItem = itemService.buyItem(item, quantity);
-        itemService.save(updatedItem);
-        model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
-        userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
-    }
-
-    private void setUserHelper(User user, Model model) {
-        if(userService.userExists(user.getId()))
+    private RedirectView buyItemHelper(Item item, Model model, int quantity) {
+        if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()) && this.itemService.checkPurchase(this.userService.getCurrentUser(), item))
         {
-            User currentUser = userService.getUser(user.getId());
-            userService.setCurrentUser(currentUser);
+            Item updatedItem = itemService.buyItem(item, quantity);
+            itemService.save(updatedItem);
+            model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
+            userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
+            return new RedirectView("redirect:/", true);
         }
         else
         {
-            // Add pop up window here
+            if(this.itemService.checkPurchase(this.userService.getCurrentUser(), item))
+            {
+                return(triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item."));
+            }
+            return triggerErrorHelper("ERROR: Balance is lower than item cost.");
         }
+
+    }
+
+    private RedirectView cartHelper()
+    {
+        return triggerErrorHelper("ERROR: Balance is lower than cart total.");
+    }
+
+    private RedirectView setUserHelper(User user, Model model) {
+        if(userService.userExists(user.getId())) {
+            User currentUser = userService.getUser(user.getId());
+            userService.setCurrentUser(currentUser);
+        }
+        else {
+            return triggerErrorHelper("ERROR: Inputted user ID does not exist...");
+        }
+        return new RedirectView("redirect:/", true);
+    }
+
+    private RedirectView triggerErrorHelper(String errorMessage) {
+        // Redirect to a URL where the error message can be displayed -> calls the @GetMapping triggerError()
+        String redirectUrl = "redirect:/triggerError?customErrorMsg=" + errorMessage;
+        return new RedirectView(redirectUrl, true);
     }
 
     private void updateFrontEnd(Model model) {
@@ -155,5 +159,7 @@ public class ItemController {
     private void updateShoppingCart(Model model) {
         model.addAttribute("cartSize", itemService.getShoppingCartSize());
         model.addAttribute("cartTotal", itemService.getShoppingCartTotal());
+        model.addAttribute("tax", userService.getTax(itemService.getShoppingCartTotal()));
+        model.addAttribute("subtotal", userService.getTotalWithTax(itemService.getShoppingCartTotal()));
     }
 }
