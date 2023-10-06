@@ -24,11 +24,11 @@ public class Item {
 
     private int stock;
 
-    Category category;
+    private int category;
 
     public Item() {}
 
-    public Item(String name, String description, String imageUrl, String locationState, double price, int stock, Category category) {
+    public Item(String name, String description, String imageUrl, String locationState, double price, int stock, int category) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -64,7 +64,7 @@ public class Item {
         return stock;
     }
 
-    public Category getCategory() { return category; }
+    public int getCategory() { return category; }
 
     public void setName(String name) {
         this.name = name;
