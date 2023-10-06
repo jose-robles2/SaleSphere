@@ -125,7 +125,7 @@ public class ItemServiceImpl implements ItemService {
         return "";
     }
 
-    public boolean checkPurchase(User currUser, Item item)
+    public boolean isValidPurchase(User currUser, Item item)
     {
         // This will be used to make sure that purchases are allowed
         if(item.getCategory() == Category.FIREARM)

@@ -102,7 +102,14 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
-        if(userService.checkBalance(item.getPrice(), this.userService.getCurrentUser())) {
+        if (item.getStock() == 0) {
+            return triggerErrorHelper("ERROR: The item " + item.getName() + " is out of stock");
+        }
+        else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {
+            return triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item.");
+        }
+        else if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))
+        {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);
             model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
@@ -110,11 +117,9 @@ public class ItemController {
             return new RedirectView("redirect:/", true);
         }
         else {
-            return triggerErrorHelper("ERROR: Balance is lower than item cost.");
+            return triggerErrorHelper("ERROR: Not enough user balance to purchase " + item.getName());
         }
-
     }
-
 
     private RedirectView setUserHelper(User user, Model model) {
         if(userService.userExists(user.getId())) {
