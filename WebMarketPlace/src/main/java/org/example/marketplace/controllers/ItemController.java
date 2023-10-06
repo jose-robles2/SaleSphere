@@ -19,11 +19,11 @@ import java.util.HashSet;
 
 @Controller
 public class ItemController {
-    private UserService userService;
+    private final UserService userService;
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
-    private StateService stateService;
+    private final StateService stateService;
 
     public ItemController(UserService userService, ItemService itemService, StateService stateService) {
         this.userService = userService;
@@ -48,7 +48,7 @@ public class ItemController {
     }
 
     @PostMapping("/addItemToCart")
-    public String addItemToCart(@ModelAttribute Item item, Model model,RedirectAttributes redirectAttributes) {
+    public String addItemToCart(@ModelAttribute Item item, Model model) {
         itemService.addItemToCart(item);
         return "redirect:/";
     }
@@ -78,10 +78,8 @@ public class ItemController {
             updateShoppingCart(model);
             return "redirect:/";
         }
-        else
-        {
-            RedirectView redirectView = cartHelper();
-            return redirectView.getUrl();
+        else {
+            return triggerErrorHelper("ERROR: Price of items in cart exceed user's balance").getUrl();
         }
     }
 
@@ -94,8 +92,7 @@ public class ItemController {
     @PostMapping("/createItem")
     public String createItem(@ModelAttribute Item item, Model model) {
         itemService.save(item);
-        // item service find by ID, if item already exists don't allow for creation
-        return "redirect:/"; // send us back to the root so we can display info to user
+        return "redirect:/";
     }
 
     @PostMapping("/setUser")
@@ -105,26 +102,19 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
-        if(userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))
-        {
+        if(userService.checkBalance(item.getPrice(), this.userService.getCurrentUser())) {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);
             model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
             userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
             return new RedirectView("redirect:/", true);
         }
-        else
-        {
-            // Trigger error
+        else {
             return triggerErrorHelper("ERROR: Balance is lower than item cost.");
         }
 
     }
 
-    private RedirectView cartHelper()
-    {
-        return triggerErrorHelper("ERROR: Balance is lower than cart total.");
-    }
 
     private RedirectView setUserHelper(User user, Model model) {
         if(userService.userExists(user.getId())) {
