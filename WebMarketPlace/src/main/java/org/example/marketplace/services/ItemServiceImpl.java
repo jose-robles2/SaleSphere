@@ -14,7 +14,9 @@ import java.util.Objects;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
     private final ItemRepository itemRepository;
 
     private final List<Item> shoppingCart;
@@ -55,8 +57,6 @@ public class ItemServiceImpl implements ItemService {
 
         return item;
     }
-
-
 
     @Override
     public void addItemToCart(Item item) {
@@ -114,21 +114,10 @@ public class ItemServiceImpl implements ItemService {
         shoppingCart.clear();
     }
 
-    @Override
-    public String getErrorMessage(Item item, int quantity) {
-        if (item.getStock() <= 0) {
-            System.out.println("ERROR: item is no longer in stock...");
-            return "ERROR: item is no longer in stock...";
-        }
-        //add new Exceptions here
-        //if(){}
-        return "";
-    }
-
     public boolean isValidPurchase(User currUser, Item item)
     {
         // This will be used to make sure that purchases are allowed
-        if(item.getCategory() == Category.FIREARM)
+        if(item.getCategory() == Category.FIREARM.ordinal())
         {
             if(!currUser.getState().isFirearmsAllowed())
             {
@@ -140,7 +129,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        if(item.getCategory() == Category.ALCOHOL)
+        if(item.getCategory() == Category.ALCOHOL.ordinal())
         {
             if(!currUser.getState().isAlcoholAllowed())
             {
@@ -152,7 +141,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        if(item.getCategory() == Category.DRUGS)
+        if(item.getCategory() == Category.DRUGS.ordinal())
         {
             if(!currUser.getState().isDrugAllowed())
             {
@@ -164,7 +153,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        if(item.getCategory() == Category.MEDICINE)
+        if(item.getCategory() == Category.MEDICINE.ordinal())
         {
             if(!currUser.getState().isMedicineAllowed())
             {
@@ -176,7 +165,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        if(item.getCategory() == Category.TECHNOLOGY)
+        if(item.getCategory() == Category.TECHNOLOGY.ordinal())
         {
             if(!currUser.getState().isTechnologyAllowed())
             {
@@ -188,7 +177,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        if(item.getCategory() == Category.TOBACCO)
+        if(item.getCategory() == Category.TOBACCO.ordinal())
         {
             if(!currUser.getState().isTobaccoAllowed())
             {

@@ -26,6 +26,4 @@ public interface ItemService {
     public void clearShoppingCart();
 
     public boolean isValidPurchase(User currUser, Item item);
-
-    public String getErrorMessage(Item item, int quantity);
 }
