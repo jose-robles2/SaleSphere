@@ -24,7 +24,7 @@ public class Item {
 
     private int stock;
 
-    int category;
+    private int category;
 
     public Item() {}
 
@@ -94,28 +94,31 @@ public class Item {
         this.stock = stock;
     }
 
+    public void setCategory(int category) { this.category = category; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Item item)) return false;
-        return getStock() == item.getStock() && Objects.equals(getId(), item.getId()) && Objects.equals(getName(), item.getName()) && Objects.equals(getDescription(), item.getDescription()) && Objects.equals(getImageUrl(), item.getImageUrl()) && Objects.equals(getLocationState(), item.getLocationState()) && Objects.equals(getPrice(), item.getPrice());
+        return Double.compare(getPrice(), item.getPrice()) == 0 && getStock() == item.getStock() && getCategory() == item.getCategory() && Objects.equals(getName(), item.getName()) && Objects.equals(getDescription(), item.getDescription()) && Objects.equals(getImageUrl(), item.getImageUrl()) && Objects.equals(getLocationState(), item.getLocationState()) && Objects.equals(getId(), item.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getImageUrl(), getLocationState(), getPrice(), getStock());
+        return Objects.hash(getName(), getDescription(), getImageUrl(), getLocationState(), getPrice(), getId(), getStock(), getCategory());
     }
 
     @Override
     public String toString() {
         return "Item{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", locationState='" + locationState + '\'' +
                 ", price=" + price +
+                ", id=" + id +
                 ", stock=" + stock +
+                ", category=" + category +
                 '}';
     }
 }

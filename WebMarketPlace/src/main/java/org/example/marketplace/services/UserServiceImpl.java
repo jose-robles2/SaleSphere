@@ -44,18 +44,18 @@ public class UserServiceImpl implements UserService{
     public User save(User user) {
         return userRepository.save(user);
     }
+
     @Override
     public User getUser(Long ID) { return userRepository.findById(ID).get(); }
+
     @Override
     public boolean userExists(Long ID) { return userRepository.existsById(ID); }
+
     @Override
     public User getCurrentUser()
     {
         Optional<User> currentUser = this.currentUser;
-        if (currentUser != null) {
-            return currentUser.get();
-        }
-        return null;
+        return currentUser.orElse(null);
     }
     @Override
     public void setCurrentUser(User currUser)
@@ -68,10 +68,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public double getTax(double total)
-
     {
         Double beforeFormat = this.currentUser.get().getState().getTaxRate() * total;
-
         return Double.parseDouble(decimalFormat.format(beforeFormat));
     }
 
@@ -90,10 +88,10 @@ public class UserServiceImpl implements UserService{
         double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
         user.setBalance(formattedAnswer);
     }
+
     @Override
     public boolean checkBalance(double itemPrice, User user)
     {
         return (user.getBalance() - itemPrice) >= 0;
     }
-
 }

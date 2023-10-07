@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class State {
     private String stateName;
@@ -93,5 +95,38 @@ public class State {
     public boolean isAlcoholAllowed() { return alcoholAllowed; }
 
     public double getTaxRate() { return taxRate; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof State state)) return false;
+        return getFirearmsAge() == state.getFirearmsAge() && isFirearmsAllowed() == state.isFirearmsAllowed() && getTobaccoAge() == state.getTobaccoAge() && isTobaccoAllowed() == state.isTobaccoAllowed() && drugAge == state.drugAge && isDrugAllowed() == state.isDrugAllowed() && getTechnologyAge() == state.getTechnologyAge() && isTechnologyAllowed() == state.isTechnologyAllowed() && getMedicineAge() == state.getMedicineAge() && isMedicineAllowed() == state.isMedicineAllowed() && getAlcoholAge() == state.getAlcoholAge() && isAlcoholAllowed() == state.isAlcoholAllowed() && Double.compare(getTaxRate(), state.getTaxRate()) == 0 && Objects.equals(getStateName(), state.getStateName()) && Objects.equals(id, state.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStateName(), getFirearmsAge(), isFirearmsAllowed(), getTobaccoAge(), isTobaccoAllowed(), drugAge, isDrugAllowed(), getTechnologyAge(), isTechnologyAllowed(), getMedicineAge(), isMedicineAllowed(), getAlcoholAge(), isAlcoholAllowed(), getTaxRate(), id);
+    }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "stateName='" + stateName + '\'' +
+                ", firearmsAge=" + firearmsAge +
+                ", firearmsAllowed=" + firearmsAllowed +
+                ", tobaccoAge=" + tobaccoAge +
+                ", tobaccoAllowed=" + tobaccoAllowed +
+                ", drugAge=" + drugAge +
+                ", drugAllowed=" + drugAllowed +
+                ", technologyAge=" + technologyAge +
+                ", technologyAllowed=" + technologyAllowed +
+                ", medicineAge=" + medicineAge +
+                ", medicineAllowed=" + medicineAllowed +
+                ", alcoholAge=" + alcoholAge +
+                ", alcoholAllowed=" + alcoholAllowed +
+                ", taxRate=" + taxRate +
+                ", id=" + id +
+                '}';
+    }
 }
 
