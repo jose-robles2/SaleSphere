@@ -188,7 +188,6 @@ public class ItemServiceImpl implements ItemService {
                 return currUser.getAge() >= currUser.getState().getTobaccoAge();
             }
         }
-
         return true;
     }
 }
