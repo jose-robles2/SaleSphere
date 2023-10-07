@@ -114,6 +114,7 @@ public class ItemController {
             itemService.save(updatedItem);
             model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
             userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
+            userService.save(this.userService.getCurrentUser());
             return new RedirectView("redirect:/", true);
         }
         else {
