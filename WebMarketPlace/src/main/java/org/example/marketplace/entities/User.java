@@ -16,7 +16,7 @@ public class User {
     private int age;
 
     private double balance;
-    @OneToOne
+    @ManyToOne
     private State state;
 
     @Id
