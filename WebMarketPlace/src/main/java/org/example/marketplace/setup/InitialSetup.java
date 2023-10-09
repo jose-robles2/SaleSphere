@@ -56,7 +56,7 @@ public class InitialSetup implements CommandLineRunner {
         Item oxycodone = new Item("Oxycodone Painkillers", "Oxycodone Max Strength", "/image", "Oregon", 59.99, 4, Category.MEDICINE.ordinal());
         Item hydrocodone = new Item("Hydrocodone Painkillers", "Hydrocodone Max Strength", "/image", "California", 59.99, 4, Category.MEDICINE.ordinal());
 
-        Item tobacco = new Item("Classic Cigarettes", "Large tobacco cigarette pack", "/image", "Washington", 9.99, 4, Category.DRUGS.ordinal());
+        Item tobacco = new Item("Classic Cigarettes", "Large tobacco cigarette pack", "/image", "Washington", 9.99, 4, Category.TOBACCO.ordinal());
         Item vape = new Item("Classic Vape", "Large vape pack", "/image", "Oregon", 9.99, 4, Category.DRUGS.ordinal());
         Item marijuana = new Item("Classic Marijuana", "Large weed pack", "/image", "California", 9.99, 0, Category.DRUGS.ordinal());
 
@@ -91,44 +91,45 @@ public class InitialSetup implements CommandLineRunner {
         itemRepository.save(marijuana);
 
         State alabama = new State("AL",
-                18, true,
-                18, true,
-                21, true,
-                25, true,
-                25, true,
-                18, true, 0.07);
+                18, false,
+                18, false,
+                21, false,
+                25, false,
+                25, false,
+                18, false, 0.07);
 
         State alaska = new State("AK",
-                18, true,
-                18, true,
                 21, true,
-                25, true,
-                25, true,
-                18, true, 0.06);
+                15, true,
+                33, true,
+                32, true,
+                1, true,
+                99, true, 0.06);
 
         State arizona = new State("AZ",
-                18, true,
-                18, true,
-                21, true,
-                25, true,
-                25, true,
-                18, true, 0.2);
+                34, true,
+                22, false,
+                50, false,
+                0, true,
+                13, true,
+                21, true, 0.2);
 
         State arkansas = new State("AR",
                 99, true,
-                18, false,
+                18, true,
                 21, true,
                 25, true,
                 25, true,
-                18, true, 0.13);
+                18, false, 0.13);
 
         State california = new State("CA",
-                18, true,
-                18, true,
-                21, true,
-                25, true,
-                25, true,
-                18, true, 0.20);
+                22, false,
+                48, true,
+                44, true,
+                31, true,
+                24, true,
+                30, true, 0.20);
+
 
         stateRepository.save(alabama);
         stateRepository.save(alaska);
@@ -136,10 +137,20 @@ public class InitialSetup implements CommandLineRunner {
         stateRepository.save(arkansas);
         stateRepository.save(california);
 
-        User user = new User("Tres", "Hiatt", "wHiatt", 55, arkansas, 1000.50);
+        User user = new User("Tres", "Hiatt", "tHiatt", 55, arkansas, 1000.50);
         User user2 = new User("Jose", "Robles", "jRob", 17, alaska, 14567.87);
+        User user3 = new User("Josh", "Long", "jLong", 99, alaska, 105500.50);
+        User user4 = new User("TobaccoAge,FirearmAllowed", "Test", "Test", 47, california, 1000.50);
+        User user5 = new User("CantBuy(age)", "Test", "Test", 17, arizona, 14567.87);
+        User user6 = new User("CantBuy(notallowed)", "Test", "Test", 90, alabama, 5000.22);
+
         user = userRepository.save(user);
         user2 = userRepository.save(user2);
+        user3 = userRepository.save(user3);
+        user4 = userRepository.save(user4);
+        user5 = userRepository.save(user5);
+        user6 = userRepository.save(user6);
+
         System.out.println(phone);
         System.out.println(laptop);
         System.out.println(tv);

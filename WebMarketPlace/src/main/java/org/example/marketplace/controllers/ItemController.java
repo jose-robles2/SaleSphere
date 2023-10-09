@@ -1,5 +1,6 @@
 package org.example.marketplace.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.marketplace.entities.Item;
 import org.example.marketplace.entities.User;
 import org.example.marketplace.services.ItemService;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.net.URI;
+import java.net.URL;
 import java.util.HashSet;
 
 @Controller
@@ -62,14 +66,21 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
+        boolean errorMessage = false;
         if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))
         {
             HashSet<String> trackedItemNames = new HashSet<>();
             for (Item item : itemService.getShoppingCartItems()) {
                 if (!trackedItemNames.contains(item.getName())) {
                     int quantity = itemService.getQuantityToDeductStock(item);
-                    buyItemHelper(item, model, quantity);
+                    RedirectView tempView = buyItemHelper(item, model, quantity);
                     trackedItemNames.add(item.getName());
+                    if(tempView.getUrl().contains("ERROR"))
+                    {
+                        clearShoppingCart(model);
+                        updateShoppingCart(model);
+                        return tempView.getUrl();
+                    }
                 }
             }
 
@@ -118,7 +129,7 @@ public class ItemController {
             return new RedirectView("redirect:/", true);
         }
         else {
-            return triggerErrorHelper("ERROR: Not enough user balance to purchase " + item.getName());
+            return triggerErrorHelper("ERROR: Not enough user balance to purchase " + item.getName() + ". Listed price does not include taxes.");
         }
     }
 
@@ -155,4 +166,6 @@ public class ItemController {
         model.addAttribute("tax", userService.getTax(itemService.getShoppingCartTotal()));
         model.addAttribute("subtotal", userService.getTotalWithTax(itemService.getShoppingCartTotal()));
     }
+
+
 }

@@ -135,7 +135,9 @@
                 <div class="userFormContainer">
                     <h1 class="userFormItem">Current User</h1>
                     <p class="userFormItem">Current User: <td th:text="${currentUser.firstName}"> </td> </p>
+                    <p class="userFormItem">User Age: <td th:text="${currentUser.age}"></td></p>
                     <p class="userFormItem">User State: <td th:text="${currentUser.State.stateName}"> </td> </p>
+                    <p class="userFormItem">State Tax Rate (in decimal form): <td th:text="${currentUser.State.taxRate}"></td></p>
                     <p class="userFormItem">User Balance: $<td th:text="${currentUser.balance}"></td></p>
                     <h1 class="userFormItem">Set Current User</h1>
                     <form class="userForm"th:action="@{/setUser}" th:object="${user}" method="post">
