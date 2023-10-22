@@ -32,7 +32,7 @@ public class InitialSetup implements CommandLineRunner {
         System.out.println("Initializing database...");
         Item phone = new Item("Phone", "IPhone 15", "/image", "Washington", 1199.99, 1, Category.TECHNOLOGY.ordinal());
         Item laptop = new Item("Laptop", "Macbook Pro", "/image", "Washington", 2199.99, 5, Category.TECHNOLOGY.ordinal());
-        Item tv = new Item("TV", "Samsund 4K TV", "/image", "Washington", 999.99, 5, Category.TECHNOLOGY.ordinal());
+        Item tv = new Item("TV", "Samsung 4K TV", "/image", "Washington", 999.99, 5, Category.TECHNOLOGY.ordinal());
         Item tablet = new Item("Tablet", "iPad Pro", "/image", "Washington", 799.99, 5, Category.TECHNOLOGY.ordinal());
         Item headphones = new Item("Headphones", "Sony Noise-Canceling", "/image", "Washington", 299.99, 5, Category.TECHNOLOGY.ordinal());
         Item camera = new Item("Camera", "Canon EOS", "/image", "Washington", 899.99, 5, Category.TECHNOLOGY.ordinal());
