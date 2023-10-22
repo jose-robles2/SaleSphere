@@ -66,7 +66,6 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        boolean errorMessage = false;
         if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))
         {
             HashSet<String> trackedItemNames = new HashSet<>();
@@ -137,6 +136,7 @@ public class ItemController {
         if(userService.userExists(user.getId())) {
             User currentUser = userService.getUser(user.getId());
             userService.setCurrentUser(currentUser);
+            this.itemService.clearShoppingCart();
         }
         else {
             return triggerErrorHelper("ERROR: Inputted user ID does not exist...");
@@ -166,6 +166,4 @@ public class ItemController {
         model.addAttribute("tax", userService.getTax(itemService.getShoppingCartTotal()));
         model.addAttribute("subtotal", userService.getTotalWithTax(itemService.getShoppingCartTotal()));
     }
-
-
 }
