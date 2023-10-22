@@ -128,7 +128,7 @@ public class ItemServiceImpl implements ItemService {
             {
                 if (currUser.getAge() >= currUser.getState().getFirearmsAge())
                 {
-                    String userStateName = currUser.getState().toString();
+                    String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "CA") ||
                             (Objects.equals(userStateName, "AR")))
                     {
@@ -136,8 +136,8 @@ public class ItemServiceImpl implements ItemService {
                         // Increase the items field as this field will only be changed for the current item
                         double newPrice = item.getPrice() + (item.getPrice() * 0.05);
                         item.setPrice(newPrice);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -153,7 +153,7 @@ public class ItemServiceImpl implements ItemService {
             {
                 if (currUser.getAge() >= currUser.getState().getAlcoholAge())
                 {
-                    String userStateName = currUser.getState().toString();
+                    String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "AZ") ||
                             (Objects.equals(userStateName, "AK")))
                     {
@@ -161,8 +161,8 @@ public class ItemServiceImpl implements ItemService {
                         // Increase the items field as this field will only be changed for the current item
                         double newPrice = item.getPrice() + (item.getPrice() * 0.10);
                         item.setPrice(newPrice);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -178,7 +178,7 @@ public class ItemServiceImpl implements ItemService {
             {
                 if (currUser.getAge() >= currUser.getState().getDrugsAge())
                 {
-                    String userStateName = currUser.getState().toString();
+                    String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "AL") ||
                             (Objects.equals(userStateName, "AK")))
                     {
@@ -186,8 +186,8 @@ public class ItemServiceImpl implements ItemService {
                         // Increase the items field as this field will only be changed for the current item
                         double newPrice = item.getPrice() + (item.getPrice() * 0.15);
                         item.setPrice(newPrice);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -203,7 +203,7 @@ public class ItemServiceImpl implements ItemService {
             {
                 if (currUser.getAge() >= currUser.getState().getMedicineAge())
                 {
-                    String userStateName = currUser.getState().toString();
+                    String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "WA") ||
                             (Objects.equals(userStateName, "CA")))
                     {
@@ -211,8 +211,8 @@ public class ItemServiceImpl implements ItemService {
                         // Increase the items field as this field will only be changed for the current item
                         double newPrice = item.getPrice() + (item.getPrice() * 0.05);
                         item.setPrice(newPrice);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -228,7 +228,7 @@ public class ItemServiceImpl implements ItemService {
             {
                 if (currUser.getAge() >= currUser.getState().getTechnologyAge())
                 {
-                    String userStateName = currUser.getState().toString();
+                    String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "AR") ||
                             (Objects.equals(userStateName, "AZ")))
                     {
@@ -236,8 +236,8 @@ public class ItemServiceImpl implements ItemService {
                         // Increase the items field as this field will only be changed for the current item
                         double newPrice = item.getPrice() + (item.getPrice() * 0.07);
                         item.setPrice(newPrice);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -253,7 +253,7 @@ public class ItemServiceImpl implements ItemService {
             {
                 if (currUser.getAge() >= currUser.getState().getTobaccoAge())
                 {
-                    String userStateName = currUser.getState().toString();
+                    String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "CA") ||
                             (Objects.equals(userStateName, "WA")))
                     {
@@ -261,12 +261,12 @@ public class ItemServiceImpl implements ItemService {
                         // Increase the items field as this field will only be changed for the current item
                         double newPrice = item.getPrice() + (item.getPrice() * 0.09);
                         item.setPrice(newPrice);
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
         }
-        return true;
+        return false;
     }
 }
