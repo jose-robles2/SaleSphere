@@ -110,8 +110,8 @@ public class InitialSetup implements CommandLineRunner {
                 34, true,
                 22, false,
                 50, false,
-                0, true,
-                13, true,
+                18, true,
+                18, true,
                 21, true, 0.2);
 
         State arkansas = new State("AR",
