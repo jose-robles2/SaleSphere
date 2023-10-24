@@ -1,6 +1,7 @@
 package org.example.marketplace.services;
 
 import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.State;
 import org.example.marketplace.entities.User;
 import org.example.marketplace.entities.Category;
 import org.example.marketplace.repositories.ItemRepository;
@@ -125,7 +126,20 @@ public class ItemServiceImpl implements ItemService {
             }
             else
             {
-                return currUser.getAge() >= currUser.getState().getFirearmsAge();
+                if (currUser.getAge() >= currUser.getState().getFirearmsAge())
+                {
+                    String userStateName = currUser.getState().getStateName();
+                    if (Objects.equals(userStateName, "CA") ||
+                            (Objects.equals(userStateName, "AR")))
+                    {
+                        // Firearms in these states receive an added 5% tax
+                        // Increase the items field as this field will only be changed for the current item
+                        double newPrice = item.getPrice() + (item.getPrice() * 0.05);
+                        item.setPrice(newPrice);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -137,7 +151,20 @@ public class ItemServiceImpl implements ItemService {
             }
             else
             {
-                return currUser.getAge() >= currUser.getState().getAlcoholAge();
+                if (currUser.getAge() >= currUser.getState().getAlcoholAge())
+                {
+                    String userStateName = currUser.getState().getStateName();
+                    if (Objects.equals(userStateName, "AZ") ||
+                            (Objects.equals(userStateName, "AK")))
+                    {
+                        // Alcohol in these states receive an added 10% tax
+                        // Increase the items field as this field will only be changed for the current item
+                        double newPrice = item.getPrice() + (item.getPrice() * 0.10);
+                        item.setPrice(newPrice);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -149,7 +176,20 @@ public class ItemServiceImpl implements ItemService {
             }
             else
             {
-                return currUser.getAge() >= currUser.getState().getDrugsAge();
+                if (currUser.getAge() >= currUser.getState().getDrugsAge())
+                {
+                    String userStateName = currUser.getState().getStateName();
+                    if (Objects.equals(userStateName, "AL") ||
+                            (Objects.equals(userStateName, "AK")))
+                    {
+                        // Drugs in these states receive an added 15% tax
+                        // Increase the items field as this field will only be changed for the current item
+                        double newPrice = item.getPrice() + (item.getPrice() * 0.15);
+                        item.setPrice(newPrice);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -161,7 +201,20 @@ public class ItemServiceImpl implements ItemService {
             }
             else
             {
-                return currUser.getAge() >= currUser.getState().getMedicineAge();
+                if (currUser.getAge() >= currUser.getState().getMedicineAge())
+                {
+                    String userStateName = currUser.getState().getStateName();
+                    if (Objects.equals(userStateName, "WA") ||
+                            (Objects.equals(userStateName, "CA")))
+                    {
+                        // Medicine in these states receive an added 5% tax
+                        // Increase the items field as this field will only be changed for the current item
+                        double newPrice = item.getPrice() + (item.getPrice() * 0.05);
+                        item.setPrice(newPrice);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -173,7 +226,20 @@ public class ItemServiceImpl implements ItemService {
             }
             else
             {
-                return currUser.getAge() >= currUser.getState().getTechnologyAge();
+                if (currUser.getAge() >= currUser.getState().getTechnologyAge())
+                {
+                    String userStateName = currUser.getState().getStateName();
+                    if (Objects.equals(userStateName, "AR") ||
+                            (Objects.equals(userStateName, "AZ")))
+                    {
+                        // TECHNOLOGY in these states receive an added 7% tax
+                        // Increase the items field as this field will only be changed for the current item
+                        double newPrice = item.getPrice() + (item.getPrice() * 0.07);
+                        item.setPrice(newPrice);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -185,9 +251,22 @@ public class ItemServiceImpl implements ItemService {
             }
             else
             {
-                return currUser.getAge() >= currUser.getState().getTobaccoAge();
+                if (currUser.getAge() >= currUser.getState().getTobaccoAge())
+                {
+                    String userStateName = currUser.getState().getStateName();
+                    if (Objects.equals(userStateName, "CA") ||
+                            (Objects.equals(userStateName, "WA")))
+                    {
+                        // TECHNOLOGY in these states receive an added 9% tax
+                        // Increase the items field as this field will only be changed for the current item
+                        double newPrice = item.getPrice() + (item.getPrice() * 0.09);
+                        item.setPrice(newPrice);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
-        return true;
+        return false;
     }
 }
