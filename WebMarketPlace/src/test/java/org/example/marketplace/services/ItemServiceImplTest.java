@@ -7,6 +7,7 @@ import org.example.marketplace.entities.User;
 import org.example.marketplace.repositories.ItemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ class ItemServiceImplTest {
 
     void setUpMockReturns() {
         Random random = new Random();
-        when(itemService.save(any(Item.class))).thenAnswer(invocationOnMock -> {
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocationOnMock -> {
             Item savedItem = invocationOnMock.getArgument(0);
             savedItem.setId(random.nextLong());
             return savedItem;
@@ -123,7 +124,7 @@ class ItemServiceImplTest {
 
     @Test
     void findAllTest() {
-        when(itemService.findAll()).thenReturn(List.of(phone, tv, laptop));
+        when(itemRepository.findAll()).thenReturn(List.of(phone, tv, laptop));
 
         List<Item> expected = new ArrayList<>(List.of(phone, tv, laptop));
         assertEquals(itemService.findAll(), expected);
@@ -144,6 +145,17 @@ class ItemServiceImplTest {
 
         // Verify that the delete method was called with the correct item since delete() doesn't return a val
         verify(itemRepository).delete(itemToDelete);
+    }
+
+    @Test
+    void deleteTest2() {
+        Item itemToDelete = phone;
+        itemService.delete(itemToDelete);
+
+        // Use an argument captor to ensure itemToDelete was successfully passed into the repository
+        ArgumentCaptor<Item> argumentCaptor = ArgumentCaptor.forClass(Item.class);
+        verify(itemRepository).delete(argumentCaptor.capture());
+        assertEquals(itemToDelete, argumentCaptor.getValue());
     }
 
     @Test
