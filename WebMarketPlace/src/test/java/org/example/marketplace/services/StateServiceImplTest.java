@@ -70,12 +70,10 @@ class StateServiceImplTest {
         // Given
         State state = new State();
 
-        // Mocking the behavior to check if stateRepository.delete() is called with the correct state
-        doAnswer((invocation) -> {
-            State argumentState = invocation.getArgument(0);
-            assertEquals(state, argumentState);
-            return null; // This represents the void return for delete
-        }).when(stateRepository).delete(state);
+
+        //mocking
+        doNothing().when(stateRepository).delete(state);
+
 
         // When
         stateService.delete(state);
