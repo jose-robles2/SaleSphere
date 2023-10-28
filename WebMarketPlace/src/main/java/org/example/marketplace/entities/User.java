@@ -78,9 +78,7 @@ public class User {
         this.balance = balance;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(long id) { this.id = id; }
 
     @Override
     public boolean equals(Object o) {
