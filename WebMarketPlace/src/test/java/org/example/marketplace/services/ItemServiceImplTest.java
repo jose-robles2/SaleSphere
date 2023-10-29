@@ -407,6 +407,13 @@ class ItemServiceImplTest {
 
     @Test
     void isValidPurchaseTest_Drugs5() {
+        User user = new User("Jose", "Robles", "jRob", 99, arkansas, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, drug));
+    }
+
+    @Test
+    void isValidPurchaseTest_Drugs6() {
         User user = new User("Jose", "Robles", "jRob", 99, california, 14567.87);
 
         assertTrue(itemService.isValidPurchase(user, drug));
@@ -512,7 +519,7 @@ class ItemServiceImplTest {
 
     @Test
     void isValidPurchaseTest_Tobacco5() {
-        User user = new User("Jose", "Robles", "jRob", 99, arkansas, 14567.87);
+        User user = new User("Jose", "Robles", "jRob", 99, alaska, 14567.87);
 
         assertTrue(itemService.isValidPurchase(user, tobacco));
     }

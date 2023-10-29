@@ -180,7 +180,7 @@ public class ItemServiceImpl implements ItemService {
                 {
                     String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "CA") ||
-                            (Objects.equals(userStateName, "AK")))
+                            (Objects.equals(userStateName, "AR")))
                     {
                         // Drugs in these states receive an added 15% tax
                         // Increase the items field as this field will only be changed for the current item
@@ -255,7 +255,7 @@ public class ItemServiceImpl implements ItemService {
                 {
                     String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "CA") ||
-                            (Objects.equals(userStateName, "AR")))
+                            (Objects.equals(userStateName, "AK")))
                     {
                         // TECHNOLOGY in these states receive an added 9% tax
                         // Increase the items field as this field will only be changed for the current item

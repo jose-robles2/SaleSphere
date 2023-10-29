@@ -1,0 +1,285 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ItemController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.marketplace.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: ItemController (org.example.marketplace.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ItemController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    5.9%
+  </span>
+  <span class="absValue">
+    (4/68)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example.marketplace.controllers;
+&nbsp;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import org.example.marketplace.entities.Item;
+&nbsp;import org.example.marketplace.entities.User;
+&nbsp;import org.example.marketplace.services.ItemService;
+&nbsp;import org.example.marketplace.services.StateService;
+&nbsp;import org.example.marketplace.services.UserService;
+&nbsp;import org.springframework.http.server.DelegatingServerHttpResponse;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.ui.Model;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+&nbsp;import org.springframework.web.servlet.view.RedirectView;
+&nbsp;import org.springframework.web.bind.annotation.ModelAttribute;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestParam;
+&nbsp;
+&nbsp;import java.net.URI;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.HashSet;
+&nbsp;
+&nbsp;@Controller
+&nbsp;public class ItemController {
+&nbsp;    private final UserService userService;
+&nbsp;
+&nbsp;    private final ItemService itemService;
+&nbsp;
+&nbsp;    private final StateService stateService;
+&nbsp;
+<b class="fc">&nbsp;    public ItemController(UserService userService, ItemService itemService, StateService stateService) {</b>
+<b class="fc">&nbsp;        this.userService = userService;</b>
+<b class="fc">&nbsp;        this.itemService = itemService;</b>
+<b class="fc">&nbsp;        this.stateService = stateService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @RequestMapping(&quot;/&quot;)
+&nbsp;    public String getItems(Model model) {
+<b class="nc">&nbsp;        model.addAttribute(&quot;items&quot;, itemService.findAll());</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;newItem&quot;, new Item());  // addItem form submit</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;item&quot;, new Item());     // buyItem form submit</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;user&quot;, new User());     // setUser form submit</b>
+<b class="nc">&nbsp;        updateFrontEnd(model);</b>
+<b class="nc">&nbsp;        return &quot;index&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/buyItem&quot;)
+&nbsp;    public String buyItem(@ModelAttribute Item item, Model model) {
+<b class="nc">&nbsp;        RedirectView redirectView = buyItemHelper(item, model, 1);</b>
+<b class="nc">&nbsp;        return redirectView.getUrl();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/addItemToCart&quot;)
+&nbsp;    public String addItemToCart(@ModelAttribute Item item, Model model) {
+<b class="nc">&nbsp;        itemService.addItemToCart(item);</b>
+<b class="nc">&nbsp;        return &quot;redirect:/&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/triggerError&quot;)
+&nbsp;    public String triggerError(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
+<b class="nc">&nbsp;        String errorMsg = (customErrorMsg != null &amp;&amp; !customErrorMsg.isEmpty()) ? customErrorMsg : &quot;An error was triggered by the button!&quot;;</b>
+<b class="nc">&nbsp;        redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;, errorMsg);</b>
+<b class="nc">&nbsp;        return &quot;redirect:/&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/buyItemsFromCart&quot;)
+&nbsp;    public String buyItemsFromCart(Model model) {
+<b class="nc">&nbsp;        if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))</b>
+&nbsp;        {
+<b class="nc">&nbsp;            HashSet&lt;String&gt; trackedItemNames = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;            for (Item item : itemService.getShoppingCartItems()) {</b>
+<b class="nc">&nbsp;                if (!trackedItemNames.contains(item.getName())) {</b>
+<b class="nc">&nbsp;                    int quantity = itemService.getQuantityToDeductStock(item);</b>
+<b class="nc">&nbsp;                    RedirectView tempView = buyItemHelper(item, model, quantity);</b>
+<b class="nc">&nbsp;                    trackedItemNames.add(item.getName());</b>
+<b class="nc">&nbsp;                    if(tempView.getUrl().contains(&quot;ERROR&quot;))</b>
+&nbsp;                    {
+<b class="nc">&nbsp;                        clearShoppingCart(model);</b>
+<b class="nc">&nbsp;                        updateShoppingCart(model);</b>
+<b class="nc">&nbsp;                        return tempView.getUrl();</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // These must be called here or else the app will only update the shopping cart for 1 item bought individually
+<b class="nc">&nbsp;            clearShoppingCart(model);</b>
+<b class="nc">&nbsp;            updateShoppingCart(model);</b>
+<b class="nc">&nbsp;            return &quot;redirect:/&quot;;</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return triggerErrorHelper(&quot;ERROR: Price of items in cart exceed user&#39;s balance&quot;).getUrl();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/clearShoppingCart&quot;)
+&nbsp;    public String clearShoppingCart(Model model) {
+<b class="nc">&nbsp;        itemService.clearShoppingCart();</b>
+<b class="nc">&nbsp;        return &quot;redirect:/&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/createItem&quot;)
+&nbsp;    public String createItem(@ModelAttribute Item item, Model model) {
+<b class="nc">&nbsp;        itemService.save(item);</b>
+<b class="nc">&nbsp;        return &quot;redirect:/&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/setUser&quot;)
+&nbsp;    public String setUserSubmit(@ModelAttribute User user, Model model) {
+<b class="nc">&nbsp;        RedirectView redirectView = setUserHelper(user, model);</b>
+<b class="nc">&nbsp;        return redirectView.getUrl();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private RedirectView buyItemHelper(Item item, Model model, int quantity) {
+<b class="nc">&nbsp;        if (item.getStock() == 0) {</b>
+<b class="nc">&nbsp;            return triggerErrorHelper(&quot;ERROR: The item &quot; + item.getName() + &quot; is out of stock&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {</b>
+<b class="nc">&nbsp;            return triggerErrorHelper(&quot;ERROR: The item &quot; + item.getName() + &quot; isn&#39;t allowed in your state and/or you aren&#39;t old enough to purchase this item.&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))</b>
+&nbsp;        {
+<b class="nc">&nbsp;            Item updatedItem = itemService.buyItem(item, quantity);</b>
+<b class="nc">&nbsp;            itemService.save(updatedItem);</b>
+<b class="nc">&nbsp;            model.addAttribute(&quot;items&quot;, itemService.findAll()); // Refresh the list of items and add it to the model</b>
+<b class="nc">&nbsp;            userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());</b>
+<b class="nc">&nbsp;            userService.save(this.userService.getCurrentUser());</b>
+<b class="nc">&nbsp;            return new RedirectView(&quot;redirect:/&quot;, true);</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return triggerErrorHelper(&quot;ERROR: Not enough user balance to purchase &quot; + item.getName() + &quot;. Listed price does not include taxes.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private RedirectView setUserHelper(User user, Model model) {
+<b class="nc">&nbsp;        if(userService.userExists(user.getId())) {</b>
+<b class="nc">&nbsp;            User currentUser = userService.getUser(user.getId());</b>
+<b class="nc">&nbsp;            userService.setCurrentUser(currentUser);</b>
+<b class="nc">&nbsp;            this.itemService.clearShoppingCart();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        else {
+<b class="nc">&nbsp;            return triggerErrorHelper(&quot;ERROR: Inputted user ID does not exist...&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return new RedirectView(&quot;redirect:/&quot;, true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private RedirectView triggerErrorHelper(String errorMessage) {
+&nbsp;        // Redirect to a URL where the error message can be displayed -&gt; calls the @GetMapping triggerError()
+<b class="nc">&nbsp;        String redirectUrl = &quot;redirect:/triggerError?customErrorMsg=&quot; + errorMessage;</b>
+<b class="nc">&nbsp;        return new RedirectView(redirectUrl, true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateFrontEnd(Model model) {
+<b class="nc">&nbsp;        updateUserLoginForm(model);</b>
+<b class="nc">&nbsp;        updateShoppingCart(model);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateUserLoginForm(Model model) {
+<b class="nc">&nbsp;        model.addAttribute(&quot;currentUser&quot;, userService.getCurrentUser()); // add an attribute for current user so index.html can acess and display properties</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;users&quot;, userService.getCurrentUser()); // add current user to list of all users</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateShoppingCart(Model model) {
+<b class="nc">&nbsp;        model.addAttribute(&quot;cartSize&quot;, itemService.getShoppingCartSize());</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;cartTotal&quot;, itemService.getShoppingCartTotal());</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;tax&quot;, userService.getTax(itemService.getShoppingCartTotal()));</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;subtotal&quot;, userService.getTotalWithTax(itemService.getShoppingCartTotal()));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-29 13:08</div>
+</div>
+</body>
+</html>
