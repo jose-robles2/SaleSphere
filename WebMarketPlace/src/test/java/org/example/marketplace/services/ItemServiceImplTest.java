@@ -213,6 +213,17 @@ class ItemServiceImplTest {
 
     @Test
     void addItemToCartTest2() {
+        Item itemToAdd = laptop;
+        int expectedCartSize = 2;
+
+        itemService.addItemToCart(itemToAdd);
+        itemService.addItemToCart(itemToAdd);
+
+        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);
+    }
+
+    @Test
+    void addItemToCartTest3() {
         Item itemToAdd = phone;
         int expectedCartSize = 1;
 
@@ -224,18 +235,20 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void addItemToCartTest3() {
-        Item itemToAdd = laptop;
-        int expectedCartSize = 2;
+    void addItemToCartTest4() {
+        Item itemToAdd = phone;
+        int expectedCartSize = 1;
 
+        itemToAdd.setStock(1);
         itemService.addItemToCart(itemToAdd);
+        itemToAdd.setStock(0);
         itemService.addItemToCart(itemToAdd);
 
         assertEquals(itemService.getShoppingCartSize(), expectedCartSize);
     }
 
     @Test
-    void getQuantityToDeductStockTest() {
+    void getQuantityToDeductStockTest1() {
         Item targetItem = laptop;
         int expectedQuantity = 3;
 
@@ -244,6 +257,19 @@ class ItemServiceImplTest {
         itemService.addItemToCart(targetItem);
 
         assertEquals(itemService.getQuantityToDeductStock(targetItem), expectedQuantity);
+    }
+
+    @Test
+    void getQuantityToDeductStockTest2() {
+        Item targetItem = laptop;
+        Item nonTargetItem = phone;
+        int expectedQuantity = 3;
+
+        itemService.addItemToCart(targetItem);
+        itemService.addItemToCart(targetItem);
+        itemService.addItemToCart(targetItem);
+
+        assertNotEquals(itemService.getQuantityToDeductStock(nonTargetItem), expectedQuantity);
     }
 
     @Test
@@ -310,6 +336,13 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void isValidPurchaseTest_Firearm5() {
+        User user = new User("Jose", "Robles", "jRob", 99, arizona, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, firearm));
+    }
+
+    @Test
     void isValidPurchaseTest_Alcohol1() {
         User user = new User("Jose", "Robles", "jRob", 17, arkansas, 14567.87);
 
@@ -333,6 +366,13 @@ class ItemServiceImplTest {
     @Test
     void isValidPurchaseTest_Alcohol4() {
         User user = new User("Jose", "Robles", "jRob", 99, alaska, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, alcohol));
+    }
+
+    @Test
+    void isValidPurchaseTest_Alcohol5() {
+        User user = new User("Jose", "Robles", "jRob", 99, arizona, 14567.87);
 
         assertTrue(itemService.isValidPurchase(user, alcohol));
     }
@@ -366,6 +406,20 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void isValidPurchaseTest_Drugs5() {
+        User user = new User("Jose", "Robles", "jRob", 99, arkansas, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, drug));
+    }
+
+    @Test
+    void isValidPurchaseTest_Drugs6() {
+        User user = new User("Jose", "Robles", "jRob", 99, california, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, drug));
+    }
+
+    @Test
     void isValidPurchaseTest_Medicine1() {
         User user = new User("Jose", "Robles", "jRob", 17, alabama, 14567.87);
 
@@ -389,6 +443,13 @@ class ItemServiceImplTest {
     @Test
     void isValidPurchaseTest_Medicine4() {
         User user = new User("Jose", "Robles", "jRob", 99, california, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, medicine));
+    }
+
+    @Test
+    void isValidPurchaseTest_Medicine5() {
+        User user = new User("Jose", "Robles", "jRob", 99, alaska, 14567.87);
 
         assertTrue(itemService.isValidPurchase(user, medicine));
     }
@@ -422,6 +483,13 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void isValidPurchaseTest_Technology5() {
+        User user = new User("Jose", "Robles", "jRob", 99, arkansas, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, phone));
+    }
+
+    @Test
     void isValidPurchaseTest_Tobacco1() {
         User user = new User("Jose", "Robles", "jRob", 17, arizona, 14567.87);
 
@@ -450,10 +518,18 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void isValidPurchaseTest_Tobacco5() {
+        User user = new User("Jose", "Robles", "jRob", 99, alaska, 14567.87);
+
+        assertTrue(itemService.isValidPurchase(user, tobacco));
+    }
+
+    @Test
     void isValidPurchaseTest_UnsupportedItem() {
         Item invalidItem = new Item("item", "item", "item", "item", 0,0,10);
         User user = new User("Jose", "Robles", "jRob", 99, california, 14567.87);
 
         assertFalse(itemService.isValidPurchase(user, invalidItem));
     }
+
 }

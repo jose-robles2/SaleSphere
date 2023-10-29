@@ -129,7 +129,7 @@ public class ItemServiceImpl implements ItemService {
                 if (currUser.getAge() >= currUser.getState().getFirearmsAge())
                 {
                     String userStateName = currUser.getState().getStateName();
-                    if (Objects.equals(userStateName, "CA") ||
+                    if (Objects.equals(userStateName, "AZ") ||
                             (Objects.equals(userStateName, "AR")))
                     {
                         // Firearms in these states receive an added 5% tax
@@ -179,8 +179,8 @@ public class ItemServiceImpl implements ItemService {
                 if (currUser.getAge() >= currUser.getState().getDrugsAge())
                 {
                     String userStateName = currUser.getState().getStateName();
-                    if (Objects.equals(userStateName, "AL") ||
-                            (Objects.equals(userStateName, "AK")))
+                    if (Objects.equals(userStateName, "CA") ||
+                            (Objects.equals(userStateName, "AR")))
                     {
                         // Drugs in these states receive an added 15% tax
                         // Increase the items field as this field will only be changed for the current item
@@ -204,7 +204,7 @@ public class ItemServiceImpl implements ItemService {
                 if (currUser.getAge() >= currUser.getState().getMedicineAge())
                 {
                     String userStateName = currUser.getState().getStateName();
-                    if (Objects.equals(userStateName, "WA") ||
+                    if (Objects.equals(userStateName, "AK") ||
                             (Objects.equals(userStateName, "CA")))
                     {
                         // Medicine in these states receive an added 5% tax
@@ -255,7 +255,7 @@ public class ItemServiceImpl implements ItemService {
                 {
                     String userStateName = currUser.getState().getStateName();
                     if (Objects.equals(userStateName, "CA") ||
-                            (Objects.equals(userStateName, "WA")))
+                            (Objects.equals(userStateName, "AK")))
                     {
                         // TECHNOLOGY in these states receive an added 9% tax
                         // Increase the items field as this field will only be changed for the current item
