@@ -81,16 +81,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void makePurchase(Double itemPrice, int quantity, User user)
+    public void makePurchase(Double itemPrice, int quantity)
     {
+        User user = getCurrentUser();
         double answer = user.getBalance() - ((itemPrice * quantity) * (user.getState().getTaxRate() + 1));
         double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
         user.setBalance(formattedAnswer);
     }
 
     @Override
-    public boolean checkBalance(double itemPrice, User user)
+    public boolean checkBalance(double itemPrice)
     {
+        User user = getCurrentUser();
         return (user.getBalance() - (itemPrice * (user.getState().getTaxRate() + 1))) >= 0;
     }
 }

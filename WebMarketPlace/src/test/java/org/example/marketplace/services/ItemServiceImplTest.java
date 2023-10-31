@@ -269,6 +269,8 @@ class ItemServiceImplTest {
         itemService.addItemToCart(targetItem);
         itemService.addItemToCart(targetItem);
 
+        int x = itemService.getQuantityToDeductStock(nonTargetItem);
+
         assertNotEquals(itemService.getQuantityToDeductStock(nonTargetItem), expectedQuantity);
     }
 

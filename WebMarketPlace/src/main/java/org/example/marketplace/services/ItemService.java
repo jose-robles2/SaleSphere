@@ -13,7 +13,7 @@ public interface ItemService {
 
     public Item buyItem(Item item, int quantity);
 
-    public void addItemToCart(Item item);
+    public boolean addItemToCart(Item item);
 
     public int getQuantityToDeductStock(Item item);
 
