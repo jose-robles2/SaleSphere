@@ -67,15 +67,7 @@ public class ItemServiceImpl implements ItemService {
             return false;
         }
 
-        if (currUser.getAge() >= getCategoryAge(category, currUser)) {
-            // Apply tax based on the user's state
-            double taxRate = getCategoryTaxRate(category, currUser.getState().getStateName());
-            double newPrice = item.getPrice() + (item.getPrice() * taxRate);
-            item.setPrice(newPrice);
-            return true;
-        }
-
-        return false;
+        return currUser.getAge() >= getCategoryAge(category, currUser);
     }
 
     private boolean isCategoryAllowed(Category category, User user) {
