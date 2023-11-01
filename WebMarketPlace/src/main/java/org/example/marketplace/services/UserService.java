@@ -19,7 +19,7 @@ public interface UserService {
 
     public boolean userExists(Long ID);
 
-    public void makePurchase(Double itemPrice, int quantity, User user);
+    public void makePurchase(Double itemPrice, int quantity);
 
-    public boolean checkBalance(double itemPrice, User user);
+    public boolean canUserMakePurchase(double itemPrice);
 }

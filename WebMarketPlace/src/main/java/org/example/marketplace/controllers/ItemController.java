@@ -37,11 +37,7 @@ public class ItemController {
 
     @RequestMapping("/")
     public String getItems(Model model) {
-        model.addAttribute("items", itemService.findAll());
-        model.addAttribute("newItem", new Item());  // addItem form submit
-        model.addAttribute("item", new Item());     // buyItem form submit
-        model.addAttribute("user", new User());     // setUser form submit
-        updateFrontEnd(model);
+        updateModel(model);
         return "index";
     }
 
@@ -53,8 +49,10 @@ public class ItemController {
 
     @PostMapping("/addItemToCart")
     public String addItemToCart(@ModelAttribute Item item, Model model) {
-        itemService.addItemToCart(item);
-        return "redirect:/";
+        if (itemService.addItemToCart(item)) {
+            return "redirect:/";
+        }
+        return triggerErrorHelper("ERROR: Item cannot be added to cart - not enough stock").getUrl();
     }
 
     @GetMapping("/triggerError")
@@ -66,31 +64,29 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))
-        {
-            HashSet<String> trackedItemNames = new HashSet<>();
-            for (Item item : itemService.getShoppingCartItems()) {
-                if (!trackedItemNames.contains(item.getName())) {
-                    int quantity = itemService.getQuantityToDeductStock(item);
-                    RedirectView tempView = buyItemHelper(item, model, quantity);
-                    trackedItemNames.add(item.getName());
-                    if(tempView.getUrl().contains("ERROR"))
-                    {
-                        clearShoppingCart(model);
-                        updateShoppingCart(model);
-                        return tempView.getUrl();
-                    }
-                }
-            }
-
-            // These must be called here or else the app will only update the shopping cart for 1 item bought individually
-            clearShoppingCart(model);
-            updateShoppingCart(model);
-            return "redirect:/";
-        }
-        else {
+        if (!userService.canUserMakePurchase(itemService.getShoppingCartTotal())) {
             return triggerErrorHelper("ERROR: Price of items in cart exceed user's balance").getUrl();
         }
+
+        HashSet<String> trackedItemNames = new HashSet<>();
+        for (Item item : itemService.getShoppingCartItems()) {
+            if (!trackedItemNames.contains(item.getName())) {
+                int quantity = itemService.getQuantityToDeductStock(item);
+                RedirectView redirectView = buyItemHelper(item, model, quantity);
+                trackedItemNames.add(item.getName());
+
+                if (redirectView.getUrl().contains("ERROR")) {
+                    clearShoppingCart(model);
+                    updateShoppingCart(model);
+                    return redirectView.getUrl();
+                }
+            }
+        }
+
+        // These must be called here or else the app will only update the shopping cart for 1 item bought individually
+        clearShoppingCart(model);
+        updateShoppingCart(model);
+        return "redirect:/";
     }
 
     @PostMapping("/clearShoppingCart")
@@ -118,12 +114,12 @@ public class ItemController {
         else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {
             return triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item.");
         }
-        else if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))
+        else if(this.userService.canUserMakePurchase(item.getPrice()))
         {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);
             model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
-            userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());
+            userService.makePurchase(item.getPrice(), quantity);
             userService.save(this.userService.getCurrentUser());
             return new RedirectView("redirect:/", true);
         }
@@ -148,6 +144,18 @@ public class ItemController {
         // Redirect to a URL where the error message can be displayed -> calls the @GetMapping triggerError()
         String redirectUrl = "redirect:/triggerError?customErrorMsg=" + errorMessage;
         return new RedirectView(redirectUrl, true);
+    }
+
+    private void updateModel(Model model) {
+        updateUserAndItems(model);
+        updateFrontEnd(model);
+    }
+
+    private void updateUserAndItems(Model model) {
+        model.addAttribute("items", itemService.findAll()); // getItems
+        model.addAttribute("newItem", new Item());  // newItem form submit
+        model.addAttribute("item", new Item());     // buyItem form submit
+        model.addAttribute("user", new User());     // setUser form submit
     }
 
     private void updateFrontEnd(Model model) {
