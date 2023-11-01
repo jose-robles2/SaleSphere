@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean checkBalance(double itemPrice)
+    public boolean canUserMakePurchase(double itemPrice)
     {
         User user = getCurrentUser();
         return (user.getBalance() - (itemPrice * (user.getState().getTaxRate() + 1))) >= 0;

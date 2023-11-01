@@ -21,5 +21,5 @@ public interface UserService {
 
     public void makePurchase(Double itemPrice, int quantity);
 
-    public boolean checkBalance(double itemPrice);
+    public boolean canUserMakePurchase(double itemPrice);
 }

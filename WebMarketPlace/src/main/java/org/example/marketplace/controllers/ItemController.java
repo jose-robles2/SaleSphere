@@ -64,31 +64,29 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        if(userService.checkBalance(itemService.getShoppingCartTotal()))
-        {
-            HashSet<String> trackedItemNames = new HashSet<>();
-            for (Item item : itemService.getShoppingCartItems()) {
-                if (!trackedItemNames.contains(item.getName())) {
-                    int quantity = itemService.getQuantityToDeductStock(item);
-                    RedirectView tempView = buyItemHelper(item, model, quantity);
-                    trackedItemNames.add(item.getName());
-                    if(tempView.getUrl().contains("ERROR"))
-                    {
-                        clearShoppingCart(model);
-                        updateShoppingCart(model);
-                        return tempView.getUrl();
-                    }
-                }
-            }
-
-            // These must be called here or else the app will only update the shopping cart for 1 item bought individually
-            clearShoppingCart(model);
-            updateShoppingCart(model);
-            return "redirect:/";
-        }
-        else {
+        if (!userService.canUserMakePurchase(itemService.getShoppingCartTotal())) {
             return triggerErrorHelper("ERROR: Price of items in cart exceed user's balance").getUrl();
         }
+
+        HashSet<String> trackedItemNames = new HashSet<>();
+        for (Item item : itemService.getShoppingCartItems()) {
+            if (!trackedItemNames.contains(item.getName())) {
+                int quantity = itemService.getQuantityToDeductStock(item);
+                RedirectView redirectView = buyItemHelper(item, model, quantity);
+                trackedItemNames.add(item.getName());
+
+                if (redirectView.getUrl().contains("ERROR")) {
+                    clearShoppingCart(model);
+                    updateShoppingCart(model);
+                    return redirectView.getUrl();
+                }
+            }
+        }
+
+        // These must be called here or else the app will only update the shopping cart for 1 item bought individually
+        clearShoppingCart(model);
+        updateShoppingCart(model);
+        return "redirect:/";
     }
 
     @PostMapping("/clearShoppingCart")
@@ -116,7 +114,7 @@ public class ItemController {
         else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {
             return triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item.");
         }
-        else if(this.userService.checkBalance(item.getPrice()))
+        else if(this.userService.canUserMakePurchase(item.getPrice()))
         {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);

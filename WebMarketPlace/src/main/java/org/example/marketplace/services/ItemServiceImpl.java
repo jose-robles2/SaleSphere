@@ -55,6 +55,65 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void clearShoppingCart() { shoppingCart.clear(); }
 
+    public boolean isValidPurchase(User currUser, Item item) {
+        if (item.getCategory() < 0 || item.getCategory() >= Category.values().length) {
+            return false;
+        }
+
+        Category category = Category.values()[item.getCategory()]; // Convert category ordinal to enum
+
+        // Check if the item is allowed in the user's state
+        if (!isCategoryAllowed(category, currUser)) {
+            return false;
+        }
+
+        if (currUser.getAge() >= getCategoryAge(category, currUser)) {
+            // Apply tax based on the user's state
+            double taxRate = getCategoryTaxRate(category, currUser.getState().getStateName());
+            double newPrice = item.getPrice() + (item.getPrice() * taxRate);
+            item.setPrice(newPrice);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isCategoryAllowed(Category category, User user) {
+        return switch (category) {
+            case FIREARM -> user.getState().isFirearmsAllowed();
+            case ALCOHOL -> user.getState().isAlcoholAllowed();
+            case DRUGS -> user.getState().isDrugAllowed();
+            case MEDICINE -> user.getState().isMedicineAllowed();
+            case TECHNOLOGY -> user.getState().isTechnologyAllowed();
+            case TOBACCO -> user.getState().isTobaccoAllowed();
+            default -> false;
+        };
+    }
+
+    private int getCategoryAge(Category category, User user) {
+        return switch (category) {
+            case FIREARM -> user.getState().getFirearmsAge();
+            case ALCOHOL -> user.getState().getAlcoholAge();
+            case DRUGS -> user.getState().getDrugsAge();
+            case MEDICINE -> user.getState().getMedicineAge();
+            case TECHNOLOGY -> user.getState().getTechnologyAge();
+            case TOBACCO -> user.getState().getTobaccoAge();
+            default -> 0;
+        };
+    }
+
+    private double getCategoryTaxRate(Category category, String userState) {
+        return switch (category) {
+            case FIREARM -> (userState.equals("AZ") || userState.equals("AR")) ? 0.05 : 0;
+            case ALCOHOL -> (userState.equals("AZ") || userState.equals("AK")) ? 0.10 : 0;
+            case DRUGS -> (userState.equals("CA") || userState.equals("AR")) ? 0.15 : 0;
+            case MEDICINE -> (userState.equals("AK") || userState.equals("CA")) ? 0.05 : 0;
+            case TECHNOLOGY -> (userState.equals("AR") || userState.equals("AZ")) ? 0.07 : 0;
+            case TOBACCO -> (userState.equals("CA") || userState.equals("AK")) ? 0.09 : 0;
+            default -> 0;
+        };
+    }
+
 //    public boolean isValidPurchase(User currUser, Item item)
 //    {
 //        // This will be used to make sure that purchases are allowed
@@ -209,63 +268,4 @@ public class ItemServiceImpl implements ItemService {
 //        }
 //        return false;
 //    }
-
-    public boolean isValidPurchase(User currUser, Item item) {
-        if (item.getCategory() < 0 || item.getCategory() >= Category.values().length) {
-            return false;
-        }
-
-        Category category = Category.values()[item.getCategory()]; // Convert category ordinal to enum
-
-        // Check if the item is allowed in the user's state
-        if (!isCategoryAllowed(category, currUser)) {
-            return false;
-        }
-
-        if (currUser.getAge() >= getCategoryAge(category, currUser)) {
-            // Apply tax based on the user's state
-            double taxRate = getCategoryTaxRate(category, currUser.getState().getStateName());
-            double newPrice = item.getPrice() + (item.getPrice() * taxRate);
-            item.setPrice(newPrice);
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isCategoryAllowed(Category category, User user) {
-        return switch (category) {
-            case FIREARM -> user.getState().isFirearmsAllowed();
-            case ALCOHOL -> user.getState().isAlcoholAllowed();
-            case DRUGS -> user.getState().isDrugAllowed();
-            case MEDICINE -> user.getState().isMedicineAllowed();
-            case TECHNOLOGY -> user.getState().isTechnologyAllowed();
-            case TOBACCO -> user.getState().isTobaccoAllowed();
-            default -> false;
-        };
-    }
-
-    private int getCategoryAge(Category category, User user) {
-        return switch (category) {
-            case FIREARM -> user.getState().getFirearmsAge();
-            case ALCOHOL -> user.getState().getAlcoholAge();
-            case DRUGS -> user.getState().getDrugsAge();
-            case MEDICINE -> user.getState().getMedicineAge();
-            case TECHNOLOGY -> user.getState().getTechnologyAge();
-            case TOBACCO -> user.getState().getTobaccoAge();
-            default -> 0;
-        };
-    }
-
-    private double getCategoryTaxRate(Category category, String userState) {
-        return switch (category) {
-            case FIREARM -> (userState.equals("AZ") || userState.equals("AR")) ? 0.05 : 0;
-            case ALCOHOL -> (userState.equals("AZ") || userState.equals("AK")) ? 0.10 : 0;
-            case DRUGS -> (userState.equals("CA") || userState.equals("AR")) ? 0.15 : 0;
-            case MEDICINE -> (userState.equals("AK") || userState.equals("CA")) ? 0.05 : 0;
-            case TECHNOLOGY -> (userState.equals("AR") || userState.equals("AZ")) ? 0.07 : 0;
-            case TOBACCO -> (userState.equals("CA") || userState.equals("AK")) ? 0.09 : 0;
-            default -> 0;
-        };
-    }
 }
