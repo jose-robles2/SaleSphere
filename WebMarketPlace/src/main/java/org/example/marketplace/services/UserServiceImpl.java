@@ -110,6 +110,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void makePurchase(Item item, int quantity, User user)
+    {
+        Double luxuryTax = getTax(item);
+
+        double answer = user.getBalance() - ((item.getPrice() * quantity) * ((user.getState().getTaxRate() * luxuryTax) + 1));
+        double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
+        user.setBalance(formattedAnswer);
+    }
+
+    @Override
     public boolean canUserAffordPurchase(double itemPrice)
     {
         User user = getCurrentUser();
@@ -122,6 +132,7 @@ public class UserServiceImpl implements UserService{
         }
 
         Category category = Category.values()[item.getCategory()]; // Convert category ordinal to enum
+
         String userState = currentUser.get().getState().getStateName();
 
 
@@ -132,7 +143,6 @@ public class UserServiceImpl implements UserService{
             case MEDICINE -> (userState.equals("AK") || userState.equals("CA")) ? 0.05 : 0;
             case TECHNOLOGY -> (userState.equals("AR") || userState.equals("AZ")) ? 0.07 : 0;
             case TOBACCO -> (userState.equals("CA") || userState.equals("AK")) ? 0.09 : 0;
-            default -> 0;
         };
     }
 }

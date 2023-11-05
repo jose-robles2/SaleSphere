@@ -534,4 +534,11 @@ class ItemServiceImplTest {
         assertFalse(itemService.isValidPurchase(user, invalidItem));
     }
 
+    @Test
+    void isValidPurchaseTest_UnsupportedItem2() {
+        Item invalidItem = new Item("item", "item", "item", "item", 0,0,-10);
+        User user = new User("Jose", "Robles", "jRob", 99, california, 14567.87);
+
+        assertFalse(itemService.isValidPurchase(user, invalidItem));
+    }
 }
