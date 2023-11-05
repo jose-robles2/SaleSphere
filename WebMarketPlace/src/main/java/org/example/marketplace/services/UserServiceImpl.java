@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService{
             beforeFormat = this.currentUser.get().getState().getTaxRate() * item.getPrice();
         }
         else {
-            beforeFormat = this.currentUser.get().getState().getTaxRate() * item.getPrice() * luxuryTax;
+            beforeFormat = (this.currentUser.get().getState().getTaxRate() + luxuryTax) * item.getPrice();
         }
         return Double.parseDouble(decimalFormat.format(beforeFormat));
     }

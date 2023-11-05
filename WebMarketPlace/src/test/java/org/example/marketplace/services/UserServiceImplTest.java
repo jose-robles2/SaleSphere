@@ -28,18 +28,33 @@ class UserServiceImplTest {
 
     private User user3;
 
+    private User user4;
+
+    private User user5;
+
     private State alabama;
 
     private State alaska;
 
     private State arizona;
 
+    private State arkansas;
+
+    private State california;
+
     private Item phone;
 
     private Item tv;
 
-    private Item laptop;
+    private Item firearm;
 
+    private Item alcohol;
+
+    private Item drug;
+
+    private Item medicine;
+
+    private Item tobacco;
 
     @BeforeEach
     void setUp()
@@ -49,7 +64,6 @@ class UserServiceImplTest {
 
         phone = new Item("Phone", "IPhone 15", "/image", "Washington", 1199.99, 1, Category.TECHNOLOGY.ordinal());
         tv = new Item("Laptop", "Macbook Pro", "/image", "Washington", 2199.99, 5, Category.TECHNOLOGY.ordinal());
-        laptop = new Item("TV", "Samsung 4K TV", "/image", "Washington", 999.99, 5, Category.TECHNOLOGY.ordinal());
 
         setUpUsersAndStates();
         setUpMockReturns();
@@ -77,14 +91,38 @@ class UserServiceImplTest {
                 34, true,
                 22, false,
                 50, false,
-                18, true,
-                18, true,
+                0, true,
+                13, true,
                 21, true, 0.2);
+
+        arkansas = new State("AR",
+                99, true,
+                18, true,
+                21, true,
+                25, true,
+                25, true,
+                18, false, 0.13);
+
+        california = new State("CA",
+                22, false,
+                48, true,
+                44, true,
+                31, true,
+                24, true,
+                30, true, 0.20);
+
+        firearm = new Item("Handgun", "Kimber Stainless 45 Auto", "/image", "Idaho", 699.99, 3, Category.FIREARM.ordinal());
+        alcohol = new Item("Rum", "Malibu Caribbean Rum", "/image", "Oregon", 19.99, 4, Category.ALCOHOL.ordinal());
+        medicine = new Item("Hydrocodone Painkillers", "Hydrocodone Max Strength", "/image", "California", 59.99, 4, Category.MEDICINE.ordinal());
+        drug= new Item("Classic Marijuana", "Large weed pack", "/image", "California", 9.99, 0, Category.DRUGS.ordinal());
+        tobacco =  new Item("Classic Cigarettes", "Large tobacco cigarette pack", "/image", "Washington", 9.99, 4, Category.TOBACCO.ordinal());
 
 
         user = new User("Tres", "Hiatt", "tHiatt", 55, arizona, 1000.50);
         user2 = new User("Jose", "Robles", "jRob", 17, alaska, 14567.87);
         user3 = new User("Josh", "Long", "jLong", 99, alaska, 105500.50);
+        user4 = new User("Jose", "Robles", "jRob", 99, alaska, 14567.87);
+        user5 = new User("Jose", "Robles", "jRob", 99, arkansas, 14567.87);
 
         userService.setCurrentUser(user);
     }
@@ -167,23 +205,217 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getTaxTest2() {
+    void getTaxTestTechnology1() {
         Item itemToTax = phone;
-        double expected = 16.8;
+        double expected = 240;
 
-        assertEquals(userService.getTax(phone), expected);
+        user.setState(california);
+        userService.setCurrentUser(user);
+
+        assertEquals(userService.getTax(itemToTax), expected);
     }
 
     @Test
-    void getTaxTest3() {
+    void getTaxTestTechnology2() {
         Item itemToTax = phone;
-        double expected = 72.0;
+        double expected = 324.0;
 
-        User user = user3;
+        user3.setState(arizona);
+        userService.setCurrentUser(user3);
 
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestTechnology3() {
+        Item itemToTax = phone;
+        double expected = 240.0;
+
+        user3.setState(arkansas);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestFirearm1() {
+        Item itemToTax = firearm;
+        double expected = 175.0;
+
+        user.setState(arizona);
         userService.setCurrentUser(user);
 
-        assertEquals(userService.getTax(phone), expected);
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestFirearm2() {
+        Item itemToTax = firearm;
+        double expected = 42.0;
+
+        user3.setState(alaska);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestFirearm3() {
+        Item itemToTax = firearm;
+        double expected = 126.0;
+
+        user3.setState(arkansas);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestAlcohol1() {
+        Item itemToTax = alcohol;
+        double expected = 6.0;
+
+        user3.setState(arizona);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestAlcohol2() {
+        Item itemToTax = alcohol;
+        double expected = 2.6;
+
+        user3.setState(arkansas);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestAlcohol3() {
+        Item itemToTax = alcohol;
+        double expected = 3.2;
+
+        user3.setState(alaska);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestDrug1() {
+        Item itemToTax = drug;
+        double expected = 3.5;
+
+        user3.setState(california);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestDrug2() {
+        Item itemToTax = drug;
+        double expected = 0.6;
+
+        user3.setState(alaska);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestDrug3() {
+        Item itemToTax = drug;
+        double expected = 2.8;
+
+        user3.setState(arkansas);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestMedicine1() {
+        Item itemToTax = medicine;
+        double expected = 6.6;
+
+        user3.setState(alaska);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestMedicine2() {
+        Item itemToTax = medicine;
+        double expected = 12.0;
+
+        user3.setState(arizona);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestMedicine3() {
+        Item itemToTax = medicine;
+        double expected = 15.0;
+
+        user3.setState(california);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestTobacco1() {
+        Item itemToTax = tobacco;
+        double expected = 2.9;
+
+        user3.setState(california);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestTobacco2() {
+        Item itemToTax = tobacco;
+        double expected = 1.3;
+
+        user3.setState(arkansas);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestTobacco3() {
+        Item itemToTax = tobacco;
+        double expected = 1.5;
+
+        user3.setState(alaska);
+        userService.setCurrentUser(user3);
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestInvalidItem() {
+        Item itemToTax = new Item("temp","temp","temp","temp",0.0,0,14231);
+        double expected = 0.0;
+
+        assertEquals(userService.getTax(itemToTax), expected);
+    }
+
+    @Test
+    void getTaxTestInvalidItem2() {
+        Item itemToTax = new Item("temp","temp","temp","temp",0.0,0,-1);
+        double expected = 0.0;
+
+        assertEquals(userService.getTax(itemToTax), expected);
     }
 
     @Test
@@ -198,7 +430,7 @@ class UserServiceImplTest {
         Item purchaseItem = tv;
         int quantity = 1;
         User purchaseUser = user;
-        double balanceAfter = -14751.43;
+        double balanceAfter = -262558.3;
 
         userService.makePurchase(purchaseItem, quantity);
 
@@ -210,7 +442,7 @@ class UserServiceImplTest {
         Item purchaseItem = tv;
         int quantity = 1;
         User purchaseUser = user;
-        double balanceAfter = -14751.43;
+        double balanceAfter = -262558.3;
 
         userService.makePurchase(purchaseItem, quantity, user);
 
@@ -234,12 +466,5 @@ class UserServiceImplTest {
         boolean expected = false;
 
         assertEquals(userService.canUserAffordPurchase(itemPrice), expected);
-    }
-
-    @Test
-    void getLuxuryTaxTest() {
-        // This is a private method and will not be tested
-            // Luxury task is an internal method used by user service impl
-                // and cannot be called elsewhere as it is not needed
     }
 }
