@@ -1,5 +1,7 @@
 package org.example.marketplace.services;
 
+import org.example.marketplace.entities.Category;
+import org.example.marketplace.entities.Item;
 import org.example.marketplace.entities.User;
 import org.example.marketplace.entities.State;
 import org.example.marketplace.repositories.UserRepository;
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.Optional;
+
+import static org.example.marketplace.entities.Category.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -74,6 +78,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public double getTax(Item item)
+    {
+        double beforeFormat = 0.0;
+        double luxuryTax = getLuxuryTax(item);
+        if (luxuryTax == 0.0) {
+            beforeFormat = this.currentUser.get().getState().getTaxRate() * item.getPrice();
+        }
+        else {
+            beforeFormat = this.currentUser.get().getState().getTaxRate() * item.getPrice() * luxuryTax;
+        }
+        return Double.parseDouble(decimalFormat.format(beforeFormat));
+    }
+
+    @Override
     public double getTotalWithTax(double total)
     {
         Double beforeFormat = (this.currentUser.get().getState().getTaxRate() + 1) * total;
@@ -81,18 +99,50 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void makePurchase(Double itemPrice, int quantity)
+    public void makePurchase(Item item, int quantity)
     {
+        Double luxuryTax = getTax(item);
         User user = getCurrentUser();
-        double answer = user.getBalance() - ((itemPrice * quantity) * (user.getState().getTaxRate() + 1));
+
+        double answer = user.getBalance() - ((item.getPrice() * quantity) * ((user.getState().getTaxRate() * luxuryTax) + 1));
         double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
         user.setBalance(formattedAnswer);
     }
 
     @Override
-    public boolean canUserMakePurchase(double itemPrice)
+    public void makePurchase(Item item, int quantity, User user)
+    {
+        Double luxuryTax = getTax(item);
+
+        double answer = user.getBalance() - ((item.getPrice() * quantity) * ((user.getState().getTaxRate() * luxuryTax) + 1));
+        double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
+        user.setBalance(formattedAnswer);
+    }
+
+    @Override
+    public boolean canUserAffordPurchase(double itemPrice)
     {
         User user = getCurrentUser();
         return (user.getBalance() - (itemPrice * (user.getState().getTaxRate() + 1))) >= 0;
+    }
+
+    private double getLuxuryTax(Item item) {
+        if (item.getCategory() < 0 || item.getCategory() >= Category.values().length) {
+            return 0.0;
+        }
+
+        Category category = Category.values()[item.getCategory()]; // Convert category ordinal to enum
+
+        String userState = currentUser.get().getState().getStateName();
+
+
+        return switch (category) {
+            case FIREARM -> (userState.equals("AZ") || userState.equals("AR")) ? 0.05 : 0;
+            case ALCOHOL -> (userState.equals("AZ") || userState.equals("AK")) ? 0.10 : 0;
+            case DRUGS -> (userState.equals("CA") || userState.equals("AR")) ? 0.15 : 0;
+            case MEDICINE -> (userState.equals("AK") || userState.equals("CA")) ? 0.05 : 0;
+            case TECHNOLOGY -> (userState.equals("AR") || userState.equals("AZ")) ? 0.07 : 0;
+            case TOBACCO -> (userState.equals("CA") || userState.equals("AK")) ? 0.09 : 0;
+        };
     }
 }
