@@ -108,6 +108,10 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
+        if (userService.getCurrentUser().getFirstName().contains("test")) {
+            return triggerErrorHelper("ERROR: Please select a new user as the app is initialized with a default/temp user");
+        }
+
         if (item.getStock() == 0) {
             return triggerErrorHelper("ERROR: The item " + item.getName() + " is out of stock");
         }
@@ -137,6 +141,7 @@ public class ItemController {
         else {
             return triggerErrorHelper("ERROR: Inputted user ID does not exist...");
         }
+
         return new RedirectView("redirect:/", true);
     }
 
