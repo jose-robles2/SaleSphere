@@ -438,18 +438,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void makePurchaseTest2() {
-        Item purchaseItem = tv;
-        int quantity = 1;
-        User purchaseUser = user;
-        double balanceAfter = -262558.3;
-
-        userService.makePurchase(purchaseItem, quantity, user);
-
-        assertEquals(purchaseUser.getBalance(), balanceAfter);
-    }
-
-    @Test
     void canUserAffordPurchaseTest() {
         double itemPrice = 45.33;
         User purchaseUser = user;

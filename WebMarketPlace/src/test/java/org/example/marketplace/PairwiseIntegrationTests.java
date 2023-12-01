@@ -89,6 +89,8 @@ class PairwiseIntegrationTests {
 
         @Test
         void buyItemHelper_Integration_Test() {
+            when(userService.canUserAffordPurchase(any(Item.class), anyInt())).thenReturn(true);
+
             String expected = "redirect:/";
             String actual = itemController.buyItem(phone, model);
             assertEquals(expected, actual);

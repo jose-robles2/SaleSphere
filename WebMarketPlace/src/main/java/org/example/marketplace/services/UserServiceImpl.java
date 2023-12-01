@@ -101,22 +101,20 @@ public class UserServiceImpl implements UserService{
     @Override
     public void makePurchase(Item item, int quantity)
     {
-        Double luxuryTax = getTax(item);
-        User user = getCurrentUser();
+        if (!canUserAffordPurchase(item, quantity)) { // extra layer of security just in case
+            return;
+        }
 
-        double answer = user.getBalance() - ((item.getPrice() * quantity) * ((user.getState().getTaxRate() * luxuryTax) + 1));
+        User user = getCurrentUser();
+        double answer = user.getBalance() - getTotal(item, quantity);
         double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
         user.setBalance(formattedAnswer);
     }
 
     @Override
-    public void makePurchase(Item item, int quantity, User user)
+    public boolean canUserAffordPurchase(Item item, int quantity)
     {
-        Double luxuryTax = getTax(item);
-
-        double answer = user.getBalance() - ((item.getPrice() * quantity) * ((user.getState().getTaxRate() * luxuryTax) + 1));
-        double formattedAnswer = Double.parseDouble(decimalFormat.format(answer));
-        user.setBalance(formattedAnswer);
+        return (getCurrentUser().getBalance()) - getTotal(item, quantity) >=0;
     }
 
     @Override
@@ -124,6 +122,13 @@ public class UserServiceImpl implements UserService{
     {
         User user = getCurrentUser();
         return (user.getBalance() - (itemPrice * (user.getState().getTaxRate() + 1))) >= 0;
+    }
+
+    private double getTotal(Item item, int quantity) {
+        Double luxuryTax = getTax(item);
+        User user = getCurrentUser();
+
+        return ((item.getPrice() * quantity + luxuryTax) * ((user.getState().getTaxRate()) + 1));
     }
 
     private double getLuxuryTax(Item item) {
