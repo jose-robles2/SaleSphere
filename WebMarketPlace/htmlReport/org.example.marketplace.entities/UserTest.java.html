@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.entities</a> &gt; <span class="el_source">UserTest.java</span></div><h1>UserTest.java</h1><pre class="source lang-java linenums">package org.example.marketplace.entities;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+<span class="fc" id="L7">class UserTest {</span>
+
+<span class="fc" id="L9">    State alabama = new State(&quot;AL&quot;,</span>
+            18, false,
+            18, false,
+            21, false,
+            25, false,
+            25, false,
+            18, false, 0.07);
+
+<span class="fc" id="L17">    State alaska = new State(&quot;AK&quot;,</span>
+            21, true,
+            15, true,
+            33, true,
+            32, true,
+            1, true,
+            99, true, 0.06);
+
+<span class="fc" id="L25">    State arizona = new State(&quot;AZ&quot;,</span>
+            34, true,
+            22, false,
+            50, false,
+            18, true,
+            18, true,
+            21, true, 0.2);
+
+
+<span class="fc" id="L34">    User user = new User(&quot;Tres&quot;, &quot;Hiatt&quot;, &quot;tHiatt&quot;, 55, arizona, 1000.50);</span>
+<span class="fc" id="L35">    User testUser = new User();</span>
+
+    @Test
+    void getFirstName() {
+<span class="fc" id="L39">        String expected = &quot;Tres&quot;;</span>
+<span class="fc" id="L40">        assertEquals(user.getFirstName(), expected);</span>
+<span class="fc" id="L41">    }</span>
+
+    @Test
+    void getLastName() {
+<span class="fc" id="L45">        String expected = &quot;Hiatt&quot;;</span>
+<span class="fc" id="L46">        assertEquals(user.getLastName(), expected);</span>
+<span class="fc" id="L47">    }</span>
+
+    @Test
+    void getUserName() {
+<span class="fc" id="L51">        String expected = &quot;tHiatt&quot;;</span>
+<span class="fc" id="L52">        assertEquals(user.getUserName(), expected);</span>
+<span class="fc" id="L53">    }</span>
+
+    @Test
+    void getAge() {
+<span class="fc" id="L57">        Integer expected = 55;</span>
+<span class="fc" id="L58">        assertEquals(user.getAge(), expected);</span>
+<span class="fc" id="L59">    }</span>
+
+    @Test
+    void getState() {
+<span class="fc" id="L63">        State expected = arizona;</span>
+<span class="fc" id="L64">        assertEquals(user.getState(), expected);</span>
+<span class="fc" id="L65">    }</span>
+
+    @Test
+    void getBalance() {
+<span class="fc" id="L69">        Double expected = 1000.50;</span>
+<span class="fc" id="L70">        assertEquals(user.getBalance(), expected);</span>
+<span class="fc" id="L71">    }</span>
+
+    @Test
+    void getId() {
+<span class="fc" id="L75">        Long id = null;</span>
+<span class="fc" id="L76">        assertEquals(user.getId(), id);</span>
+<span class="fc" id="L77">    }</span>
+
+    @Test
+    void setFirstName() {
+<span class="fc" id="L81">        user.setFirstName(&quot;TEST&quot;);</span>
+<span class="fc" id="L82">        String expected = &quot;TEST&quot;;</span>
+<span class="fc" id="L83">        assertEquals(user.getFirstName(), expected);</span>
+<span class="fc" id="L84">    }</span>
+
+    @Test
+    void setLastName() {
+<span class="fc" id="L88">        user.setLastName(&quot;TEST&quot;);</span>
+<span class="fc" id="L89">        String expected = &quot;TEST&quot;;</span>
+<span class="fc" id="L90">        assertEquals(user.getLastName(), expected);</span>
+<span class="fc" id="L91">    }</span>
+
+    @Test
+    void setUserName() {
+<span class="fc" id="L95">        user.setUserName(&quot;TEST&quot;);</span>
+<span class="fc" id="L96">        String expected = &quot;TEST&quot;;</span>
+<span class="fc" id="L97">        assertEquals(user.getUserName(), expected);</span>
+<span class="fc" id="L98">    }</span>
+
+    @Test
+    void setAge() {
+<span class="fc" id="L102">        user.setAge(25);</span>
+<span class="fc" id="L103">        Integer expected = 25;</span>
+<span class="fc" id="L104">        assertEquals(user.getAge(), expected);</span>
+<span class="fc" id="L105">    }</span>
+
+    @Test
+    void setState() {
+<span class="fc" id="L109">        user.setState(alaska);</span>
+<span class="fc" id="L110">        State expected = alaska;</span>
+<span class="fc" id="L111">        assertEquals(user.getState(), expected);</span>
+<span class="fc" id="L112">    }</span>
+
+    @Test
+    void setBalance() {
+<span class="fc" id="L116">        user.setBalance(500.0);</span>
+<span class="fc" id="L117">        Double expected = 500.0;</span>
+<span class="fc" id="L118">        assertEquals(user.getBalance(), expected);</span>
+<span class="fc" id="L119">    }</span>
+
+    @Test
+    void testEquals() {
+<span class="fc" id="L123">    }</span>
+
+    @Test
+    void testHashCode() {
+<span class="fc" id="L127">    }</span>
+
+    @Test
+    void testToString() {
+<span class="fc" id="L131">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

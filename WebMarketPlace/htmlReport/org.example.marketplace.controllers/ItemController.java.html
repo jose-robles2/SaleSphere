@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.controllers</a> &gt; <span class="el_source">ItemController.java</span></div><h1>ItemController.java</h1><pre class="source lang-java linenums">package org.example.marketplace.controllers;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.User;
+import org.example.marketplace.services.ItemService;
+import org.example.marketplace.services.StateService;
+import org.example.marketplace.services.UserService;
+import org.springframework.http.server.DelegatingServerHttpResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.net.URI;
+import java.net.URL;
+import java.util.HashSet;
+
+@Controller
+public class ItemController {
+    private final UserService userService;
+
+    private final ItemService itemService;
+
+    private final StateService stateService;
+
+<span class="fc" id="L32">    public ItemController(UserService userService, ItemService itemService, StateService stateService) {</span>
+<span class="fc" id="L33">        this.userService = userService;</span>
+<span class="fc" id="L34">        this.itemService = itemService;</span>
+<span class="fc" id="L35">        this.stateService = stateService;</span>
+<span class="fc" id="L36">    }</span>
+
+    @RequestMapping(&quot;/&quot;)
+    public String getItems(Model model) {
+<span class="nc" id="L40">        model.addAttribute(&quot;items&quot;, itemService.findAll());</span>
+<span class="nc" id="L41">        model.addAttribute(&quot;newItem&quot;, new Item());  // addItem form submit</span>
+<span class="nc" id="L42">        model.addAttribute(&quot;item&quot;, new Item());     // buyItem form submit</span>
+<span class="nc" id="L43">        model.addAttribute(&quot;user&quot;, new User());     // setUser form submit</span>
+<span class="nc" id="L44">        updateFrontEnd(model);</span>
+<span class="nc" id="L45">        return &quot;index&quot;;</span>
+    }
+
+    @PostMapping(&quot;/buyItem&quot;)
+    public String buyItem(@ModelAttribute Item item, Model model) {
+<span class="nc" id="L50">        RedirectView redirectView = buyItemHelper(item, model, 1);</span>
+<span class="nc" id="L51">        return redirectView.getUrl();</span>
+    }
+
+    @PostMapping(&quot;/addItemToCart&quot;)
+    public String addItemToCart(@ModelAttribute Item item, Model model) {
+<span class="nc" id="L56">        itemService.addItemToCart(item);</span>
+<span class="nc" id="L57">        return &quot;redirect:/&quot;;</span>
+    }
+
+    @GetMapping(&quot;/triggerError&quot;)
+    public String triggerError(@RequestParam String customErrorMsg, RedirectAttributes redirectAttributes) {
+<span class="nc bnc" id="L62" title="All 4 branches missed.">        String errorMsg = (customErrorMsg != null &amp;&amp; !customErrorMsg.isEmpty()) ? customErrorMsg : &quot;An error was triggered by the button!&quot;;</span>
+<span class="nc" id="L63">        redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;, errorMsg);</span>
+<span class="nc" id="L64">        return &quot;redirect:/&quot;;</span>
+    }
+
+    @PostMapping(&quot;/buyItemsFromCart&quot;)
+    public String buyItemsFromCart(Model model) {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if(userService.checkBalance(itemService.getShoppingCartTotal(), this.userService.getCurrentUser()))</span>
+        {
+<span class="nc" id="L71">            HashSet&lt;String&gt; trackedItemNames = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            for (Item item : itemService.getShoppingCartItems()) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                if (!trackedItemNames.contains(item.getName())) {</span>
+<span class="nc" id="L74">                    int quantity = itemService.getQuantityToDeductStock(item);</span>
+<span class="nc" id="L75">                    RedirectView tempView = buyItemHelper(item, model, quantity);</span>
+<span class="nc" id="L76">                    trackedItemNames.add(item.getName());</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                    if(tempView.getUrl().contains(&quot;ERROR&quot;))</span>
+                    {
+<span class="nc" id="L79">                        clearShoppingCart(model);</span>
+<span class="nc" id="L80">                        updateShoppingCart(model);</span>
+<span class="nc" id="L81">                        return tempView.getUrl();</span>
+                    }
+                }
+<span class="nc" id="L84">            }</span>
+
+            // These must be called here or else the app will only update the shopping cart for 1 item bought individually
+<span class="nc" id="L87">            clearShoppingCart(model);</span>
+<span class="nc" id="L88">            updateShoppingCart(model);</span>
+<span class="nc" id="L89">            return &quot;redirect:/&quot;;</span>
+        }
+        else {
+<span class="nc" id="L92">            return triggerErrorHelper(&quot;ERROR: Price of items in cart exceed user's balance&quot;).getUrl();</span>
+        }
+    }
+
+    @PostMapping(&quot;/clearShoppingCart&quot;)
+    public String clearShoppingCart(Model model) {
+<span class="nc" id="L98">        itemService.clearShoppingCart();</span>
+<span class="nc" id="L99">        return &quot;redirect:/&quot;;</span>
+    }
+
+    @PostMapping(&quot;/createItem&quot;)
+    public String createItem(@ModelAttribute Item item, Model model) {
+<span class="nc" id="L104">        itemService.save(item);</span>
+<span class="nc" id="L105">        return &quot;redirect:/&quot;;</span>
+    }
+
+    @PostMapping(&quot;/setUser&quot;)
+    public String setUserSubmit(@ModelAttribute User user, Model model) {
+<span class="nc" id="L110">        RedirectView redirectView = setUserHelper(user, model);</span>
+<span class="nc" id="L111">        return redirectView.getUrl();</span>
+    }
+
+    private RedirectView buyItemHelper(Item item, Model model, int quantity) {
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (item.getStock() == 0) {</span>
+<span class="nc" id="L116">            return triggerErrorHelper(&quot;ERROR: The item &quot; + item.getName() + &quot; is out of stock&quot;);</span>
+        }
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {</span>
+<span class="nc" id="L119">            return triggerErrorHelper(&quot;ERROR: The item &quot; + item.getName() + &quot; isn't allowed in your state and/or you aren't old enough to purchase this item.&quot;);</span>
+        }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        else if(this.userService.checkBalance(item.getPrice(), this.userService.getCurrentUser()))</span>
+        {
+<span class="nc" id="L123">            Item updatedItem = itemService.buyItem(item, quantity);</span>
+<span class="nc" id="L124">            itemService.save(updatedItem);</span>
+<span class="nc" id="L125">            model.addAttribute(&quot;items&quot;, itemService.findAll()); // Refresh the list of items and add it to the model</span>
+<span class="nc" id="L126">            userService.makePurchase(item.getPrice(), quantity, this.userService.getCurrentUser());</span>
+<span class="nc" id="L127">            userService.save(this.userService.getCurrentUser());</span>
+<span class="nc" id="L128">            return new RedirectView(&quot;redirect:/&quot;, true);</span>
+        }
+        else {
+<span class="nc" id="L131">            return triggerErrorHelper(&quot;ERROR: Not enough user balance to purchase &quot; + item.getName() + &quot;. Listed price does not include taxes.&quot;);</span>
+        }
+    }
+
+    private RedirectView setUserHelper(User user, Model model) {
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(userService.userExists(user.getId())) {</span>
+<span class="nc" id="L137">            User currentUser = userService.getUser(user.getId());</span>
+<span class="nc" id="L138">            userService.setCurrentUser(currentUser);</span>
+<span class="nc" id="L139">            this.itemService.clearShoppingCart();</span>
+<span class="nc" id="L140">        }</span>
+        else {
+<span class="nc" id="L142">            return triggerErrorHelper(&quot;ERROR: Inputted user ID does not exist...&quot;);</span>
+        }
+<span class="nc" id="L144">        return new RedirectView(&quot;redirect:/&quot;, true);</span>
+    }
+
+    private RedirectView triggerErrorHelper(String errorMessage) {
+        // Redirect to a URL where the error message can be displayed -&gt; calls the @GetMapping triggerError()
+<span class="nc" id="L149">        String redirectUrl = &quot;redirect:/triggerError?customErrorMsg=&quot; + errorMessage;</span>
+<span class="nc" id="L150">        return new RedirectView(redirectUrl, true);</span>
+    }
+
+    private void updateFrontEnd(Model model) {
+<span class="nc" id="L154">        updateUserLoginForm(model);</span>
+<span class="nc" id="L155">        updateShoppingCart(model);</span>
+<span class="nc" id="L156">    }</span>
+
+    private void updateUserLoginForm(Model model) {
+<span class="nc" id="L159">        model.addAttribute(&quot;currentUser&quot;, userService.getCurrentUser()); // add an attribute for current user so index.html can acess and display properties</span>
+<span class="nc" id="L160">        model.addAttribute(&quot;users&quot;, userService.getCurrentUser()); // add current user to list of all users</span>
+<span class="nc" id="L161">    }</span>
+
+    private void updateShoppingCart(Model model) {
+<span class="nc" id="L164">        model.addAttribute(&quot;cartSize&quot;, itemService.getShoppingCartSize());</span>
+<span class="nc" id="L165">        model.addAttribute(&quot;cartTotal&quot;, itemService.getShoppingCartTotal());</span>
+<span class="nc" id="L166">        model.addAttribute(&quot;tax&quot;, userService.getTax(itemService.getShoppingCartTotal()));</span>
+<span class="nc" id="L167">        model.addAttribute(&quot;subtotal&quot;, userService.getTotalWithTax(itemService.getShoppingCartTotal()));</span>
+<span class="nc" id="L168">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

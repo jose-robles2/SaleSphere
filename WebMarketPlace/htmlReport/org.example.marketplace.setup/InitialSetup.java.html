@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InitialSetup.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.setup</a> &gt; <span class="el_source">InitialSetup.java</span></div><h1>InitialSetup.java</h1><pre class="source lang-java linenums">package org.example.marketplace.setup;
+
+import org.example.marketplace.entities.Category;
+import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.State;
+import org.example.marketplace.entities.User;
+import org.example.marketplace.repositories.ItemRepository;
+import org.example.marketplace.repositories.UserRepository;
+import org.example.marketplace.repositories.StateRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+// Spring will initialize this component, then look at the deps. and inject instances of the deps. into its constr.
+
+@Component
+public class InitialSetup implements CommandLineRunner {
+
+    private final UserRepository userRepository;
+
+    private final ItemRepository itemRepository;
+
+    private final StateRepository stateRepository;
+
+<span class="fc" id="L24">    public InitialSetup(UserRepository userRepository, ItemRepository itemRepository, StateRepository stateRepository) {</span>
+<span class="fc" id="L25">        this.userRepository = userRepository;</span>
+<span class="fc" id="L26">        this.itemRepository = itemRepository;</span>
+<span class="fc" id="L27">        this.stateRepository = stateRepository;</span>
+<span class="fc" id="L28">    }</span>
+
+    @Override
+    public void run(String... args) throws Exception {
+<span class="fc" id="L32">        System.out.println(&quot;Initializing database...&quot;);</span>
+<span class="fc" id="L33">        Item phone = new Item(&quot;Phone&quot;, &quot;IPhone 15&quot;, &quot;/image&quot;, &quot;Washington&quot;, 1199.99, 1, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L34">        Item laptop = new Item(&quot;Laptop&quot;, &quot;Macbook Pro&quot;, &quot;/image&quot;, &quot;Washington&quot;, 2199.99, 5, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L35">        Item tv = new Item(&quot;TV&quot;, &quot;Samsung 4K TV&quot;, &quot;/image&quot;, &quot;Washington&quot;, 999.99, 5, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L36">        Item tablet = new Item(&quot;Tablet&quot;, &quot;iPad Pro&quot;, &quot;/image&quot;, &quot;Washington&quot;, 799.99, 5, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L37">        Item headphones = new Item(&quot;Headphones&quot;, &quot;Sony Noise-Canceling&quot;, &quot;/image&quot;, &quot;Washington&quot;, 299.99, 5, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L38">        Item camera = new Item(&quot;Camera&quot;, &quot;Canon EOS&quot;, &quot;/image&quot;, &quot;Washington&quot;, 899.99, 5, Category.TECHNOLOGY.ordinal());</span>
+
+//        Item smartwatch = new Item(&quot;Smartwatch&quot;, &quot;Apple Watch Series 7&quot;, &quot;/image&quot;, &quot;Washington&quot;, 399.99, 5);
+//        Item speaker = new Item(&quot;Speaker&quot;, &quot;Bose SoundLink&quot;, &quot;/image&quot;, &quot;Washington&quot;, 199.99, 5);
+//        Item gamingConsole = new Item(&quot;Gaming Console&quot;, &quot;PlayStation 5&quot;, &quot;/image&quot;, &quot;Washington&quot;, 499.99, 5);
+//        Item keyboard = new Item(&quot;Keyboard&quot;, &quot;Logitech G Pro&quot;, &quot;/image&quot;, &quot;Washington&quot;, 129.99, 5);
+//        Item mouse = new Item(&quot;Mouse&quot;, &quot;Razer DeathAdder&quot;, &quot;/image&quot;, &quot;Washington&quot;, 69.99, 5);
+//        Item printer = new Item(&quot;Printer&quot;, &quot;HP LaserJet Pro&quot;, &quot;/image&quot;, &quot;Washington&quot;, 249.99, 5);
+
+<span class="fc" id="L47">        Item handgun = new Item(&quot;Handgun&quot;, &quot;Kimber Stainless 45 Auto&quot;, &quot;/image&quot;, &quot;Idaho&quot;, 699.99, 3, Category.FIREARM.ordinal());</span>
+<span class="fc" id="L48">        Item semiAutoRifle = new Item(&quot;Semi-Auto Rifle&quot;, &quot;CMMG Mk4 B16&quot;, &quot;/image&quot;, &quot;Alabama&quot;, 999.99, 1, Category.FIREARM.ordinal());</span>
+<span class="fc" id="L49">        Item shotgun = new Item(&quot;Shotgun&quot;, &quot;Benelli M1014 12 Gauge&quot;, &quot;/image&quot;, &quot;Florida&quot;, 1899.99, 1, Category.FIREARM.ordinal());</span>
+
+<span class="fc" id="L51">        Item moonShine = new Item(&quot;Moonshine&quot;, &quot;Naturally brewed alcohol&quot;, &quot;/image&quot;, &quot;Washington&quot;, 59.99, 4, Category.ALCOHOL.ordinal());</span>
+<span class="fc" id="L52">        Item vodka = new Item(&quot;Vodka&quot;, &quot;Tito's Vodka&quot;, &quot;/image&quot;, &quot;California&quot;, 39.99, 4, Category.ALCOHOL.ordinal());</span>
+<span class="fc" id="L53">        Item rum = new Item(&quot;Rum&quot;, &quot;Malibu Caribbean Rum&quot;, &quot;/image&quot;, &quot;Oregon&quot;, 19.99, 4, Category.ALCOHOL.ordinal());</span>
+
+<span class="fc" id="L55">        Item percocet = new Item(&quot;Percocet Painkillers&quot;, &quot;Percocet Max Strength&quot;, &quot;/image&quot;, &quot;Washington&quot;, 59.99, 4, Category.MEDICINE.ordinal());</span>
+<span class="fc" id="L56">        Item oxycodone = new Item(&quot;Oxycodone Painkillers&quot;, &quot;Oxycodone Max Strength&quot;, &quot;/image&quot;, &quot;Oregon&quot;, 59.99, 4, Category.MEDICINE.ordinal());</span>
+<span class="fc" id="L57">        Item hydrocodone = new Item(&quot;Hydrocodone Painkillers&quot;, &quot;Hydrocodone Max Strength&quot;, &quot;/image&quot;, &quot;California&quot;, 59.99, 4, Category.MEDICINE.ordinal());</span>
+
+<span class="fc" id="L59">        Item tobacco = new Item(&quot;Classic Cigarettes&quot;, &quot;Large tobacco cigarette pack&quot;, &quot;/image&quot;, &quot;Washington&quot;, 9.99, 4, Category.TOBACCO.ordinal());</span>
+<span class="fc" id="L60">        Item vape = new Item(&quot;Classic Vape&quot;, &quot;Large vape pack&quot;, &quot;/image&quot;, &quot;Oregon&quot;, 9.99, 4, Category.DRUGS.ordinal());</span>
+<span class="fc" id="L61">        Item marijuana = new Item(&quot;Classic Marijuana&quot;, &quot;Large weed pack&quot;, &quot;/image&quot;, &quot;California&quot;, 9.99, 0, Category.DRUGS.ordinal());</span>
+
+<span class="fc" id="L63">        phone = itemRepository.save(phone);</span>
+<span class="fc" id="L64">        laptop = itemRepository.save(laptop);</span>
+<span class="fc" id="L65">        tv = itemRepository.save(tv);</span>
+<span class="fc" id="L66">        tablet = itemRepository.save(tablet);</span>
+<span class="fc" id="L67">        headphones = itemRepository.save(headphones);</span>
+<span class="fc" id="L68">        camera = itemRepository.save(camera);</span>
+
+//        smartwatch = itemRepository.save(smartwatch);
+//        speaker = itemRepository.save(speaker);
+//        gamingConsole = itemRepository.save(gamingConsole);
+//        keyboard = itemRepository.save(keyboard);
+//        mouse = itemRepository.save(mouse);
+//        printer = itemRepository.save(printer);
+
+<span class="fc" id="L77">        itemRepository.save(handgun);</span>
+<span class="fc" id="L78">        itemRepository.save(semiAutoRifle);</span>
+<span class="fc" id="L79">        itemRepository.save(shotgun);</span>
+
+<span class="fc" id="L81">        itemRepository.save(moonShine);</span>
+<span class="fc" id="L82">        itemRepository.save(vodka);</span>
+<span class="fc" id="L83">        itemRepository.save(rum);</span>
+
+<span class="fc" id="L85">        itemRepository.save(percocet);</span>
+<span class="fc" id="L86">        itemRepository.save(oxycodone);</span>
+<span class="fc" id="L87">        itemRepository.save(hydrocodone);</span>
+
+<span class="fc" id="L89">        itemRepository.save(tobacco);</span>
+<span class="fc" id="L90">        itemRepository.save(vape);</span>
+<span class="fc" id="L91">        itemRepository.save(marijuana);</span>
+
+<span class="fc" id="L93">        State alabama = new State(&quot;AL&quot;,</span>
+                18, false,
+                18, false,
+                21, false,
+                25, false,
+                25, false,
+                18, false, 0.07);
+
+<span class="fc" id="L101">        State alaska = new State(&quot;AK&quot;,</span>
+                21, true,
+                15, true,
+                33, true,
+                32, true,
+                1, true,
+                99, true, 0.06);
+
+<span class="fc" id="L109">        State arizona = new State(&quot;AZ&quot;,</span>
+                34, true,
+                22, false,
+                50, false,
+                18, true,
+                18, true,
+                21, true, 0.2);
+
+<span class="fc" id="L117">        State arkansas = new State(&quot;AR&quot;,</span>
+                99, true,
+                18, true,
+                21, true,
+                25, true,
+                25, true,
+                18, false, 0.13);
+
+<span class="fc" id="L125">        State california = new State(&quot;CA&quot;,</span>
+                22, false,
+                48, true,
+                44, true,
+                31, true,
+                24, true,
+                30, true, 0.20);
+
+
+<span class="fc" id="L134">        stateRepository.save(alabama);</span>
+<span class="fc" id="L135">        stateRepository.save(alaska);</span>
+<span class="fc" id="L136">        stateRepository.save(arizona);</span>
+<span class="fc" id="L137">        stateRepository.save(arkansas);</span>
+<span class="fc" id="L138">        stateRepository.save(california);</span>
+
+<span class="fc" id="L140">        User user = new User(&quot;Tres&quot;, &quot;Hiatt&quot;, &quot;tHiatt&quot;, 55, arkansas, 1000.50);</span>
+<span class="fc" id="L141">        User user2 = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, alaska, 14567.87);</span>
+<span class="fc" id="L142">        User user3 = new User(&quot;Josh&quot;, &quot;Long&quot;, &quot;jLong&quot;, 99, alaska, 105500.50);</span>
+<span class="fc" id="L143">        User user4 = new User(&quot;TobaccoAge,FirearmAllowed&quot;, &quot;Test&quot;, &quot;Test&quot;, 47, california, 1000.50);</span>
+<span class="fc" id="L144">        User user5 = new User(&quot;CantBuy(age)&quot;, &quot;Test&quot;, &quot;Test&quot;, 17, arizona, 14567.87);</span>
+<span class="fc" id="L145">        User user6 = new User(&quot;CantBuy(notallowed)&quot;, &quot;Test&quot;, &quot;Test&quot;, 90, alabama, 5000.22);</span>
+
+<span class="fc" id="L147">        user = userRepository.save(user);</span>
+<span class="fc" id="L148">        user2 = userRepository.save(user2);</span>
+<span class="fc" id="L149">        user3 = userRepository.save(user3);</span>
+<span class="fc" id="L150">        user4 = userRepository.save(user4);</span>
+<span class="fc" id="L151">        user5 = userRepository.save(user5);</span>
+<span class="fc" id="L152">        user6 = userRepository.save(user6);</span>
+
+<span class="fc" id="L154">        System.out.println(phone);</span>
+<span class="fc" id="L155">        System.out.println(laptop);</span>
+<span class="fc" id="L156">        System.out.println(tv);</span>
+<span class="fc" id="L157">        System.out.println(tablet);</span>
+<span class="fc" id="L158">        System.out.println(headphones);</span>
+<span class="fc" id="L159">        System.out.println(camera);</span>
+
+<span class="fc" id="L161">        System.out.println(stateRepository);</span>
+
+//        System.out.println(smartwatch);
+//        System.out.println(speaker);
+//        System.out.println(gamingConsole);
+//        System.out.println(keyboard);
+//        System.out.println(mouse);
+//        System.out.println(printer);
+
+<span class="fc" id="L170">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

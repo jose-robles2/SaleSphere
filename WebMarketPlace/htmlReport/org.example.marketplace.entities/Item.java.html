@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Item.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.entities</a> &gt; <span class="el_source">Item.java</span></div><h1>Item.java</h1><pre class="source lang-java linenums">package org.example.marketplace.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import java.util.Objects;
+
+@Entity
+public class Item {
+
+    private String name;
+
+    private String description;
+
+    private String imageUrl;
+
+    private String locationState;
+
+    private double price;
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private int stock;
+
+    private int category;
+
+<span class="fc" id="L29">    public Item() {}</span>
+
+<span class="fc" id="L31">    public Item(String name, String description, String imageUrl, String locationState, double price, int stock, int category) {</span>
+<span class="fc" id="L32">        this.name = name;</span>
+<span class="fc" id="L33">        this.description = description;</span>
+<span class="fc" id="L34">        this.imageUrl = imageUrl;</span>
+<span class="fc" id="L35">        this.locationState = locationState;</span>
+<span class="fc" id="L36">        this.price = price;</span>
+<span class="fc" id="L37">        this.stock = stock;</span>
+<span class="fc" id="L38">        this.category = category;</span>
+<span class="fc" id="L39">    }</span>
+
+    public String getName() {
+<span class="fc" id="L42">        return name;</span>
+    }
+
+    public String getDescription() {
+<span class="fc" id="L46">        return description;</span>
+    }
+
+    public String getImageUrl() {
+<span class="fc" id="L50">        return imageUrl;</span>
+    }
+
+    public String getLocationState() {
+<span class="fc" id="L54">        return locationState;</span>
+    }
+
+    public double getPrice() {
+<span class="fc" id="L58">        return price;</span>
+    }
+
+<span class="fc" id="L61">    public Long getId() { return id; }</span>
+
+    public int getStock() {
+<span class="fc" id="L64">        return stock;</span>
+    }
+
+<span class="fc" id="L67">    public int getCategory() { return category; }</span>
+
+    public void setName(String name) {
+<span class="fc" id="L70">        this.name = name;</span>
+<span class="fc" id="L71">    }</span>
+
+    public void setDescription(String description) {
+<span class="fc" id="L74">        this.description = description;</span>
+<span class="fc" id="L75">    }</span>
+
+    public void setImageUrl(String imageUrl) {
+<span class="fc" id="L78">        this.imageUrl = imageUrl;</span>
+<span class="fc" id="L79">    }</span>
+
+    public void setLocationState(String locationState) {
+<span class="fc" id="L82">        this.locationState = locationState;</span>
+<span class="fc" id="L83">    }</span>
+
+    public void setPrice(double price) {
+<span class="fc" id="L86">        this.price = price;</span>
+<span class="fc" id="L87">    }</span>
+
+    public void setId(Long id) {
+<span class="fc" id="L90">        this.id = id;</span>
+<span class="fc" id="L91">    }</span>
+
+    public void setStock(int stock) {
+<span class="fc" id="L94">        this.stock = stock;</span>
+<span class="fc" id="L95">    }</span>
+
+<span class="fc" id="L97">    public void setCategory(int category) { this.category = category; }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (!(o instanceof Item item)) return false;</span>
+<span class="nc bnc" id="L103" title="All 16 branches missed.">        return Double.compare(getPrice(), item.getPrice()) == 0 &amp;&amp; getStock() == item.getStock() &amp;&amp; getCategory() == item.getCategory() &amp;&amp; Objects.equals(getName(), item.getName()) &amp;&amp; Objects.equals(getDescription(), item.getDescription()) &amp;&amp; Objects.equals(getImageUrl(), item.getImageUrl()) &amp;&amp; Objects.equals(getLocationState(), item.getLocationState()) &amp;&amp; Objects.equals(getId(), item.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L108">        return Objects.hash(getName(), getDescription(), getImageUrl(), getLocationState(), getPrice(), getId(), getStock(), getCategory());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L113">        return &quot;Item{&quot; +</span>
+                &quot;name='&quot; + name + '\'' +
+                &quot;, description='&quot; + description + '\'' +
+                &quot;, imageUrl='&quot; + imageUrl + '\'' +
+                &quot;, locationState='&quot; + locationState + '\'' +
+                &quot;, price=&quot; + price +
+                &quot;, id=&quot; + id +
+                &quot;, stock=&quot; + stock +
+                &quot;, category=&quot; + category +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
