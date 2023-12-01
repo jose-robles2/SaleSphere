@@ -3,9 +3,12 @@ package org.example.marketplace.services;
 import org.example.marketplace.entities.*;
 import org.example.marketplace.repositories.ItemRepository;
 import org.springframework.stereotype.Service;
+import org.example.marketplace.entities.Category;
 
 import java.text.DecimalFormat;
 import java.util.*;
+
+import static org.example.marketplace.entities.Category.ALCOHOL;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -19,6 +22,11 @@ public class ItemServiceImpl implements ItemService {
     public ItemServiceImpl(ItemRepository itemRepository, List<Item> shoppingCart) {
         this.itemRepository = itemRepository;
         this.shoppingCart = new ShoppingCart(shoppingCart);
+    }
+
+    public ItemServiceImpl(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+        this.shoppingCart = new ShoppingCart(new ArrayList<Item>());
     }
 
     @Override
@@ -67,15 +75,7 @@ public class ItemServiceImpl implements ItemService {
             return false;
         }
 
-        if (currUser.getAge() >= getCategoryAge(category, currUser)) {
-            // Apply tax based on the user's state
-            double taxRate = getCategoryTaxRate(category, currUser.getState().getStateName());
-            double newPrice = item.getPrice() + (item.getPrice() * taxRate);
-            item.setPrice(newPrice);
-            return true;
-        }
-
-        return false;
+        return currUser.getAge() >= getCategoryAge(category, currUser);
     }
 
     private boolean isCategoryAllowed(Category category, User user) {
@@ -86,7 +86,6 @@ public class ItemServiceImpl implements ItemService {
             case MEDICINE -> user.getState().isMedicineAllowed();
             case TECHNOLOGY -> user.getState().isTechnologyAllowed();
             case TOBACCO -> user.getState().isTobaccoAllowed();
-            default -> false;
         };
     }
 
@@ -98,19 +97,6 @@ public class ItemServiceImpl implements ItemService {
             case MEDICINE -> user.getState().getMedicineAge();
             case TECHNOLOGY -> user.getState().getTechnologyAge();
             case TOBACCO -> user.getState().getTobaccoAge();
-            default -> 0;
-        };
-    }
-
-    private double getCategoryTaxRate(Category category, String userState) {
-        return switch (category) {
-            case FIREARM -> (userState.equals("AZ") || userState.equals("AR")) ? 0.05 : 0;
-            case ALCOHOL -> (userState.equals("AZ") || userState.equals("AK")) ? 0.10 : 0;
-            case DRUGS -> (userState.equals("CA") || userState.equals("AR")) ? 0.15 : 0;
-            case MEDICINE -> (userState.equals("AK") || userState.equals("CA")) ? 0.05 : 0;
-            case TECHNOLOGY -> (userState.equals("AR") || userState.equals("AZ")) ? 0.07 : 0;
-            case TOBACCO -> (userState.equals("CA") || userState.equals("AK")) ? 0.09 : 0;
-            default -> 0;
         };
     }
 

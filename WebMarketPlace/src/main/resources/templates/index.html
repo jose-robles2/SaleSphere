@@ -140,10 +140,11 @@
                     <p class="userFormItem">State Tax Rate (in decimal form): <td th:text="${currentUser.State.taxRate}"></td></p>
                     <p class="userFormItem">User Balance: $<td th:text="${currentUser.balance}"></td></p>
                     <h1 class="userFormItem">Set Current User</h1>
-                    <form class="userForm"th:action="@{/setUser}" th:object="${user}" method="post">
-                        <p class="userFormItem">Id: <input type="text" th:field="*{id}" /></p>
-                        <p class="userFormItem"><input type="submit" value="Submit" /> </p>
+                    <form class="userForm" th:action="@{/setUser}" th:object="${user}" method="post">
+                        <p class="userFormItem">Id: <input type="text" th:field="*{id}" pattern="\d+" required /></p>
+                        <p class="userFormItem"><input type="submit" value="Submit" /></p>
                     </form>
+
                 </div>
                 <div class="headerTitle">
                     <h1>SaleSphere Market</h1>

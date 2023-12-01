@@ -1,5 +1,6 @@
 package org.example.marketplace.services;
 
+import org.example.marketplace.entities.Item;
 import org.example.marketplace.entities.User;
 
 public interface UserService {
@@ -13,13 +14,17 @@ public interface UserService {
 
     public void setCurrentUser(User currUser);
 
+    public double getTax(Item item);
+
     public double getTax(double total);
 
     public double getTotalWithTax(double total);
 
     public boolean userExists(Long ID);
 
-    public void makePurchase(Double itemPrice, int quantity);
+    public void makePurchase(Item item, int quantity);
 
-    public boolean canUserMakePurchase(double itemPrice);
+    public void makePurchase(Item item, int quantity, User user);
+
+    public boolean canUserAffordPurchase(double itemPrice);
 }

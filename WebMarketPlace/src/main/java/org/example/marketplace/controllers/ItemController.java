@@ -64,7 +64,7 @@ public class ItemController {
 
     @PostMapping("/buyItemsFromCart")
     public String buyItemsFromCart(Model model) {
-        if (!userService.canUserMakePurchase(itemService.getShoppingCartTotal())) {
+        if (!userService.canUserAffordPurchase(itemService.getShoppingCartTotal())) {
             return triggerErrorHelper("ERROR: Price of items in cart exceed user's balance").getUrl();
         }
 
@@ -108,18 +108,22 @@ public class ItemController {
     }
 
     private RedirectView buyItemHelper(Item item, Model model, int quantity) {
+        if (userService.getCurrentUser().getFirstName().contains("test")) {
+            return triggerErrorHelper("ERROR: Please select a new user as the app is initialized with a default/temp user");
+        }
+
         if (item.getStock() == 0) {
             return triggerErrorHelper("ERROR: The item " + item.getName() + " is out of stock");
         }
         else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {
             return triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item.");
         }
-        else if(this.userService.canUserMakePurchase(item.getPrice()))
+        else if(this.userService.canUserAffordPurchase(item.getPrice()))
         {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);
             model.addAttribute("items", itemService.findAll()); // Refresh the list of items and add it to the model
-            userService.makePurchase(item.getPrice(), quantity);
+            userService.makePurchase(item, quantity);
             userService.save(this.userService.getCurrentUser());
             return new RedirectView("redirect:/", true);
         }
@@ -137,6 +141,7 @@ public class ItemController {
         else {
             return triggerErrorHelper("ERROR: Inputted user ID does not exist...");
         }
+
         return new RedirectView("redirect:/", true);
     }
 

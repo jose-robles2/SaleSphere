@@ -1,0 +1,101 @@
+graph TD
+    AA[APP INITIALIZATION] --> AAa[main\n &#40MarketPlaceApplication&#41] --> AAb[run\n &#40SpringApplication&#41] --> AAc[run\n &#40InitialSetup&#41] --> AAd[run\n &#40SpringApplication&#41] --> AAe[getItems\n &#40ItemController&#41]
+    AAe --> AAea[updateModel\n &#40ItemController&#41]
+    AAea --> AAeaa[updateUserAndItems\n &#40ItemController&#41]
+    AAea --> AAeab[updateShoppingCart\n &#40ItemController&#41]
+    AAeab --> AAeac[updateUserLoginForm\n &#40ItemController&#41]
+    AAeab --> AAead[updateShoppingCart\n &#40ItemController&#41]
+
+    BB[APP RUNTIME] --> BBa[Submit Button\n &#40Index.html&#41] --> BBb[setUserSubmit\n &#40ItemController&#41] --> BBc[setUserHelper\n &#40ItemController&#41]
+    BBc --> BBca[userExists\n &#40UserService&#41]
+    BBc --> BBcb[getUser\n &#40UserService&#41]
+    BBc --> BBcc[setCurrentUser\n &#40UserService&#41]
+    BBc --> BBcd[clearShopping\n &#40ItemService&#41]
+    BBc --> BBce[triggerErrorHelper\n &#40ItemController&#41]
+
+    BBca --> BBcaa[existsById\n &#40UserRepository&#41]
+    BBcb --> BBcab[findById\n &#40UserRepository&#41]
+    BBcd --> BBcac[clear\n &#40ShoppingCart&#41]
+
+    CC[APP RUNTIME] --> CCa[buyButton\n &#40Index.html&#41] --> CCb[buyItem\n &#40ItemController&#41]
+    CCb --> CCc[buyItemHelper\n &#40ItemController&#41]
+    CCc --> CCd[getCurrentUser\n &#40UserService&#41]
+    CCc --> CCe[getFirstName\n &#40User&#41]
+    CCc --> BBce
+    CCc --> CCf[getStock\n &#40Item&#41]
+    CCc --> CCg[isValidPurchase\n &#40ItemService&#41]
+    CCc --> CCh[getName\n &#40Item&#41]
+    CCc --> CCi[getPrice\n &#40Item&#41]
+    CCc --> CCj[canUserAffordPurchase\n &#40UserService&#41]
+    CCc --> CCk[buyItem\n &#40ItemService&#41]
+    CCc --> CCl[save\n &#40ItemService&#41]
+    CCc --> CCm[makePurchase\n &#40UserService&#41]
+    CCc --> CCn[save\n &#40UserService&#41]
+
+    CCg --> CCga[getCategory\n &#40Item&#41]
+    CCg --> CCgb[isCategoryAllowed\n &#40Item&#41]
+    CCg --> CCgc[getAge\n &#40User&#41]
+    CCg --> CCgd[getCategoryAge\n &#40ItemService&#41]
+
+    CCj --> CCd
+    CCj --> CCja[getBalance\n &#40User&#41]
+    CCj --> CCjb[getState\n &#40User&#41]
+    CCj --> CCjc[getTaxRate\n &#40State&#41]
+
+    CCk --> CCka[setStock\n &#40Item&#41]
+    CCk --> CCkb[remove\n &#40ShoppingCart&#41]
+
+    CCkb --> CCkba[updateItemTypeQuanitityMap\n &#40ShoppingCart&#41]
+
+    CCl --> CCla[save\n &#40ItemRepository&#41]
+
+    CCm --> CCma[getTax\n &#40UserService&#41]
+    CCm --> CCja
+    CCm --> CCi
+    CCm --> CCjb
+    CCm --> CCjc
+
+    CCma --> CCmaa[getLuxuryTax\n &#40UserService&#41]
+    CCma --> CCjb
+    CCma --> CCjb
+    CCma --> CCi
+
+    CCmaa --> CCga
+    CCmaa --> CCjb
+    CCmaa --> CCmaaa[getStateName\n &#40State&#41]
+
+    CCn --> CCna[save\n &#40UserRepository&#41]
+
+    DD[APP RUNTIME] --> DDa[Clear Cart Button\n &#40Index.html&#41] --> DDb[clearShoppingCart\n &#40ItemController&#41]
+    DDb --> DDba[clearShoppingCart\n &#40ItemService&#41]
+    DDba --> DDbaa[clearShoppingCart\n &#40ShoppingCart&#41]
+
+    EE[APP RUNTIME] --> EEa[Create Item Form\n &#40Index.html&#41] --> EEb[createItem\n &#40ItemController&#41]
+    EEb --> CCl
+
+    FF[APP RUNTIME] --> FFa[Add item to Cart Button\n &#40Index.html&#41] --> FFb[addItemToCart\n &#40ItemController&#41]
+    FFb --> FFba[addItemToCart\n &#40ItemService&#41]
+    FFba --> FFbaa[add\n &#ShoppingCart&#41]
+    FFbaa --> FFbaaa[canAddToCart\n &#40ShoppingCart&#41]
+    FFbaa --> CCi
+    FFbaa --> CCkba
+    FFbaa --> FFbab[updateItemCountMap\n &#40ShoppingCart&#41]
+
+    GG[APP RUNTIME] --> GGa[Buy items from cart Button\n &#40Index.html&#41] --> GGb[buyItemsFromCart\n &#40ItemController&#41]
+    GGb --> CCj
+    GGb --> BBce
+    GGb --> GGba[getShoppingCartItems\n &#40ItemService&#41]
+    GGb --> CCh
+    GGb --> GGbb[getQuantityToDeductStock\n &#40ItemService&#41]
+    GGb --> CCc
+    GGb --> DDb
+    GGb --> AAeab
+
+    GGba --> GGbaa[getCartItems\n &#40ShoppingCart&#41]
+
+    GGbb --> GGbab[getQuantityToDeductStock\n &#40ShoppingCart&#41]
+
+
+
+
+
