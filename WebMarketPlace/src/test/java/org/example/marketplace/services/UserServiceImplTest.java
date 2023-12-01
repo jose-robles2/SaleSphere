@@ -154,6 +154,16 @@ class UserServiceImplTest {
     }
 
     @Test
+    void saveTest2() {
+        User user4 = new User("Test", "Testing", "tTest", 42, alabama, 100.50);
+
+        User user5 = userService.save(user4);
+        User user6 = userService.save(user4);
+
+        assertEquals(user5, user6);
+    }
+
+    @Test
     void getUserTest() {
         when(user_repository.findById(1L)).thenReturn(Optional.ofNullable(user));
 

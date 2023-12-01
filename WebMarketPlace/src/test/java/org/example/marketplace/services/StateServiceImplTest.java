@@ -61,8 +61,17 @@ class StateServiceImplTest {
         // Then
         assertNotNull(savedState);
         verify(stateRepository, times(1)).save(state);
+    }
 
-
+    @Test
+    void save2() {
+        State state = new State();
+        when(stateRepository.save(any(State.class))).thenReturn(state);
+        // When
+        State savedState = stateService.save(state);
+        State savedState2 = stateService.save(state);
+        // Then
+        assertEquals(savedState, savedState2);
     }
 
     @Test
