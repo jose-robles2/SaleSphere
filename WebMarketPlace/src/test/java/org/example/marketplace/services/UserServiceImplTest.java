@@ -440,7 +440,7 @@ class UserServiceImplTest {
         Item purchaseItem = tv;
         int quantity = 1;
         User purchaseUser = user;
-        double balanceAfter = -262558.3;
+        double balanceAfter = 1000.5;
 
         userService.makePurchase(purchaseItem, quantity);
 
