@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,7 +59,7 @@ class NeighborhoodIntegrationTests {
             userRepository = mock(UserRepository.class);
             userService = new UserServiceImpl(userRepository);
             itemRepository = mock(ItemRepository.class);
-            itemService = new ItemServiceImpl(itemRepository);
+            itemService = new ItemServiceImpl(itemRepository, new ArrayList<Item>());
             stateService = mock(StateService.class);
             model = mock(Model.class);
 

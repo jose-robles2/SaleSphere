@@ -1,10 +1,7 @@
 package org.example.marketplace;
 
 import org.example.marketplace.controllers.ItemController;
-import org.example.marketplace.entities.Category;
-import org.example.marketplace.entities.Item;
-import org.example.marketplace.entities.State;
-import org.example.marketplace.entities.User;
+import org.example.marketplace.entities.*;
 import org.example.marketplace.repositories.ItemRepository;
 import org.example.marketplace.repositories.UserRepository;
 import org.example.marketplace.services.*;
@@ -60,7 +57,7 @@ class PairwiseIntegrationTests {
         void setUp() {
             userService = mock(UserService.class);
             itemRepository = mock(ItemRepository.class);
-            itemService = new ItemServiceImpl(itemRepository);
+            itemService = new ItemServiceImpl(itemRepository, new ArrayList<Item>());
             stateService = mock(StateService.class);
             model = mock(Model.class);
 
@@ -197,7 +194,7 @@ class PairwiseIntegrationTests {
         void setUp() {
             userService = mock(UserService.class);
             itemRepository = mock(ItemRepository.class);
-            itemService = new ItemServiceImpl(itemRepository);
+            itemService = new ItemServiceImpl(itemRepository, new ArrayList<Item>());
             stateService = mock(StateService.class);
             model = mock(Model.class);
 
