@@ -24,11 +24,6 @@ public class ItemServiceImpl implements ItemService {
         this.shoppingCart = new ShoppingCart(shoppingCart);
     }
 
-    public ItemServiceImpl(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-        this.shoppingCart = new ShoppingCart(new ArrayList<Item>());
-    }
-
     @Override
     public Iterable<Item> findAll() { return itemRepository.findAll(); }
 
