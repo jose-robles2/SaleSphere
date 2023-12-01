@@ -139,6 +139,15 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void saveTest2() {
+        Item tablet = new Item("Tablet", "iPad Pro", "/image", "Washington", 799.99, 5, Category.TECHNOLOGY.ordinal());
+
+        Item tablet1 = itemService.save(tablet);
+        Item tablet2 = itemService.save(tablet);
+        assertEquals(tablet1.getId(), tablet2.getId());
+    }
+
+    @Test
     void deleteTest() {
         Item itemToDelete = phone;
         itemService.delete(itemToDelete);
