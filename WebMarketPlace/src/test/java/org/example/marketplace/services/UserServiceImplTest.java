@@ -154,6 +154,16 @@ class UserServiceImplTest {
     }
 
     @Test
+    void saveTest2() {
+        User user4 = new User("Test", "Testing", "tTest", 42, alabama, 100.50);
+
+        User user5 = userService.save(user4);
+        User user6 = userService.save(user4);
+
+        assertEquals(user5, user6);
+    }
+
+    @Test
     void getUserTest() {
         when(user_repository.findById(1L)).thenReturn(Optional.ofNullable(user));
 
@@ -430,21 +440,9 @@ class UserServiceImplTest {
         Item purchaseItem = tv;
         int quantity = 1;
         User purchaseUser = user;
-        double balanceAfter = -262558.3;
+        double balanceAfter = 1000.5;
 
         userService.makePurchase(purchaseItem, quantity);
-
-        assertEquals(purchaseUser.getBalance(), balanceAfter);
-    }
-
-    @Test
-    void makePurchaseTest2() {
-        Item purchaseItem = tv;
-        int quantity = 1;
-        User purchaseUser = user;
-        double balanceAfter = -262558.3;
-
-        userService.makePurchase(purchaseItem, quantity, user);
 
         assertEquals(purchaseUser.getBalance(), balanceAfter);
     }

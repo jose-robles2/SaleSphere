@@ -118,7 +118,7 @@ public class ItemController {
         else if (!this.itemService.isValidPurchase(this.userService.getCurrentUser(), item)) {
             return triggerErrorHelper("ERROR: The item " + item.getName() + " isn't allowed in your state and/or you aren't old enough to purchase this item.");
         }
-        else if(this.userService.canUserAffordPurchase(item.getPrice()))
+        else if(this.userService.canUserAffordPurchase(item, quantity))
         {
             Item updatedItem = itemService.buyItem(item, quantity);
             itemService.save(updatedItem);

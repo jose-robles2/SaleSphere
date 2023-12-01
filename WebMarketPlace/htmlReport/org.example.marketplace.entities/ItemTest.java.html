@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.entities</a> &gt; <span class="el_source">ItemTest.java</span></div><h1>ItemTest.java</h1><pre class="source lang-java linenums">package org.example.marketplace.entities;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+<span class="fc" id="L8">class ItemTest {</span>
+
+    private Item phone;
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L14">        phone = new Item(&quot;Phone&quot;, &quot;IPhone 15&quot;, &quot;/image&quot;, &quot;Washington&quot;, 1199.99, 1, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L15">    }</span>
+
+    @Test
+    void getNameTest() {
+<span class="fc" id="L19">        String expected = &quot;Phone&quot;;</span>
+<span class="fc" id="L20">        assertEquals(phone.getName(), expected);</span>
+<span class="fc" id="L21">    }</span>
+
+    @Test
+    void getDescriptionTest() {
+<span class="fc" id="L25">        String expected = &quot;IPhone 15&quot;;</span>
+<span class="fc" id="L26">        assertEquals(phone.getDescription(), expected);</span>
+<span class="fc" id="L27">    }</span>
+
+    @Test
+    void getImageUrlTest() {
+<span class="fc" id="L31">        String expected = &quot;/image&quot;;</span>
+<span class="fc" id="L32">        assertEquals(phone.getImageUrl(), expected);</span>
+<span class="fc" id="L33">    }</span>
+
+    @Test
+    void getLocationStateTest() {
+<span class="fc" id="L37">        String expected = &quot;Washington&quot;;</span>
+<span class="fc" id="L38">        assertEquals(phone.getLocationState(), expected);</span>
+<span class="fc" id="L39">    }</span>
+
+    @Test
+    void getPriceTest() {
+<span class="fc" id="L43">        double expected = 1199.99;</span>
+<span class="fc" id="L44">        assertEquals(phone.getPrice(), expected);</span>
+<span class="fc" id="L45">    }</span>
+
+    @Test
+    void getIdTest() {
+<span class="fc" id="L49">        Long expected = null;</span>
+<span class="fc" id="L50">        assertEquals(phone.getId(), expected);</span>
+<span class="fc" id="L51">    }</span>
+
+    @Test
+    void getStockTest() {
+<span class="fc" id="L55">        int expected = 1;</span>
+<span class="fc" id="L56">        assertEquals(phone.getStock(), expected);</span>
+<span class="fc" id="L57">    }</span>
+
+    @Test
+    void getCategoryTest() {
+<span class="fc" id="L61">        int expected = Category.TECHNOLOGY.ordinal();</span>
+<span class="fc" id="L62">        assertEquals(phone.getCategory(), expected);</span>
+<span class="fc" id="L63">    }</span>
+
+    @Test
+    void setNameTest() {
+<span class="fc" id="L67">        String expected = &quot;IPhone2&quot;;</span>
+<span class="fc" id="L68">        phone.setName(expected);</span>
+<span class="fc" id="L69">        assertEquals(phone.getName(), expected);</span>
+<span class="fc" id="L70">    }</span>
+
+    @Test
+    void setDescriptionTest() {
+<span class="fc" id="L74">        String expected = &quot;New Description&quot;;</span>
+<span class="fc" id="L75">        phone.setDescription(expected);</span>
+<span class="fc" id="L76">        assertEquals(phone.getDescription(), expected);</span>
+<span class="fc" id="L77">    }</span>
+
+    @Test
+    void setImageUrlTest() {
+<span class="fc" id="L81">        String expected = &quot;/newImage&quot;;</span>
+<span class="fc" id="L82">        phone.setImageUrl(expected);</span>
+<span class="fc" id="L83">        assertEquals(phone.getImageUrl(), expected);</span>
+<span class="fc" id="L84">    }</span>
+
+    @Test
+    void setLocationStateTest() {
+<span class="fc" id="L88">        String expected = &quot;California&quot;;</span>
+<span class="fc" id="L89">        phone.setLocationState(expected);</span>
+<span class="fc" id="L90">        assertEquals(phone.getLocationState(), expected);</span>
+<span class="fc" id="L91">    }</span>
+
+    @Test
+    void setPriceTest() {
+<span class="fc" id="L95">        double expected = 1000;</span>
+<span class="fc" id="L96">        phone.setPrice(expected);</span>
+<span class="fc" id="L97">        assertEquals(phone.getPrice(), expected);</span>
+<span class="fc" id="L98">    }</span>
+
+    @Test
+    void setIdTest() {
+<span class="fc" id="L102">        Long expected = 10L;</span>
+<span class="fc" id="L103">        phone.setId(expected);</span>
+<span class="fc" id="L104">        assertEquals(phone.getId(), expected);</span>
+<span class="fc" id="L105">    }</span>
+
+    @Test
+    void setStockTest() {
+<span class="fc" id="L109">        int expected = 100;</span>
+<span class="fc" id="L110">        phone.setStock(expected);</span>
+<span class="fc" id="L111">        assertEquals(phone.getStock(), expected);</span>
+<span class="fc" id="L112">    }</span>
+
+    @Test
+    void setCategoryTest() {
+<span class="fc" id="L116">        int expected = Category.ALCOHOL.ordinal();</span>
+<span class="fc" id="L117">        phone.setCategory(expected);</span>
+<span class="fc" id="L118">        assertEquals(phone.getCategory(), expected);</span>
+<span class="fc" id="L119">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

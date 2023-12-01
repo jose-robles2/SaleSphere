@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.entities</a> &gt; <span class="el_source">StateTest.java</span></div><h1>StateTest.java</h1><pre class="source lang-java linenums">package org.example.marketplace.entities;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+<span class="fc" id="L8">class StateTest {</span>
+
+    private State california;
+    private State anotherCalifornia;
+    private State texas;
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L16">        california = new State(&quot;California&quot;, 21, true, 21, true, 21, false, 18, true, 18, true, 21, true, 0.07);</span>
+<span class="fc" id="L17">        anotherCalifornia = new State(&quot;California&quot;, 21, true, 21, true, 21, false, 18, true, 18, true, 21, true, 0.07);</span>
+<span class="fc" id="L18">        texas = new State(&quot;Texas&quot;, 18, true, 18, true, 20, true, 17, true, 19, true, 21, true, 0.06);</span>
+<span class="fc" id="L19">    }</span>
+
+    @Test
+    void getFirearmsAge() {
+<span class="fc" id="L23">        assertEquals(21, california.getFirearmsAge());</span>
+
+<span class="fc" id="L25">    }</span>
+
+    @Test
+    void isFirearmsAllowed() {
+<span class="fc" id="L29">        assertTrue(california.isFirearmsAllowed());</span>
+
+<span class="fc" id="L31">    }</span>
+
+    @Test
+    void getTobaccoAge() {
+<span class="fc" id="L35">        assertEquals(21, california.getTobaccoAge());</span>
+
+<span class="fc" id="L37">    }</span>
+
+    @Test
+    void isTobaccoAllowed() {
+<span class="fc" id="L41">        assertTrue(california.isTobaccoAllowed());</span>
+
+<span class="fc" id="L43">    }</span>
+
+    @Test
+    void getDrugsAge() {
+<span class="fc" id="L47">        assertEquals(21, california.getDrugsAge());</span>
+
+<span class="fc" id="L49">    }</span>
+
+    @Test
+    void isDrugAllowed() {
+<span class="fc" id="L53">        assertFalse(california.isDrugAllowed());</span>
+
+<span class="fc" id="L55">    }</span>
+
+    @Test
+    void getTechnologyAge() {
+<span class="fc" id="L59">        assertEquals(18, california.getTechnologyAge());</span>
+
+<span class="fc" id="L61">    }</span>
+
+    @Test
+    void isTechnologyAllowed() {
+<span class="fc" id="L65">        assertTrue(california.isTechnologyAllowed());</span>
+
+<span class="fc" id="L67">    }</span>
+
+    @Test
+    void getMedicineAge() {
+<span class="fc" id="L71">        assertEquals(18, california.getMedicineAge());</span>
+
+<span class="fc" id="L73">    }</span>
+
+    @Test
+    void isMedicineAllowed() {
+<span class="fc" id="L77">        assertEquals(21, california.getAlcoholAge());</span>
+
+<span class="fc" id="L79">    }</span>
+
+    @Test
+    void getStateName() {
+<span class="fc" id="L83">        assertEquals(&quot;California&quot;, california.getStateName());</span>
+
+<span class="fc" id="L85">    }</span>
+
+    @Test
+    void getAlcoholAge() {
+<span class="fc" id="L89">        assertEquals(21, california.getAlcoholAge());</span>
+
+<span class="fc" id="L91">    }</span>
+
+    @Test
+    void isAlcoholAllowed() {
+<span class="fc" id="L95">        assertTrue(california.isAlcoholAllowed());</span>
+
+<span class="fc" id="L97">    }</span>
+
+    @Test
+    void getTaxRate() {
+<span class="fc" id="L101">        assertEquals(0.07, california.getTaxRate());</span>
+<span class="fc" id="L102">    }</span>
+
+    @Test
+    void testEquals() {
+<span class="fc" id="L106">        assertEquals(california, anotherCalifornia, &quot;Both objects should be considered equal as they have the same properties.&quot;);</span>
+<span class="fc" id="L107">        assertNotEquals(california, texas, &quot;Both objects should not be considered equal as they have different properties.&quot;);</span>
+<span class="fc" id="L108">    }</span>
+
+    @Test
+    void testHashCode() {
+<span class="fc" id="L112">        assertEquals(california.hashCode(), anotherCalifornia.hashCode(), &quot;Hash codes of two equal objects should be the same.&quot;);</span>
+<span class="fc" id="L113">    }</span>
+
+    @Test
+    void testToString() {
+<span class="fc" id="L117">        String expected = &quot;State{stateName='California', firearmsAge=21, firearmsAllowed=true, tobaccoAge=21, tobaccoAllowed=true, drugAge=21, drugAllowed=false, technologyAge=18, technologyAllowed=true, medicineAge=18, medicineAllowed=true, alcoholAge=21, alcoholAllowed=true, taxRate=0.07, id=null}&quot;;</span>
+<span class="fc" id="L118">        assertEquals(expected, california.toString(), &quot;The toString method should return the expected string representation.&quot;);</span>
+<span class="fc" id="L119">    }</span>
+
+    @Test
+    void testEquals_SameObject() {
+<span class="fc" id="L123">        assertTrue(california.equals(california));</span>
+<span class="fc" id="L124">    }</span>
+
+    @Test
+    void testEquals_DifferentType() {
+<span class="fc" id="L128">        assertFalse(california.equals(new Object()));</span>
+<span class="fc" id="L129">    }</span>
+
+    @Test
+    void testEquals_DifferentStates() {
+<span class="fc" id="L133">        assertFalse(california.equals(texas));</span>
+<span class="fc" id="L134">    }</span>
+
+    @Test
+    void testEquals_SameStateValues() {
+<span class="fc" id="L138">        assertTrue(california.equals(anotherCalifornia));</span>
+<span class="fc" id="L139">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

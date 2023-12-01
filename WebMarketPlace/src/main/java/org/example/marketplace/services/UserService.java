@@ -3,6 +3,8 @@ package org.example.marketplace.services;
 import org.example.marketplace.entities.Item;
 import org.example.marketplace.entities.User;
 
+import java.text.DecimalFormat;
+
 public interface UserService {
     public Iterable<User> findAll();
 
@@ -24,7 +26,7 @@ public interface UserService {
 
     public void makePurchase(Item item, int quantity);
 
-    public void makePurchase(Item item, int quantity, User user);
+    public boolean canUserAffordPurchase(Item item, int quantity);
 
     public boolean canUserAffordPurchase(double itemPrice);
 }

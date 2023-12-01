@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemServiceImplTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in cms Coverage Results</a> &gt; <a href="index.source.html" class="el_package">org.example.marketplace.services</a> &gt; <span class="el_source">ItemServiceImplTest.java</span></div><h1>ItemServiceImplTest.java</h1><pre class="source lang-java linenums">package org.example.marketplace.services;
+
+import org.example.marketplace.entities.Category;
+import org.example.marketplace.entities.Item;
+import org.example.marketplace.entities.State;
+import org.example.marketplace.entities.User;
+import org.example.marketplace.repositories.ItemRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.text.DecimalFormat;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L21">class ItemServiceImplTest {</span>
+
+    private List&lt;Item&gt; shoppingCart;
+
+    private ItemRepository itemRepository;
+
+    private ItemService itemService;
+
+    private Item phone;
+
+    private Item tv;
+
+    private Item laptop;
+
+    private Item firearm;
+
+    private Item alcohol;
+
+    private Item drug;
+
+    private Item medicine;
+
+    private Item tobacco;
+
+    private State alabama;
+
+    private State alaska;
+
+    private State arizona;
+
+    private State arkansas;
+
+    private State california;
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L57">        shoppingCart = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L58">        itemRepository = mock(ItemRepository.class);</span>
+<span class="fc" id="L59">        itemService = new ItemServiceImpl(itemRepository, shoppingCart);</span>
+
+<span class="fc" id="L61">        setUpMockReturns();</span>
+<span class="fc" id="L62">        setUpItemsAndStates();</span>
+<span class="fc" id="L63">    }</span>
+
+    void setUpMockReturns() {
+<span class="fc" id="L66">        Random random = new Random();</span>
+<span class="fc" id="L67">        when(itemRepository.save(any(Item.class))).thenAnswer(invocationOnMock -&gt; {</span>
+<span class="fc" id="L68">            Item savedItem = invocationOnMock.getArgument(0);</span>
+<span class="fc" id="L69">            savedItem.setId(random.nextLong());</span>
+<span class="fc" id="L70">            return savedItem;</span>
+        });
+<span class="fc" id="L72">    }</span>
+
+    void setUpItemsAndStates() {
+<span class="fc" id="L75">        phone = new Item(&quot;Phone&quot;, &quot;IPhone 15&quot;, &quot;/image&quot;, &quot;Washington&quot;, 1199.99, 1, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L76">        tv = new Item(&quot;Laptop&quot;, &quot;Macbook Pro&quot;, &quot;/image&quot;, &quot;Washington&quot;, 2199.99, 5, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L77">        laptop = new Item(&quot;TV&quot;, &quot;Samsung 4K TV&quot;, &quot;/image&quot;, &quot;Washington&quot;, 999.99, 5, Category.TECHNOLOGY.ordinal());</span>
+<span class="fc" id="L78">        firearm = new Item(&quot;Handgun&quot;, &quot;Kimber Stainless 45 Auto&quot;, &quot;/image&quot;, &quot;Idaho&quot;, 699.99, 3, Category.FIREARM.ordinal());</span>
+<span class="fc" id="L79">        alcohol = new Item(&quot;Rum&quot;, &quot;Malibu Caribbean Rum&quot;, &quot;/image&quot;, &quot;Oregon&quot;, 19.99, 4, Category.ALCOHOL.ordinal());</span>
+<span class="fc" id="L80">        medicine = new Item(&quot;Hydrocodone Painkillers&quot;, &quot;Hydrocodone Max Strength&quot;, &quot;/image&quot;, &quot;California&quot;, 59.99, 4, Category.MEDICINE.ordinal());</span>
+<span class="fc" id="L81">        drug= new Item(&quot;Classic Marijuana&quot;, &quot;Large weed pack&quot;, &quot;/image&quot;, &quot;California&quot;, 9.99, 0, Category.DRUGS.ordinal());</span>
+<span class="fc" id="L82">        tobacco =  new Item(&quot;Classic Cigarettes&quot;, &quot;Large tobacco cigarette pack&quot;, &quot;/image&quot;, &quot;Washington&quot;, 9.99, 4, Category.TOBACCO.ordinal());</span>
+
+<span class="fc" id="L84">        alabama = new State(&quot;AL&quot;,</span>
+                18, false,
+                18, false,
+                21, false,
+                25, false,
+                25, false,
+                18, false, 0.07);
+
+<span class="fc" id="L92">        alaska = new State(&quot;AK&quot;,</span>
+                21, true,
+                15, true,
+                33, true,
+                32, true,
+                1, true,
+                99, true, 0.06);
+
+<span class="fc" id="L100">        arizona = new State(&quot;AZ&quot;,</span>
+                34, true,
+                22, false,
+                50, false,
+                0, true,
+                13, true,
+                21, true, 0.2);
+
+<span class="fc" id="L108">        arkansas = new State(&quot;AR&quot;,</span>
+                99, true,
+                18, true,
+                21, true,
+                25, true,
+                25, true,
+                18, false, 0.13);
+
+<span class="fc" id="L116">        california = new State(&quot;CA&quot;,</span>
+                22, false,
+                48, true,
+                44, true,
+                31, true,
+                24, true,
+                30, true, 0.20);
+<span class="fc" id="L123">    }</span>
+
+    @Test
+    void findAllTest() {
+<span class="fc" id="L127">        when(itemRepository.findAll()).thenReturn(List.of(phone, tv, laptop));</span>
+
+<span class="fc" id="L129">        List&lt;Item&gt; expected = new ArrayList&lt;&gt;(List.of(phone, tv, laptop));</span>
+<span class="fc" id="L130">        assertEquals(itemService.findAll(), expected);</span>
+<span class="fc" id="L131">    }</span>
+
+    @Test
+    void saveTest() {
+<span class="fc" id="L135">        Item tablet = new Item(&quot;Tablet&quot;, &quot;iPad Pro&quot;, &quot;/image&quot;, &quot;Washington&quot;, 799.99, 5, Category.TECHNOLOGY.ordinal());</span>
+
+<span class="fc" id="L137">        tablet = itemService.save(tablet);</span>
+<span class="fc" id="L138">        assertNotEquals(tablet.getId(), null);</span>
+<span class="fc" id="L139">    }</span>
+
+    @Test
+    void deleteTest() {
+<span class="fc" id="L143">        Item itemToDelete = phone;</span>
+<span class="fc" id="L144">        itemService.delete(itemToDelete);</span>
+
+        // Verify that the delete method was called with the correct item since delete() doesn't return a val
+<span class="fc" id="L147">        verify(itemRepository).delete(itemToDelete);</span>
+<span class="fc" id="L148">    }</span>
+
+    @Test
+    void deleteTest2() {
+<span class="fc" id="L152">        Item itemToDelete = phone;</span>
+<span class="fc" id="L153">        itemService.delete(itemToDelete);</span>
+
+        // Use an argument captor to ensure itemToDelete was successfully passed into the repository
+<span class="fc" id="L156">        ArgumentCaptor&lt;Item&gt; argumentCaptor = ArgumentCaptor.forClass(Item.class);</span>
+<span class="fc" id="L157">        verify(itemRepository).delete(argumentCaptor.capture());</span>
+<span class="fc" id="L158">        assertEquals(itemToDelete, argumentCaptor.getValue());</span>
+<span class="fc" id="L159">    }</span>
+
+    @Test
+    void buyItemTest1() {
+<span class="fc" id="L163">        Item itemToBuy = phone;</span>
+<span class="fc" id="L164">        int quantity = 1;</span>
+<span class="fc" id="L165">        int expectedStock = itemToBuy.getStock() - 1;</span>
+
+<span class="fc" id="L167">        Item updatedItem = itemService.buyItem(itemToBuy, quantity);</span>
+
+<span class="fc" id="L169">        assertEquals(updatedItem.getStock(), expectedStock);</span>
+<span class="fc" id="L170">    }</span>
+
+    @Test
+    void buyItemTest2() {
+<span class="fc" id="L174">        Item itemToBuy = phone;</span>
+<span class="fc" id="L175">        int quantity = 1;</span>
+<span class="fc" id="L176">        itemToBuy.setStock(0);</span>
+
+<span class="fc" id="L178">        Item updatedItem = itemService.buyItem(itemToBuy, quantity);</span>
+
+<span class="fc" id="L180">        assertEquals(itemToBuy, updatedItem);</span>
+<span class="fc" id="L181">    }</span>
+
+    @Test
+    void buyItemTest3() {
+<span class="fc" id="L185">        Item itemToBuy = phone;</span>
+<span class="fc" id="L186">        int quantity = 1, expectedCartSize = 0;</span>
+<span class="fc" id="L187">        itemService.addItemToCart(itemToBuy);</span>
+
+<span class="fc" id="L189">        Item updatedItem = itemService.buyItem(itemToBuy, quantity);</span>
+
+<span class="fc" id="L191">        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);</span>
+<span class="fc" id="L192">    }</span>
+
+    @Test
+    void buyItemTest4() {
+<span class="fc" id="L196">        Item itemToBuy = phone;</span>
+<span class="fc" id="L197">        int quantity = 1, expectedCartSize = 1;</span>
+<span class="fc" id="L198">        itemService.addItemToCart(tv);</span>
+
+<span class="fc" id="L200">        Item updatedItem = itemService.buyItem(itemToBuy, quantity);</span>
+
+<span class="fc" id="L202">        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);</span>
+<span class="fc" id="L203">    }</span>
+
+    @Test
+    void addItemToCartTest1() {
+<span class="fc" id="L207">        Item itemToAdd = phone;</span>
+<span class="fc" id="L208">        int expectedCartSize = 1;</span>
+<span class="fc" id="L209">        itemService.addItemToCart(itemToAdd);</span>
+
+<span class="fc" id="L211">        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);</span>
+<span class="fc" id="L212">    }</span>
+
+    @Test
+    void addItemToCartTest2() {
+<span class="fc" id="L216">        Item itemToAdd = laptop;</span>
+<span class="fc" id="L217">        int expectedCartSize = 2;</span>
+
+<span class="fc" id="L219">        itemService.addItemToCart(itemToAdd);</span>
+<span class="fc" id="L220">        itemService.addItemToCart(itemToAdd);</span>
+
+<span class="fc" id="L222">        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);</span>
+<span class="fc" id="L223">    }</span>
+
+    @Test
+    void addItemToCartTest3() {
+<span class="fc" id="L227">        Item itemToAdd = phone;</span>
+<span class="fc" id="L228">        int expectedCartSize = 1;</span>
+
+<span class="fc" id="L230">        itemToAdd.setStock(1);</span>
+<span class="fc" id="L231">        itemService.addItemToCart(itemToAdd);</span>
+<span class="fc" id="L232">        itemService.addItemToCart(itemToAdd);</span>
+
+<span class="fc" id="L234">        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);</span>
+<span class="fc" id="L235">    }</span>
+
+    @Test
+    void addItemToCartTest4() {
+<span class="fc" id="L239">        Item itemToAdd = phone;</span>
+<span class="fc" id="L240">        int expectedCartSize = 1;</span>
+
+<span class="fc" id="L242">        itemToAdd.setStock(1);</span>
+<span class="fc" id="L243">        itemService.addItemToCart(itemToAdd);</span>
+<span class="fc" id="L244">        itemToAdd.setStock(0);</span>
+<span class="fc" id="L245">        itemService.addItemToCart(itemToAdd);</span>
+
+<span class="fc" id="L247">        assertEquals(itemService.getShoppingCartSize(), expectedCartSize);</span>
+<span class="fc" id="L248">    }</span>
+
+    @Test
+    void getQuantityToDeductStockTest1() {
+<span class="fc" id="L252">        Item targetItem = laptop;</span>
+<span class="fc" id="L253">        int expectedQuantity = 3;</span>
+
+<span class="fc" id="L255">        itemService.addItemToCart(targetItem);</span>
+<span class="fc" id="L256">        itemService.addItemToCart(targetItem);</span>
+<span class="fc" id="L257">        itemService.addItemToCart(targetItem);</span>
+
+<span class="fc" id="L259">        assertEquals(itemService.getQuantityToDeductStock(targetItem), expectedQuantity);</span>
+<span class="fc" id="L260">    }</span>
+
+    @Test
+    void getQuantityToDeductStockTest2() {
+<span class="fc" id="L264">        Item targetItem = laptop;</span>
+<span class="fc" id="L265">        Item nonTargetItem = phone;</span>
+<span class="fc" id="L266">        int expectedQuantity = 3;</span>
+
+<span class="fc" id="L268">        itemService.addItemToCart(targetItem);</span>
+<span class="fc" id="L269">        itemService.addItemToCart(targetItem);</span>
+<span class="fc" id="L270">        itemService.addItemToCart(targetItem);</span>
+
+<span class="fc" id="L272">        assertNotEquals(itemService.getQuantityToDeductStock(nonTargetItem), expectedQuantity);</span>
+<span class="fc" id="L273">    }</span>
+
+    @Test
+    void getShoppingCartItemsTest() {
+<span class="fc" id="L277">        itemService.addItemToCart(phone);</span>
+<span class="fc" id="L278">        assertEquals(itemService.getShoppingCartItems(), List.of(phone));</span>
+<span class="fc" id="L279">    }</span>
+
+    @Test
+    void getShoppingCartSizeTest() {
+<span class="fc" id="L283">        itemService.addItemToCart(tv);</span>
+<span class="fc" id="L284">        itemService.addItemToCart(laptop);</span>
+<span class="fc" id="L285">        assertEquals(itemService.getShoppingCartSize(), 2);</span>
+<span class="fc" id="L286">    }</span>
+
+    @Test
+    void getShoppingCartTotalTest() {
+<span class="fc" id="L290">        DecimalFormat decimalFormat = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc" id="L291">        double expectedTotal = phone.getPrice() + tv.getPrice() + laptop.getPrice();</span>
+<span class="fc" id="L292">        expectedTotal = Double.parseDouble(decimalFormat.format(expectedTotal));</span>
+<span class="fc" id="L293">        itemService.addItemToCart(phone);</span>
+<span class="fc" id="L294">        itemService.addItemToCart(tv);</span>
+<span class="fc" id="L295">        itemService.addItemToCart(laptop);</span>
+
+<span class="fc" id="L297">        assertEquals(itemService.getShoppingCartTotal(), expectedTotal);</span>
+<span class="fc" id="L298">    }</span>
+
+    @Test
+    void clearShoppingCartTest() {
+<span class="fc" id="L302">        itemService.addItemToCart(phone);</span>
+<span class="fc" id="L303">        itemService.addItemToCart(tv);</span>
+<span class="fc" id="L304">        itemService.addItemToCart(laptop);</span>
+<span class="fc" id="L305">        itemService.clearShoppingCart();</span>
+
+<span class="fc" id="L307">        assertEquals(itemService.getShoppingCartSize(), 0);</span>
+<span class="fc" id="L308">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Firearm1() {
+<span class="fc" id="L312">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, alabama, 14567.87);</span>
+
+<span class="fc" id="L314">        assertFalse(itemService.isValidPurchase(user, firearm));</span>
+<span class="fc" id="L315">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Firearm2() {
+<span class="fc" id="L319">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, alaska, 14567.87);</span>
+
+<span class="fc" id="L321">        assertFalse(itemService.isValidPurchase(user, firearm));</span>
+<span class="fc" id="L322">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Firearm3() {
+<span class="fc" id="L326">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 21, alaska, 14567.87);</span>
+
+<span class="fc" id="L328">        assertTrue(itemService.isValidPurchase(user, firearm));</span>
+<span class="fc" id="L329">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Firearm4() {
+<span class="fc" id="L333">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, arkansas, 14567.87);</span>
+
+<span class="fc" id="L335">        assertTrue(itemService.isValidPurchase(user, firearm));</span>
+<span class="fc" id="L336">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Firearm5() {
+<span class="fc" id="L340">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, arizona, 14567.87);</span>
+
+<span class="fc" id="L342">        assertTrue(itemService.isValidPurchase(user, firearm));</span>
+<span class="fc" id="L343">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Alcohol1() {
+<span class="fc" id="L347">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, arkansas, 14567.87);</span>
+
+<span class="fc" id="L349">        assertFalse(itemService.isValidPurchase(user, alcohol));</span>
+<span class="fc" id="L350">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Alcohol2() {
+<span class="fc" id="L354">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, california, 14567.87);</span>
+
+<span class="fc" id="L356">        assertFalse(itemService.isValidPurchase(user, alcohol));</span>
+<span class="fc" id="L357">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Alcohol3() {
+<span class="fc" id="L361">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 33, california, 14567.87);</span>
+
+<span class="fc" id="L363">        assertTrue(itemService.isValidPurchase(user, alcohol));</span>
+<span class="fc" id="L364">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Alcohol4() {
+<span class="fc" id="L368">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, alaska, 14567.87);</span>
+
+<span class="fc" id="L370">        assertTrue(itemService.isValidPurchase(user, alcohol));</span>
+<span class="fc" id="L371">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Alcohol5() {
+<span class="fc" id="L375">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, arizona, 14567.87);</span>
+
+<span class="fc" id="L377">        assertTrue(itemService.isValidPurchase(user, alcohol));</span>
+<span class="fc" id="L378">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Drugs1() {
+<span class="fc" id="L382">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, arizona, 14567.87);</span>
+
+<span class="fc" id="L384">        assertFalse(itemService.isValidPurchase(user, drug));</span>
+<span class="fc" id="L385">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Drugs2() {
+<span class="fc" id="L389">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, california, 14567.87);</span>
+
+<span class="fc" id="L391">        assertFalse(itemService.isValidPurchase(user, drug));</span>
+<span class="fc" id="L392">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Drugs3() {
+<span class="fc" id="L396">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 45, california, 14567.87);</span>
+
+<span class="fc" id="L398">        assertTrue(itemService.isValidPurchase(user, drug));</span>
+<span class="fc" id="L399">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Drugs4() {
+<span class="fc" id="L403">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, alaska, 14567.87);</span>
+
+<span class="fc" id="L405">        assertTrue(itemService.isValidPurchase(user, drug));</span>
+<span class="fc" id="L406">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Drugs5() {
+<span class="fc" id="L410">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, arkansas, 14567.87);</span>
+
+<span class="fc" id="L412">        assertTrue(itemService.isValidPurchase(user, drug));</span>
+<span class="fc" id="L413">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Drugs6() {
+<span class="fc" id="L417">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, california, 14567.87);</span>
+
+<span class="fc" id="L419">        assertTrue(itemService.isValidPurchase(user, drug));</span>
+<span class="fc" id="L420">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Medicine1() {
+<span class="fc" id="L424">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, alabama, 14567.87);</span>
+
+<span class="fc" id="L426">        assertFalse(itemService.isValidPurchase(user, medicine));</span>
+<span class="fc" id="L427">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Medicine2() {
+<span class="fc" id="L431">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 10, arizona, 14567.87);</span>
+
+<span class="fc" id="L433">        assertFalse(itemService.isValidPurchase(user, medicine));</span>
+<span class="fc" id="L434">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Medicine3() {
+<span class="fc" id="L438">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 33, arizona, 14567.87);</span>
+
+<span class="fc" id="L440">        assertTrue(itemService.isValidPurchase(user, medicine));</span>
+<span class="fc" id="L441">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Medicine4() {
+<span class="fc" id="L445">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, california, 14567.87);</span>
+
+<span class="fc" id="L447">        assertTrue(itemService.isValidPurchase(user, medicine));</span>
+<span class="fc" id="L448">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Medicine5() {
+<span class="fc" id="L452">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, alaska, 14567.87);</span>
+
+<span class="fc" id="L454">        assertTrue(itemService.isValidPurchase(user, medicine));</span>
+<span class="fc" id="L455">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Technology1() {
+<span class="fc" id="L459">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, alabama, 14567.87);</span>
+
+<span class="fc" id="L461">        assertFalse(itemService.isValidPurchase(user, phone));</span>
+<span class="fc" id="L462">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Technology2() {
+<span class="fc" id="L466">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 10, alaska, 14567.87);</span>
+
+<span class="fc" id="L468">        assertFalse(itemService.isValidPurchase(user, phone));</span>
+<span class="fc" id="L469">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Technology3() {
+<span class="fc" id="L473">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 53, alaska, 14567.87);</span>
+
+<span class="fc" id="L475">        assertTrue(itemService.isValidPurchase(user, phone));</span>
+<span class="fc" id="L476">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Technology4() {
+<span class="fc" id="L480">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, arizona, 14567.87);</span>
+
+<span class="fc" id="L482">        assertTrue(itemService.isValidPurchase(user, phone));</span>
+<span class="fc" id="L483">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Technology5() {
+<span class="fc" id="L487">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, arkansas, 14567.87);</span>
+
+<span class="fc" id="L489">        assertTrue(itemService.isValidPurchase(user, phone));</span>
+<span class="fc" id="L490">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Tobacco1() {
+<span class="fc" id="L494">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 17, arizona, 14567.87);</span>
+
+<span class="fc" id="L496">        assertFalse(itemService.isValidPurchase(user, tobacco));</span>
+<span class="fc" id="L497">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Tobacco2() {
+<span class="fc" id="L501">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 10, arkansas, 14567.87);</span>
+
+<span class="fc" id="L503">        assertFalse(itemService.isValidPurchase(user, tobacco));</span>
+<span class="fc" id="L504">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Tobacco3() {
+<span class="fc" id="L508">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 53, arkansas, 14567.87);</span>
+
+<span class="fc" id="L510">        assertTrue(itemService.isValidPurchase(user, tobacco));</span>
+<span class="fc" id="L511">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Tobacco4() {
+<span class="fc" id="L515">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, california, 14567.87);</span>
+
+<span class="fc" id="L517">        assertTrue(itemService.isValidPurchase(user, tobacco));</span>
+<span class="fc" id="L518">    }</span>
+
+    @Test
+    void isValidPurchaseTest_Tobacco5() {
+<span class="fc" id="L522">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, alaska, 14567.87);</span>
+
+<span class="fc" id="L524">        assertTrue(itemService.isValidPurchase(user, tobacco));</span>
+<span class="fc" id="L525">    }</span>
+
+    @Test
+    void isValidPurchaseTest_UnsupportedItem() {
+<span class="fc" id="L529">        Item invalidItem = new Item(&quot;item&quot;, &quot;item&quot;, &quot;item&quot;, &quot;item&quot;, 0,0,10);</span>
+<span class="fc" id="L530">        User user = new User(&quot;Jose&quot;, &quot;Robles&quot;, &quot;jRob&quot;, 99, california, 14567.87);</span>
+
+<span class="fc" id="L532">        assertFalse(itemService.isValidPurchase(user, invalidItem));</span>
+<span class="fc" id="L533">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

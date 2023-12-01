@@ -1,3 +1,4 @@
+import io.qameta.allure.TmsLink;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -46,6 +47,7 @@ public class SeleniumTest {
     }
 
     // Test to verify that the home page loads correctly.
+    @TmsLink("C1")
     @Test
     void testHomePageLoads() {
         openPage();
@@ -55,8 +57,9 @@ public class SeleniumTest {
         assertNotNull(header, "Header should be present");
         assertNotNull(itemsContainer, "Items container should be present");
     }
-    // Test to verify that the login functionality works.
 
+    // Test to verify that the login functionality works.
+    @TmsLink("C2")
     @Test
     void testlogin() {
         openPage(); // Navigate to the page where the form is located
@@ -75,9 +78,8 @@ public class SeleniumTest {
         // Add any assertions or additional actions needed after form submission
     }
 
-
-
     // Test to verify buying an item and checking the stock count.
+    @TmsLink("C3")
     @Test
     void testBuyItemAndCheckStock() {
         login();
@@ -98,12 +100,13 @@ public class SeleniumTest {
         assertTrue(newStock < initialStock, "Stock should decrease after a purchase");
 
     }
-    // Helper method to extract numeric stock number from text.
 
+    // Helper method to extract numeric stock number from text.
     private int extractStockNumber(String stockText) {
         return Integer.parseInt(stockText.replaceAll("[^0-9]", ""));
     }
     // Test to verify submitting an item creation form.
+    @TmsLink("C4")
     @Test
     void testItemCreationFormSubmission() {
         login();
@@ -124,7 +127,9 @@ public class SeleniumTest {
 
 
     }
+
     // Test to verify adding an item to the cart and then buying it.
+    @TmsLink("C5")
     @Test
     void testAddAndBuyFromCart() {
         login();
